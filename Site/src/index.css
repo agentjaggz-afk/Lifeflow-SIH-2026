@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2.5 rounded-xl px-6 py-2.5 text-sm font-bold text-white border border-white/20 transition-all duration-200 ease-out hover:-translate-y-0.5 active:translate-y-0 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none;
+    padding: 10px 24px !important;
+    min-height: 42px !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+    background: linear-gradient(135deg, #b91c1c 0%, #991b1b 50%, #450a0a 100%) !important;
+    box-shadow: 0 4px 14px rgba(185, 28, 28, 0.35) !important;
+  }
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 50%, #7f1d1d 100%) !important;
+    box-shadow: 0 6px 20px rgba(185, 28, 28, 0.5) !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
+  }
+
+  /* Universal LifeFlow Crimson Button Rules across React Views */
+  .btn-lifeflow-crimson,
+  button.bg-primary-600,
+  button.bg-primary-700,
+  button.bg-red-600,
+  button.bg-red-700,
+  a.bg-primary-600,
+  a.bg-primary-700,
+  a.bg-red-600,
+  a.bg-red-700 {
+    background: linear-gradient(135deg, #b91c1c 0%, #991b1b 50%, #450a0a 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 4px 14px rgba(185, 28, 28, 0.35) !important;
+  }
+
+  .btn-lifeflow-crimson:hover,
+  button.bg-primary-600:hover,
+  button.bg-primary-700:hover,
+  button.bg-red-600:hover,
+  button.bg-red-700:hover,
+  a.bg-primary-600:hover,
+  a.bg-primary-700:hover,
+  a.bg-red-600:hover,
+  a.bg-red-700:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 50%, #7f1d1d 100%) !important;
+    box-shadow: 0 6px 20px rgba(185, 28, 28, 0.5) !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
+  }
+
+  .btn-location-search {
+    height: 48px !important;
+    padding: 0 20px !important;
+    background: linear-gradient(135deg, #b91c1c 0%, #991b1b 50%, #450a0a 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    box-shadow: 0 4px 14px rgba(185, 28, 28, 0.4) !important;
+    opacity: 1 !important;
+    cursor: pointer !important;
+  }
+
+  .btn-location-search:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 50%, #7f1d1d 100%) !important;
+    box-shadow: 0 6px 20px rgba(185, 28, 28, 0.55) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+    transform: translateY(-1.5px) !important;
+  }
+
+  .btn-location-search:active {
+    transform: translateY(0) !important;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-gray-200 transition-all duration-200 ease-out hover:bg-gray-50 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-95;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-medium text-gray-600 transition-all duration-200 ease-out hover:bg-gray-100 hover:text-gray-900 active:scale-95;
+  }
+  .card {
+    @apply rounded-2xl bg-white shadow-sm ring-1 ring-gray-100 transition-all duration-300 ease-out;
+  }
+  .interactive-card {
+    @apply rounded-2xl bg-white shadow-sm ring-1 ring-gray-100 transition-all duration-200 ease-out hover:shadow-lg hover:shadow-primary-950/5 hover:-translate-y-1 hover:ring-primary-200 active:scale-[0.98] cursor-pointer;
+  }
+  .input {
+    @apply w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 transition-all duration-200 focus:border-primary-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-primary-100;
+  }
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-gray-700;
+  }
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium transition-all duration-150;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #d1d5db;
+}
+
+/* =====================================================
+   MOBILE TOUCH & ORIENTATION OPTIMIZATIONS
+===================================================== */
+@layer base {
+  html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  button, a, input, select, textarea {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  @media (max-width: 768px) {
+    input, select, textarea {
+      font-size: 16px !important;
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .btn-primary,
+  .btn-secondary,
+  .btn-lifeflow-crimson {
+    min-height: 44px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 550px) {
+  header {
+    min-height: 52px;
+  }
+}
+

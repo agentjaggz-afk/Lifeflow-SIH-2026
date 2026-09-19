@@ -1,0 +1,2036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeFlow - Blood Network Platform</title>
+
+    <!-- LifeFlow Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <link rel="stylesheet" href="style1.css?v=4.0.0">
+
+    <style>
+        /* LifeFlow Crimson Gateway Buttons */
+        #btnGatewayDonate,
+        #btnGatewayHospitalAuth,
+        .gateway-btn.btn-red {
+            background: linear-gradient(135deg, #b91c1c 0%, #991b1b 50%, #450a0a 100%) !important;
+            color: #ffffff !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            box-shadow: 0 4px 14px rgba(185, 28, 28, 0.35) !important;
+            transition: all 0.22s ease !important;
+        }
+
+        #btnGatewayDonate:hover,
+        #btnGatewayHospitalAuth:hover,
+        .gateway-btn.btn-red:hover {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 50%, #7f1d1d 100%) !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 20px rgba(185, 28, 28, 0.5) !important;
+            border-color: rgba(255, 255, 255, 0.35) !important;
+        }
+
+        #btnGatewayDonate:active,
+        #btnGatewayHospitalAuth:active,
+        .gateway-btn.btn-red:active {
+            transform: translateY(0) !important;
+        }
+    </style>
+
+    <link rel="preconnect" href="http://localhost:5174">
+    <link rel="dns-prefetch" href="http://localhost:5174">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    >
+</head>
+
+<body>
+
+<!-- =====================================================
+     AUTHENTICATION PAGE (LifeFlow Crimson Layout)
+===================================================== -->
+
+<div id="authPage" class="auth-page bg-lifeflow-crimson">
+
+    <!-- TOP NAVIGATION HEADER (Exact matching screenshot layout) -->
+    <header class="landing-header">
+        <a href="/index.html" class="header-brand" title="LifeFlow Blood Network Platform">
+            <div class="logo-drop">
+                <i class="fa-solid fa-droplet"></i>
+            </div>
+            <div class="brand-text-block">
+                <span class="brand-name">LifeFlow</span>
+                <span class="brand-tagline">Blood Network Platform</span>
+            </div>
+        </a>
+
+        <div class="header-actions">
+            <span class="header-pill-btn header-pill-display" title="Donor &amp; Consumer Hub">
+                <i class="fa-solid fa-hand-holding-droplet"></i>
+                <span>Donor Hub</span>
+            </span>
+            <span class="header-pill-btn header-pill-display" title="Hospital Portal">
+                <i class="fa-solid fa-hospital"></i>
+                <span>Hospital Portal</span>
+            </span>
+            <span class="header-pill-btn header-pill-display" title="NGO Portal">
+                <i class="fa-solid fa-people-group"></i>
+                <span>NGO Portal</span>
+            </span>
+        </div>
+    </header>
+
+    <!-- CENTERED HERO SECTION (Exact matching screenshot typography & layout) -->
+    <div class="landing-hero">
+        <div class="hero-badge">
+            <i class="fa-solid fa-bolt"></i>
+            <span>Live blood metrics in your area</span>
+        </div>
+
+        <h1 class="hero-title">
+            Connecting donors, receivers,<br>
+            hospitals &amp; blood camps
+        </h1>
+
+        <p class="hero-subtitle">
+            Real-time blood availability across every blood group and component.
+            Find donors, track inventory, and save lives — all in one network.
+        </p>
+    </div>
+
+    <!-- CENTERED FLOATING WHITE CARD (Exact matching screenshot card format) -->
+    <div class="auth-card-wrapper">
+
+        <div class="auth-box">
+
+            <div id="roleSelection">
+
+                <div class="gateway-header">
+                    <h2>Welcome to LifeFlow</h2>
+                    <p class="auth-subtitle">
+                        Blood Network Platform — Select your dedicated portal to donate, request blood, or manage institutional transfers
+                    </p>
+                </div>
+
+                <div class="portal-gateway-grid">
+
+                    <!-- SECTION 1: Donor & Consumer Hub -->
+                    <div class="gateway-card individual-gateway-card" id="cardDonorConsumerHub" onclick="selectRole('donor', 'login')" role="button" tabindex="0" title="Click to access Donor & Consumer Hub">
+                        <div class="gateway-card-top">
+                            <div class="gateway-header-row">
+                                <div class="gateway-icon-box donor-consumer-icon">
+                                    <i class="fa-solid fa-hand-holding-droplet"></i>
+                                </div>
+                                <span class="gateway-tag individual-tag">
+                                    <i class="fa-solid fa-user-heart"></i> Individual Hub
+                                </span>
+                            </div>
+
+                            <h3 class="gateway-title">Donor & Consumer Hub</h3>
+                            <p class="gateway-desc">
+                                Register as a blood donor, check eligibility, or request urgent blood units for personal emergency use.
+                            </p>
+
+                            <div class="gateway-badges">
+                                <span class="gateway-badge"><i class="fa-solid fa-location-dot"></i> Find Nearby Drives</span>
+                                <span class="gateway-badge"><i class="fa-solid fa-bell"></i> Urgent Patient Requests</span>
+                                <span class="gateway-badge"><i class="fa-solid fa-shield-heart"></i> Eligibility Screening</span>
+                            </div>
+                        </div>
+
+                        <div class="gateway-actions">
+                            <button type="button" class="gateway-btn btn-red" id="btnGatewayDonate" onclick="event.stopPropagation(); selectRole('donor', 'signup')" style="background: linear-gradient(135deg, #b91c1c 0%, #991b1b 50%, #450a0a 100%) !important; color: #ffffff !important; border: 1px solid rgba(255, 255, 255, 0.2) !important; box-shadow: 0 4px 14px rgba(185, 28, 28, 0.35) !important;">
+                                <i class="fa-solid fa-heart-circle-bolt"></i>
+                                <span>Donate Blood</span>
+                            </button>
+                            <button type="button" class="gateway-btn btn-red-secondary" id="btnGatewayFindBlood" onclick="event.stopPropagation(); selectRole('consumer', 'login')">
+                                <i class="fa-solid fa-droplet"></i>
+                                <span>Find / Request Blood</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 2: Hospital & NGO Portal -->
+                    <div class="gateway-card institutional-gateway-card">
+                        <div class="gateway-card-top">
+                            <div class="gateway-header-row">
+                                <div class="gateway-icon-box hosp-ngo-icon">
+                                    <i class="fa-solid fa-hospital-user"></i>
+                                </div>
+                                <span class="gateway-tag institutional-tag">
+                                    <i class="fa-solid fa-shield-halved"></i> Institutional Gateway
+                                </span>
+                            </div>
+
+                            <h3 class="gateway-title">Hospital & NGO Portal</h3>
+                            <p class="gateway-desc">
+                                Institutional access for licensed hospitals and NGOs to manage blood inventories, initiate inter-hospital transfers, and track stock.
+                            </p>
+
+                            <div class="gateway-badges">
+                                <span class="gateway-badge"><i class="fa-solid fa-id-card"></i> Licence Verified</span>
+                                <span class="gateway-badge"><i class="fa-solid fa-boxes-stacked"></i> Live Bank Sync</span>
+                                <span class="gateway-badge"><i class="fa-solid fa-truck-medical"></i> Inter-Hospital Transfer</span>
+                            </div>
+                        </div>
+
+                        <div class="gateway-actions">
+                            <button type="button" class="gateway-btn btn-red" id="btnGatewayHospitalAuth" onclick="openHospitalPortal()" style="background: linear-gradient(135deg, #b91c1c 0%, #991b1b 50%, #450a0a 100%) !important; color: #ffffff !important; border: 1px solid rgba(255, 255, 255, 0.2) !important; box-shadow: 0 4px 14px rgba(185, 28, 28, 0.35) !important;">
+                                <i class="fa-solid fa-right-to-bracket"></i>
+                                <span>Hospital Sign In / Register</span>
+                            </button>
+                            <button type="button" class="gateway-btn btn-red-secondary" id="btnGatewayNgoAuth" onclick="openHospitalPortal('ngo')">
+                                <i class="fa-solid fa-people-group"></i>
+                                <span>NGO Partner Access</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================================
+                 LOGIN / SIGNUP FORM
+            ===================================================== -->
+
+            <div id="authFormContainer" class="hidden">
+
+                <button class="back-button" onclick="backToRoles()">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Change Account Type
+                </button>
+
+                <div class="selected-role">
+                    <div id="selectedRoleIcon" class="selected-role-icon">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+
+                    <div>
+                        <span>Creating account as</span>
+                        <strong id="selectedRoleName">Donor</strong>
+                    </div>
+                </div>
+
+
+                <div class="auth-tabs">
+
+                    <button
+                        id="loginTab"
+                        class="auth-tab active"
+                        onclick="showLogin()">
+                        Login
+                    </button>
+
+                    <button
+                        id="signupTab"
+                        class="auth-tab"
+                        onclick="showSignup()">
+                        Sign Up
+                    </button>
+
+                </div>
+
+
+                <!-- LOGIN -->
+
+                <form id="loginForm" onsubmit="loginUser(event)">
+
+                    <div class="form-group">
+
+                        <label>Email / Phone</label>
+
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-user"></i>
+
+                            <input
+                                type="text"
+                                id="loginEmail"
+                                placeholder="Enter email or phone"
+                                required
+                            >
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>Password</label>
+
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock"></i>
+
+                            <input
+                                type="password"
+                                id="loginPassword"
+                                placeholder="Enter password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                onclick="togglePassword('loginPassword', this)">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-options">
+
+                        <label class="remember">
+                            <input type="checkbox">
+                            Remember me
+                        </label>
+
+                        <a href="#" onclick="forgotPassword(event)">
+                            Forgot password?
+                        </a>
+
+                    </div>
+
+
+                    <button type="submit" class="auth-submit">
+                        Login
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+
+                    <!-- 1-Click Demo Evaluation Box for Donor & Consumer -->
+                    <div id="donorDemoCredentialsBox" class="donor-demo-box" style="margin-top: 18px;">
+                        <div class="demo-box-divider">
+                            <span>1-Click Demo Sign In</span>
+                        </div>
+                        <button type="button" class="demo-quick-login-btn" id="btnQuickDemoDonor" onclick="quickDemoSignIn('donor')" title="Sign in immediately as a registered Blood Donor">
+                            <div class="demo-btn-content">
+                                <i class="fa-solid fa-bolt demo-bolt-icon"></i>
+                                <div class="demo-btn-text">
+                                    <strong>Demo Sign In as Blood Donor</strong>
+                                    <span>Instant login as: Rahul Sharma (O+ Donor)</span>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                        <button type="button" class="demo-quick-login-btn btn-consumer-demo" id="btnQuickDemoConsumer" onclick="quickDemoSignIn('consumer')" style="margin-top: 8px;" title="Sign in immediately as a Blood Recipient">
+                            <div class="demo-btn-content">
+                                <i class="fa-solid fa-heart-pulse demo-pulse-icon"></i>
+                                <div class="demo-btn-text">
+                                    <strong>Demo Sign In as Recipient / Patient</strong>
+                                    <span>Instant login as: Priya Patel (Recipient)</span>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                    <div id="ngoDemoCredentialsBox" class="hosp-demo-box hidden" style="margin-top: 16px;">
+                        <div class="demo-title">
+                            <i class="fa-solid fa-bolt"></i> NGO Evaluation Demo Account
+                        </div>
+                        <p>Auto-fill verified NGO credentials:</p>
+                        <button type="button" class="demo-fill-btn" onclick="fillDemoNgoCredentials('LIC-NGO-OD-9021', 'Pass@123')">
+                            <i class="fa-solid fa-key"></i> Auto-fill (LIC-NGO-OD-9021 / Pass@123)
+                        </button>
+                        <button type="button" class="demo-fill-btn" style="margin-top: 6px;" onclick="fillDemoNgoCredentials('NGO-RED-001', 'Pass@123')">
+                            <i class="fa-solid fa-key"></i> Auto-fill Delhi (NGO-RED-001 / Pass@123)
+                        </button>
+                    </div>
+
+                </form>
+
+
+                <!-- SIGN UP -->
+
+                <form
+                    id="signupForm"
+                    class="hidden"
+                    onsubmit="signupUser(event)">
+
+                    <div id="signupFields">
+
+                        <!-- Fields are generated by JavaScript -->
+
+                    </div>
+
+
+                    <div class="terms">
+
+                        <label>
+                            <input type="checkbox" required>
+
+                            I agree to the
+                            <a href="#">Terms & Conditions</a>
+                            and
+                            <a href="#">Privacy Policy</a>.
+                        </label>
+
+                    </div>
+
+
+                    <button type="submit" class="auth-submit">
+                        Create Account
+                        <i class="fa-solid fa-user-plus"></i>
+                    </button>
+
+                </form>
+
+
+                <p id="authMessage" class="auth-message"></p>
+
+            </div>
+
+
+            <!-- =====================================================
+                 HOSPITAL SECTION AUTHENTICATION MODULE
+            ===================================================== -->
+            <div id="hospitalAuthSection" class="hospital-auth-section hidden">
+
+                <div class="hosp-topbar">
+                    <button type="button" class="hosp-back-btn" onclick="backToRoles()">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>Change Account Type</span>
+                    </button>
+                    <span class="hosp-trust-badge">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        NABH & Blood Bank Certified Gateway
+                    </span>
+                </div>
+
+                <div class="hosp-header">
+                    <div class="hosp-badge-icon">
+                        <i class="fa-solid fa-droplet"></i>
+                    </div>
+                    <div>
+                        <h2>LifeFlow Hospital Portal</h2>
+                        <p>Authorized medical center & blood donation access gateway</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs: Sign In / Sign Up -->
+                <div class="hosp-tabs">
+                    <button
+                        type="button"
+                        id="hospTabSignIn"
+                        class="hosp-tab active"
+                        onclick="switchHospitalTab('signin')">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        Sign In
+                    </button>
+                    <button
+                        type="button"
+                        id="hospTabSignUp"
+                        class="hosp-tab"
+                        onclick="switchHospitalTab('signup')">
+                        <i class="fa-solid fa-user-plus"></i>
+                        Sign Up
+                    </button>
+                </div>
+
+                <!-- SIGN IN FORM -->
+                <div id="hospSignInCard" class="hosp-card">
+                    <form id="hospSignInForm" onsubmit="handleHospitalSignIn(event)">
+                        <div class="hosp-form-group">
+                            <label for="hospLoginLicense">
+                                Hospital Licence Number <span class="required">*</span>
+                            </label>
+                            <div class="hosp-input-wrapper">
+                                <i class="fa-solid fa-id-card"></i>
+                                <input
+                                    type="text"
+                                    id="hospLoginLicense"
+                                    placeholder="e.g. LIC-2026-001 or HOSP-DL-4821"
+                                    required
+                                    autocomplete="username"
+                                >
+                            </div>
+                            <span class="field-hint">Enter your official state or national hospital licence identifier</span>
+                        </div>
+
+                        <div class="hosp-form-group">
+                            <div class="label-row">
+                                <label for="hospLoginPassword">
+                                    Password <span class="required">*</span>
+                                </label>
+                            </div>
+                            <div class="hosp-input-wrapper">
+                                <i class="fa-solid fa-lock"></i>
+                                <input
+                                    type="password"
+                                    id="hospLoginPassword"
+                                    placeholder="Enter your password"
+                                    required
+                                    autocomplete="current-password"
+                                >
+                                <button
+                                    type="button"
+                                    class="password-toggle"
+                                    onclick="togglePassword('hospLoginPassword', this)">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="hosp-form-options">
+                            <label class="hosp-remember">
+                                <input type="checkbox" id="hospRememberMe" checked>
+                                <span>Remember Hospital Licence Number</span>
+                            </label>
+                            <a href="#" class="hosp-forgot-link" onclick="handleHospForgotPassword(event)">
+                                Forgot Password?
+                            </a>
+                        </div>
+
+                        <button type="submit" class="hosp-submit-btn" id="hospSignInBtn">
+                            <span>Sign In to LifeFlow Hospital Portal</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+
+                        <div class="hosp-demo-box">
+                            <div class="demo-title">
+                                <i class="fa-solid fa-bolt"></i> Instant Demo Evaluation
+                            </div>
+                            <p>Test with pre-configured verified hospital credentials:</p>
+                            <button type="button" class="demo-fill-btn" onclick="fillDemoHospCredentials()">
+                                <i class="fa-solid fa-key"></i> Auto-fill Demo (LIC-2026-001 / Pass@123)
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- SIGN UP FORM -->
+                <div id="hospSignUpCard" class="hosp-card hidden">
+                    <form id="hospSignUpForm" onsubmit="handleHospitalSignUp(event)">
+                        <div class="hosp-form-row">
+                            <div class="hosp-form-group">
+                                <label for="hospSignupHospitalName">
+                                    Hospital Name <span class="required">*</span>
+                                </label>
+                                <div class="hosp-input-wrapper">
+                                    <i class="fa-solid fa-hospital"></i>
+                                    <input
+                                        type="text"
+                                        id="hospSignupHospitalName"
+                                        placeholder="e.g. City Care Blood Centre / Apollo"
+                                        required
+                                    >
+                                </div>
+                            </div>
+
+                            <div class="hosp-form-group">
+                                <label for="hospSignupLocation">
+                                    Hospital Location <span class="required">*</span>
+                                </label>
+                                <div class="hosp-input-wrapper">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    <input
+                                        type="text"
+                                        id="hospSignupLocation"
+                                        placeholder="e.g. New Delhi, Central Block"
+                                        required
+                                    >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hosp-form-group">
+                            <label for="hospSignupLicense">
+                                Hospital Licence Number <span class="required">*</span>
+                            </label>
+                            <div class="hosp-input-wrapper">
+                                <i class="fa-solid fa-id-card"></i>
+                                <input
+                                    type="text"
+                                    id="hospSignupLicense"
+                                    placeholder="e.g. LIC-2026-9041 (Unique Hospital Identifier)"
+                                    required
+                                >
+                            </div>
+                            <span class="field-hint">Unique medical authority registration / licence identifier</span>
+                        </div>
+
+                        <div class="hosp-form-row">
+                            <div class="hosp-form-group">
+                                <label for="hospSignupPassword">
+                                    Password <span class="required">*</span>
+                                </label>
+                                <div class="hosp-input-wrapper">
+                                    <i class="fa-solid fa-lock"></i>
+                                    <input
+                                        type="password"
+                                        id="hospSignupPassword"
+                                        placeholder="Min. 6 characters"
+                                        minlength="6"
+                                        required
+                                    >
+                                    <button
+                                        type="button"
+                                        class="password-toggle"
+                                        onclick="togglePassword('hospSignupPassword', this)">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="hosp-form-group">
+                                <label for="hospSignupConfirmPassword">
+                                    Confirm Password <span class="required">*</span>
+                                </label>
+                                <div class="hosp-input-wrapper">
+                                    <i class="fa-solid fa-shield-halved"></i>
+                                    <input
+                                        type="password"
+                                        id="hospSignupConfirmPassword"
+                                        placeholder="Re-type password"
+                                        minlength="6"
+                                        required
+                                    >
+                                    <button
+                                        type="button"
+                                        class="password-toggle"
+                                        onclick="togglePassword('hospSignupConfirmPassword', this)">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Visual Captcha -->
+                        <div class="hosp-captcha-section">
+                            <label>
+                                Security Verification Challenge <span class="required">*</span>
+                            </label>
+                            <div class="captcha-box">
+                                <div class="captcha-preview">
+                                    <canvas id="hospCaptchaCanvas" width="160" height="42" title="Visual Captcha Challenge"></canvas>
+                                    <button
+                                        type="button"
+                                        class="captcha-refresh"
+                                        onclick="refreshHospCaptcha()"
+                                        title="Generate new captcha">
+                                        <i class="fa-solid fa-rotate-right"></i>
+                                    </button>
+                                </div>
+                                <div class="captcha-input-group">
+                                    <i class="fa-solid fa-key"></i>
+                                    <input
+                                        type="text"
+                                        id="hospCaptchaInput"
+                                        placeholder="TYPE CAPTCHA"
+                                        maxlength="6"
+                                        required
+                                        autocomplete="off"
+                                    >
+                                </div>
+                            </div>
+                            <span class="field-hint">Enter the exact characters shown in the security challenge box.</span>
+                        </div>
+
+                        <div class="hosp-terms">
+                            <label>
+                                <input type="checkbox" id="hospTermsAgree" required checked>
+                                <span>I certify that this registration corresponds to an accredited hospital, blood bank, or authorized medical facility under statutory health guidelines.</span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="hosp-submit-btn" id="hospSignUpBtn">
+                            <span>Register Hospital</span>
+                            <i class="fa-solid fa-user-check"></i>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     MAIN BLOODLINK DASHBOARD
+===================================================== -->
+
+<div id="dashboard" class="dashboard hidden">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">♥</div>
+            <span>BloodLink</span>
+        </div>
+
+
+        <nav>
+
+            <a href="#home" class="nav-link active">
+                <i class="fa-solid fa-house"></i>
+                Home
+            </a>
+
+            <a href="#search" class="nav-link">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Find Blood
+            </a>
+
+            <a href="#banks" class="nav-link">
+                <i class="fa-solid fa-building-columns"></i>
+                Blood Banks
+            </a>
+
+            <a href="#requests" class="nav-link">
+                <i class="fa-solid fa-file-medical"></i>
+                Requests
+            </a>
+
+            <a href="#notifications" class="nav-link">
+                <i class="fa-solid fa-bell"></i>
+                Notifications
+            </a>
+
+            <a href="#profile" class="nav-link">
+                <i class="fa-solid fa-user"></i>
+                Profile
+            </a>
+
+            <a href="#settings" class="nav-link">
+                <i class="fa-solid fa-gear"></i>
+                Settings
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <button onclick="logoutUser()" class="logout-button">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main-content">
+
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <div class="top-search">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="text"
+                    placeholder="Search BloodLink..."
+                >
+
+            </div>
+
+
+            <div class="top-profile">
+
+                <div class="notification-icon">
+                    <i class="fa-solid fa-bell"></i>
+                    <span>3</span>
+                </div>
+
+                <div class="profile-avatar">
+                    M
+                </div>
+
+                <div class="profile-info">
+
+                    <strong id="dashboardUserName">
+                        User
+                    </strong>
+
+                    <small id="dashboardUserRole">
+                        Donor
+                    </small>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =====================================================
+             HOME
+        ===================================================== -->
+
+        <section id="home" class="page-section">
+
+            <div class="hero">
+
+                <div class="hero-content">
+
+                    <span class="hero-label">
+                        <i class="fa-solid fa-heart"></i>
+                        Every Drop Matters
+                    </span>
+
+                    <h1>
+                        Your Blood Can Be
+                        <span>Someone's Second Chance.</span>
+                    </h1>
+
+                    <p>
+                        Find blood, donate blood and connect with
+                        hospitals and organizations through BloodLink.
+                    </p>
+
+
+                    <div class="hero-buttons">
+
+                        <a href="#search" class="primary-button">
+                            Find Blood
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+
+                        <a href="#requests" class="secondary-button">
+                            Request Blood
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <div class="hero-image">
+
+                    <div class="blood-drop">
+                        ♥
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- =====================================================
+                 NGO REAL-TIME EMERGENCY BLOOD RECEPTION ENGINE
+                 (Active for NGO Sessions)
+            ===================================================== -->
+            <div id="ngoEmergencyReceptionPanel" class="ngo-emergency-reception-container hidden">
+                <div class="emergency-panel-header">
+                    <div class="emergency-panel-title-group">
+                        <div class="emergency-beacon-badge">
+                            <span class="pulse-beacon"></span>
+                            <i class="fa-solid fa-truck-medical"></i>
+                        </div>
+                        <div>
+                            <div class="panel-kicker">Hospital Blood Banks &amp; NGO Network</div>
+                            <h2 class="panel-heading">Real-Time Emergency Blood Reception Queue</h2>
+                            <p class="panel-subtext">Active code-red broadcasts and urgent shortage requisitions within response radius</p>
+                        </div>
+                    </div>
+                    <div class="emergency-panel-controls">
+                        <span id="sseConnectionStatusBadge" class="sse-status-badge sse-connecting">
+                            <span class="status-dot"></span> <span id="sseStatusText" class="status-text">Connecting SSE...</span>
+                        </span>
+                        <button type="button" class="btn-simulate-alert" onclick="triggerSimulatedEmergencyAlert()" title="Simulate an incoming hospital shortage call">
+                            <i class="fa-solid fa-bolt"></i> Simulate Inflow
+                        </button>
+                    </div>
+                </div>
+
+                <div id="ngoEmergencyAlertsList" class="emergency-alerts-grid">
+                    <!-- Populated dynamically via SSE stream / active alerts poller -->
+                </div>
+            </div>
+
+            <!-- QUICK ACTIONS -->
+
+            <div class="section-heading">
+
+                <div>
+                    <h2>Quick Actions</h2>
+                    <p>What would you like to do?</p>
+                </div>
+
+            </div>
+
+
+            <div class="quick-grid">
+
+                <a href="#search" class="quick-card">
+
+                    <div class="quick-icon">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+
+                    <h3>Find Blood</h3>
+
+                    <p>
+                        Search for available blood near you.
+                    </p>
+
+                </a>
+
+
+                <a href="#requests" class="quick-card">
+
+                    <div class="quick-icon">
+                        <i class="fa-solid fa-hand-holding-droplet"></i>
+                    </div>
+
+                    <h3>Request Blood</h3>
+
+                    <p>
+                        Create a blood request.
+                    </p>
+
+                </a>
+
+
+                <div class="quick-card">
+
+                    <div class="quick-icon">
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
+
+                    <h3>Donate Blood</h3>
+
+                    <p>
+                        Register as a blood donor.
+                    </p>
+
+                </div>
+
+
+                <a href="#banks" class="quick-card">
+
+                    <div class="quick-icon">
+                        <i class="fa-solid fa-building-columns"></i>
+                    </div>
+
+                    <h3>Blood Banks</h3>
+
+                    <p>
+                        Explore nearby blood banks.
+                    </p>
+
+                </a>
+
+            </div>
+
+
+
+            <!-- STATS -->
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-droplet"></i>
+                    </div>
+
+                    <div>
+                        <h3>1,250+</h3>
+                        <p>Registered Donors</p>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-hospital"></i>
+                    </div>
+
+                    <div>
+                        <h3>85+</h3>
+                        <p>Hospitals Connected</p>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
+
+                    <div>
+                        <h3>3,400+</h3>
+                        <p>Lives Supported</p>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-handshake"></i>
+                    </div>
+
+                    <div>
+                        <h3>42+</h3>
+                        <p>NGO Partners</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             SEARCH
+        ===================================================== -->
+
+        <section id="search" class="page-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <h2>Find Blood</h2>
+                    <p>Search for blood availability near you.</p>
+                </div>
+
+            </div>
+
+
+            <div class="search-box">
+
+                <div class="form-group">
+
+                    <label>Blood Group</label>
+
+                    <select>
+                        <option>Select Blood Group</option>
+                        <option>A+</option>
+                        <option>A-</option>
+                        <option>B+</option>
+                        <option>B-</option>
+                        <option>AB+</option>
+                        <option>AB-</option>
+                        <option>O+</option>
+                        <option>O-</option>
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>City</label>
+
+                    <input
+                        type="text"
+                        placeholder="Enter your city"
+                    >
+
+                </div>
+
+
+                <button class="search-button">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    Search
+                </button>
+
+            </div>
+
+
+            <div class="blood-results">
+
+                <div class="blood-result-card" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+
+                    <div>
+                        <h3>City Care Blood Centre</h3>
+                        <p>📍 Bhubaneswar</p>
+                    </div>
+
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span class="available">
+                            O+ Available
+                        </span>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=City+Care+Blood+Centre%2C+Bhubaneswar" target="_blank" rel="noopener noreferrer" class="drive-directions-btn btn-sm" title="Get Directions to City Care Blood Centre on Google Maps">
+                            <i class="fa-solid fa-diamond-turn-right"></i>
+                            <span>Directions</span>
+                        </a>
+                    </div>
+
+                </div>
+
+
+                <div class="blood-result-card" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+
+                    <div>
+                        <h3>LifeLine Blood Bank</h3>
+                        <p>📍 Cuttack</p>
+                    </div>
+
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span class="available">
+                            O+ Available
+                        </span>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=LifeLine+Blood+Bank%2C+Cuttack" target="_blank" rel="noopener noreferrer" class="drive-directions-btn btn-sm" title="Get Directions to LifeLine Blood Bank on Google Maps">
+                            <i class="fa-solid fa-diamond-turn-right"></i>
+                            <span>Directions</span>
+                        </a>
+                    </div>
+
+                </div>
+
+
+                <div class="blood-result-card" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+
+                    <div>
+                        <h3>Red Cross Blood Centre</h3>
+                        <p>📍 Rourkela</p>
+                    </div>
+
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span class="available">
+                            O+ Available
+                        </span>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Red+Cross+Blood+Centre%2C+Rourkela" target="_blank" rel="noopener noreferrer" class="drive-directions-btn btn-sm" title="Get Directions to Red Cross Blood Centre on Google Maps">
+                            <i class="fa-solid fa-diamond-turn-right"></i>
+                            <span>Directions</span>
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             BLOOD BANKS
+        ===================================================== -->
+
+        <section id="banks" class="page-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <h2>Blood Banks</h2>
+                    <p>Connected blood banks.</p>
+                </div>
+
+            </div>
+
+
+            <div class="bank-grid">
+
+                <div class="bank-card">
+
+                    <div class="bank-icon">
+                        <i class="fa-solid fa-building-columns"></i>
+                    </div>
+
+                    <h3>City Care Blood Centre</h3>
+
+                    <p>
+                        Bhubaneswar, Odisha
+                    </p>
+
+                    <span class="bank-status">
+                        Open
+                    </span>
+
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=City+Care+Blood+Centre%2C+Bhubaneswar%2C+Odisha" target="_blank" rel="noopener noreferrer" class="drive-directions-btn" title="Get Directions to City Care Blood Centre on Google Maps" style="margin-top:12px; justify-content:center;">
+                        <i class="fa-solid fa-diamond-turn-right"></i>
+                        <span>Get Directions</span>
+                    </a>
+
+                </div>
+
+
+                <div class="bank-card">
+
+                    <div class="bank-icon">
+                        <i class="fa-solid fa-building-columns"></i>
+                    </div>
+
+                    <h3>LifeLine Blood Bank</h3>
+
+                    <p>
+                        Cuttack, Odisha
+                    </p>
+
+                    <span class="bank-status">
+                        Open
+                    </span>
+
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=LifeLine+Blood+Bank%2C+Cuttack%2C+Odisha" target="_blank" rel="noopener noreferrer" class="drive-directions-btn" title="Get Directions to LifeLine Blood Bank on Google Maps" style="margin-top:12px; justify-content:center;">
+                        <i class="fa-solid fa-diamond-turn-right"></i>
+                        <span>Get Directions</span>
+                    </a>
+
+                </div>
+
+
+                <div class="bank-card">
+
+                    <div class="bank-icon">
+                        <i class="fa-solid fa-building-columns"></i>
+                    </div>
+
+                    <h3>Red Cross Blood Centre</h3>
+
+                    <p>
+                        Rourkela, Odisha
+                    </p>
+
+                    <span class="bank-status">
+                        Open
+                    </span>
+
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=Red+Cross+Blood+Centre%2C+Rourkela%2C+Odisha" target="_blank" rel="noopener noreferrer" class="drive-directions-btn" title="Get Directions to Red Cross Blood Centre on Google Maps" style="margin-top:12px; justify-content:center;">
+                        <i class="fa-solid fa-diamond-turn-right"></i>
+                        <span>Get Directions</span>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             REQUESTS
+        ===================================================== -->
+
+        <section id="requests" class="page-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <h2>Blood Request</h2>
+                    <p>Create a request for blood.</p>
+                </div>
+
+            </div>
+
+
+            <div class="request-form">
+
+                <div class="form-group">
+
+                    <label>Patient Name</label>
+
+                    <input
+                        type="text"
+                        placeholder="Enter patient name"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Blood Group</label>
+
+                    <select>
+
+                        <option>Select Blood Group</option>
+
+                        <option>A+</option>
+                        <option>A-</option>
+                        <option>B+</option>
+                        <option>B-</option>
+                        <option>AB+</option>
+                        <option>AB-</option>
+                        <option>O+</option>
+                        <option>O-</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Required Units</label>
+
+                    <input
+                        type="number"
+                        min="1"
+                        placeholder="Number of units"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Hospital</label>
+
+                    <input
+                        type="text"
+                        placeholder="Hospital name"
+                    >
+
+                </div>
+
+
+                <button class="auth-submit">
+                    Submit Blood Request
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             NOTIFICATIONS
+        ===================================================== -->
+
+        <section id="notifications" class="page-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <h2>Notifications</h2>
+                    <p>Your latest BloodLink updates.</p>
+                </div>
+
+            </div>
+
+
+            <div class="notification-list">
+
+                <!-- NGO Emergency Blood Reception Feed for Notifications Center -->
+                <div id="ngoNotificationEmergencyFeed"></div>
+
+                <div class="notification-card">
+
+                    <i class="fa-solid fa-droplet"></i>
+
+                    <div>
+                        <h3>Blood request nearby</h3>
+                        <p>
+                            An O+ blood request has been posted.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="notification-card">
+
+                    <i class="fa-solid fa-heart"></i>
+
+                    <div>
+                        <h3>Thank you for supporting BloodLink</h3>
+                        <p>
+                            Your contribution can help save lives.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             PROFILE
+        ===================================================== -->
+
+        <section id="profile" class="page-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <h2>Profile</h2>
+                    <p>Your BloodLink account information.</p>
+                </div>
+
+            </div>
+
+
+            <div class="profile-card">
+
+                <div class="large-avatar">
+                    M
+                </div>
+
+                <div class="profile-details">
+
+                    <h2 id="profileName">
+                        User
+                    </h2>
+
+                    <p id="profileRole">
+                        Donor
+                    </p>
+
+                    <p>
+                        Blood Group:
+                        <strong id="profileBloodGroup">
+                            O+
+                        </strong>
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             SETTINGS
+        ===================================================== -->
+
+        <section id="settings" class="page-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <h2>Settings</h2>
+                    <p>Manage your BloodLink preferences.</p>
+                </div>
+
+            </div>
+
+
+            <div class="settings-card">
+
+                <label class="setting-row">
+
+                    <div>
+                        <strong>Notifications</strong>
+                        <p>Receive BloodLink notifications.</p>
+                    </div>
+
+                    <input type="checkbox" checked>
+
+                </label>
+
+
+                <label class="setting-row">
+
+                    <div>
+                        <strong>Email Updates</strong>
+                        <p>Receive important updates through email.</p>
+                    </div>
+
+                    <input type="checkbox" checked>
+
+                </label>
+
+
+                <label class="setting-row">
+
+                    <div>
+                        <strong>Dark Mode</strong>
+                        <p>Enable dark appearance.</p>
+                    </div>
+
+                    <input
+                        type="checkbox"
+                        id="darkModeToggle"
+                        onchange="toggleDarkMode()"
+                    >
+
+                </label>
+
+            </div>
+
+        </section>
+
+
+
+        <footer>
+
+            <p>
+                © 2026 BloodLink. Connecting Blood. Saving Lives.
+            </p>
+
+        </footer>
+
+    </main>
+
+</div>
+
+
+<!-- =====================================================
+     1. POST-LOGIN SELECTION HUB
+===================================================== -->
+<div id="hospitalHubSection" class="hospital-hub-section hidden">
+    <!-- Hub Top Navigation -->
+    <header class="hub-navbar">
+        <div class="hub-nav-brand">
+            <div class="hosp-logo-icon">
+                <i class="fa-solid fa-droplet"></i>
+            </div>
+            <div>
+                <span class="hub-brand-title">LifeFlow</span>
+                <span class="hub-brand-subtitle">Blood Network Platform</span>
+            </div>
+        </div>
+
+        <div class="hub-nav-center">
+            <div class="hub-facility-chip">
+                <i class="fa-solid fa-hospital"></i>
+                <span id="hubHospitalName">City Care Blood Centre & Hospital</span>
+                <span class="hub-licence-badge" id="hubHospitalLicense">LIC-2026-001</span>
+                <a href="#" id="hubDirectionsLink" target="_blank" rel="noopener noreferrer" class="drive-directions-btn btn-sm" style="margin-left:8px;" title="Get Directions on Google Maps">
+                    <i class="fa-solid fa-diamond-turn-right"></i>
+                    <span>Directions</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="hub-nav-actions">
+            <span class="hub-status-pill">
+                <span class="pulse-dot-green"></span>
+                <span>Active Clinical Shift</span>
+            </span>
+            <button type="button" class="hub-signout-btn" onclick="logoutHospital()">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <span>Sign Out</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hub Main Container -->
+    <main class="hub-main-container">
+        <!-- Hero Welcome Header -->
+        <div class="hub-welcome-banner">
+            <div class="hub-banner-content">
+                <span class="hub-badge-pill">
+                    <i class="fa-solid fa-shield-halved"></i> Authorized Medical Node
+                </span>
+                <h1>Welcome, <span id="hubWelcomeHospitalTitle">City Care Blood Centre</span></h1>
+                <p>
+                    Select an authorized healthcare department below to oversee blood bank reserves, restock donor units via Barcode tracking, or issue urgent clinical blood requisitions.
+                </p>
+            </div>
+            <div class="hub-banner-quickmetrics">
+                <div class="hub-metric-tile">
+                    <span class="hub-metric-val" id="hubTotalStockMetric">972</span>
+                    <span class="hub-metric-lbl">Total Stock (Units)</span>
+                </div>
+                <div class="hub-metric-divider"></div>
+                <div class="hub-metric-tile">
+                    <span class="hub-metric-val text-green">100%</span>
+                    <span class="hub-metric-lbl">Cold-Chain Monitored</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Two Prominent Service Cards -->
+        <div class="hub-services-grid">
+            <!-- Service Card A: Manage Your Blood Bank -->
+            <div class="hub-service-card card-manage-bank" id="serviceCardManage">
+                <div class="service-card-tag security-tag">
+                    <i class="fa-solid fa-lock"></i> Requires Admin Verification
+                </div>
+                <div class="service-card-icon-wrap icon-red">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                </div>
+                <div class="service-card-body">
+                    <h2 class="service-card-title">Manage Your Blood Bank</h2>
+                    <p class="service-card-desc">
+                        Full-spectrum inventory oversight for all standard and rare blood groups. Track reserve levels, monitor expiration dates, and restock verified blood bags using automated Barcode scanning.
+                    </p>
+                    <div class="service-card-features">
+                        <div class="sc-feat-item">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Real-Time Group Reserves (A, B, AB, O & Bombay Oh)</span>
+                        </div>
+                        <div class="sc-feat-item">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Interactive Barcode Blood Bag Scanner & Logging</span>
+                        </div>
+                        <div class="sc-feat-item">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Automated Safe / Critical Stock Thresholds</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-card-footer">
+                    <button type="button" class="hub-action-btn btn-red" id="btnOpenManageBank" onclick="openSecurityGate()">
+                        <span>Manage Blood Bank</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <span class="service-auth-hint">
+                        <i class="fa-solid fa-shield-cat"></i> Protected by Staff Admin Gate
+                    </span>
+                </div>
+            </div>
+
+                        <!-- Service Card C: Hospital Blood Banks & NGO Network -->
+            <div class="hub-service-card card-ngo-network" id="serviceCardNgo">
+                <div class="service-card-tag" style="background:#EFF6FF; color:#1D4ED8; border:1px solid #BFDBFE;">
+                    <i class="fa-solid fa-handshake-angle"></i> Hospital Blood Banks & NGO Network
+                </div>
+                <div class="service-card-icon-wrap" style="background:linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%); color:#FFF;">
+                    <i class="fa-solid fa-building-ngo"></i>
+                </div>
+                <div class="service-card-body">
+                    <h2 class="service-card-title">Hospital Blood Banks & NGO Network</h2>
+                    <p class="service-card-desc">
+                        Link your hospital facility with statutory blood-donation NGOs and regional blood banks. Establish mutual aid affiliations, monitor real-time stock availability, and coordinate rapid emergency SOS blood response.
+                    </p>
+                    <div class="service-card-features">
+                        <div class="sc-feat-item">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Statutory NGO License Validation & Bilateral Affiliation</span>
+                        </div>
+                        <div class="sc-feat-item">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Emergency SOS Broadcast & Priority Intercept</span>
+                        </div>
+                        <div class="sc-feat-item">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Centralized Inter-Facility Regional Collaboration</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-card-footer">
+                    <button type="button" class="hub-action-btn" style="background:linear-gradient(135deg, #1E40AF 0%, #2563EB 100%); color:#FFF;" id="btnOpenNgoNetworkHub" onclick="openNgoNetworkView()">
+                        <span>NGO Network & Collaboration</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <span class="service-auth-hint">
+                        <i class="fa-solid fa-shield-halved"></i> Verified Regional Network Active
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Compliance & Protocol Strip -->
+        <div class="hub-compliance-strip">
+            <div class="comp-strip-item">
+                <i class="fa-solid fa-temperature-arrow-down"></i>
+                <span>WHO Cold-Chain Validated (2°C – 6°C)</span>
+            </div>
+            <div class="comp-strip-item">
+                <i class="fa-solid fa-fingerprint"></i>
+                <span>Barcoded Traceability Standard (ISBT 128 Compliant)</span>
+            </div>
+            <div class="comp-strip-item">
+                <i class="fa-solid fa-shield-virus"></i>
+                <span>100% Mandatory Transfusion-Transmissible Infection (TTI) Screened</span>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- =====================================================
+     2. ADMIN SECURITY VERIFICATION GATE MODAL
+===================================================== -->
+<div id="hospSecurityGateModal" class="hosp-modal-overlay hidden">
+    <div class="hosp-security-card" role="dialog" aria-modal="true" aria-labelledby="secModalTitle">
+        <button type="button" class="modal-close-btn" onclick="closeSecurityGate()" title="Cancel and return to hub">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="security-card-header">
+            <div class="security-shield-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <h2 id="secModalTitle">Admin Security Verification</h2>
+            <p>
+                Authorized personnel verification required to access the <strong>Blood Bank Inventory Dashboard</strong>.
+            </p>
+        </div>
+
+        <form id="hospAdminAuthForm" onsubmit="verifyAdminCredentials(event)">
+            <div class="hosp-form-group">
+                <label for="hospAdminStaffId">
+                    Admin / Staff ID <span class="required">*</span>
+                </label>
+                <div class="hosp-input-wrapper">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <input
+                        type="text"
+                        id="hospAdminStaffId"
+                        placeholder="e.g. ADMIN-001 or STAFF-2026"
+                        required
+                        autocomplete="username"
+                    >
+                </div>
+                <span class="field-hint">Enter your hospital administrative or blood bank staff ID</span>
+            </div>
+
+            <div class="hosp-form-group">
+                <div class="label-row">
+                    <label for="hospAdminSecurityKey">
+                        Security Key / Password <span class="required">*</span>
+                    </label>
+                </div>
+                <div class="hosp-input-wrapper">
+                    <i class="fa-solid fa-key"></i>
+                    <input
+                        type="password"
+                        id="hospAdminSecurityKey"
+                        placeholder="Enter security key"
+                        required
+                        autocomplete="current-password"
+                    >
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        onclick="togglePassword('hospAdminSecurityKey', this)"
+                        title="Toggle password visibility">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                </div>
+                <span class="field-hint">Master department encryption key or admin password</span>
+            </div>
+
+            <div class="hosp-demo-box">
+                <div class="demo-title">
+                    <i class="fa-solid fa-bolt"></i> Quick Evaluation Credentials
+                </div>
+                <p>Click below to pre-populate verified admin staff credentials:</p>
+                <button type="button" class="demo-fill-btn" onclick="fillDemoAdminCredentials()">
+                    <i class="fa-solid fa-id-badge"></i> Auto-fill Demo Admin (ADMIN-001 / admin@123)
+                </button>
+            </div>
+
+            <div class="security-modal-actions">
+                <button type="button" class="hosp-cancel-btn" onclick="closeSecurityGate()">
+                    Cancel
+                </button>
+                <button type="submit" class="hosp-submit-btn btn-red" id="btnSubmitAdminSecurity">
+                    <span>Access Dashboard</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- =====================================================
+     3. BLOOD BANK INVENTORY DASHBOARD
+===================================================== -->
+<div id="hospitalInventorySection" class="hospital-inventory-section hidden">
+    <!-- Top Bar with Back Button, Info, and Scan Button -->
+    <header class="inventory-topbar">
+        <div class="inv-topbar-left">
+            <button type="button" class="inv-back-btn" id="btnBackToServices" onclick="backToHub()">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Back to Services</span>
+            </button>
+            <div class="inv-title-group">
+                <h1>Blood Bank Inventory Dashboard</h1>
+                <p id="invHospitalBadge">City Care Blood Centre • Licence: LIC-2026-001</p>
+            </div>
+        </div>
+
+        <div class="inv-topbar-right">
+            <div class="inv-sync-pill">
+                <span class="pulse-dot-green"></span>
+                <span>Live Inventory Sync</span>
+            </div>
+            <!-- Dedicated Add / Restock Blood Button -->
+            <button type="button" class="hosp-submit-btn btn-red btn-scan-restock" id="btnOpenBarcodeScanner" onclick="openBarcodeScannerModal()">
+                <i class="fa-solid fa-barcode"></i>
+                <span>+ Add / Restock Blood (Scan Barcode)</span>
+            </button>
+            <span id="btnOpenQrScanner" class="hidden"></span>
+        </div>
+    </header>
+
+    <main class="inventory-main-content">
+        <!-- Overview Stats Row -->
+        <div class="inv-stats-row">
+            <div class="inv-stat-card stat-total">
+                <div class="stat-card-icon">
+                    <i class="fa-solid fa-droplet"></i>
+                </div>
+                <div class="stat-card-info">
+                    <span class="stat-num" id="invTotalUnitsDisplay">972</span>
+                    <span class="stat-label">Total Blood Units In Stock</span>
+                </div>
+            </div>
+
+            <div class="inv-stat-card stat-safe">
+                <div class="stat-card-icon">
+                    <i class="fa-solid fa-shield-heart"></i>
+                </div>
+                <div class="stat-card-info">
+                    <span class="stat-num text-green" id="invSafeGroupsDisplay">3</span>
+                    <span class="stat-label">Adequate Stock (&gt; 150 Units)</span>
+                </div>
+            </div>
+
+            <div class="inv-stat-card" style="background:#FFFBEB; border-color:#FDE68A;">
+                <div class="stat-card-icon" style="background:#FEF3C7; color:#D97706;">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <div class="stat-card-info">
+                    <span class="stat-num" style="color:#B45309;" id="invModerateGroupsDisplay">3</span>
+                    <span class="stat-label">Moderate Warning (100–150 Units)</span>
+                </div>
+            </div>
+
+            <div class="inv-stat-card stat-critical">
+                <div class="stat-card-icon">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                </div>
+                <div class="stat-card-info">
+                    <span class="stat-num text-red" id="invCriticalGroupsDisplay">2</span>
+                    <span class="stat-label">Critical Alerts (&lt; 100 Units)</span>
+                </div>
+            </div>
+
+            <div class="inv-stat-card stat-rare">
+                <div class="stat-card-icon">
+                    <i class="fa-solid fa-gem"></i>
+                </div>
+                <div class="stat-card-info">
+                    <span class="stat-num text-purple" id="invRareUnitsDisplay">30</span>
+                    <span class="stat-label">Rare Phenotype Units (Bombay/Rh-null)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 1: Standard Blood Groups Grid (8 groups) -->
+        <div class="inv-section-header">
+            <div>
+                <h2>Standard Blood Groups Inventory</h2>
+                <p>Live monitored reserve units. All counts verified against digital storage logging.</p>
+            </div>
+            <div class="inv-legend">
+                <span class="legend-item"><span class="legend-dot green"></span> Safe Stock (&gt; 150 Units)</span>
+                <span class="legend-item"><span class="legend-dot orange"></span> Moderate (100–150 Units)</span>
+                <span class="legend-item"><span class="legend-dot red"></span> Critical Alert (&lt; 100 Units)</span>
+            </div>
+        </div>
+
+        <!-- Standard Blood Groups Grid (8 cards) -->
+        <div class="blood-grid-container" id="standardBloodGrid">
+            <!-- Injected by JavaScript dynamically with bright green badges -->
+        </div>
+
+        <!-- Section 2: Rare Blood Group Reserves -->
+        <div class="inv-section-header rare-header">
+            <div>
+                <h2><i class="fa-solid fa-dna"></i> Rare & Phenotype-Specific Blood Reserves</h2>
+                <p>Special cryopreserved units tracked under national rare-donor registry protocols.</p>
+            </div>
+            <span class="rare-alert-pill">
+                <i class="fa-solid fa-snowflake"></i> Ultra-Low Temperature Cryo-Storage (-80°C)
+            </span>
+        </div>
+
+        <div class="rare-blood-grid" id="rareBloodGrid">
+            <!-- Injected by JavaScript dynamically with bright green badges -->
+        </div>
+
+        <!-- Section 3: Recent Inbound Blood Bags / Restock Log -->
+        <div class="inv-section-header">
+            <div>
+                <h2><i class="fa-solid fa-barcode"></i> Inbound Blood Bag Restock Audit Log</h2>
+                <p>History of blood bags scanned via Barcode and restocked into the active hospital inventory.</p>
+            </div>
+            <button type="button" class="btn-table-restock" onclick="openBarcodeScannerModal()">
+                <i class="fa-solid fa-barcode"></i> Barcode Scan &amp; Restock
+            </button>
+        </div>
+
+        <div class="inv-log-table-wrapper">
+            <table class="inv-log-table">
+                <thead>
+                    <tr>
+                        <th>Bag Barcode / ID</th>
+                        <th>Blood Group</th>
+                        <th>Collection Date</th>
+                        <th>Expiry Date</th>
+                        <th>Volume</th>
+                        <th>Serology Status</th>
+                        <th>Restock Action</th>
+                    </tr>
+                </thead>
+                <tbody id="inboundLogTableBody">
+                    <!-- Populated dynamically via JS -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+<!-- =====================================================
+     4. BARCODE BLOOD BAG SCANNER MODAL
+===================================================== -->
+<div id="barcodeScannerModal" class="hosp-modal-overlay hidden">
+    <div id="qrScannerModal" class="hidden"></div>
+    <div class="barcode-scanner-card qr-scanner-card" role="dialog" aria-modal="true" aria-labelledby="barcodeModalTitle">
+        <button type="button" class="modal-close-btn" onclick="closeBarcodeScannerModal()" title="Close scanner">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="barcode-scanner-header qr-scanner-header">
+            <div class="barcode-header-icon qr-header-icon">
+                <i class="fa-solid fa-barcode"></i>
+            </div>
+            <div>
+                <h2 id="barcodeModalTitle">Scan Blood Bag Barcode / Restock</h2>
+                <h2 id="qrModalTitle" class="hidden">Scan Blood Bag Barcode / Restock</h2>
+                <p>Point laser scanner at blood bag linear barcode or select a test bag preset below.</p>
+            </div>
+        </div>
+
+        <!-- Camera Viewfinder Simulation Overlay -->
+        <div class="scanner-viewfinder-box">
+            <div class="viewfinder-camera-feed">
+                <!-- Laser Scan Line Animation -->
+                <div class="viewfinder-laser-line"></div>
+                <!-- Viewfinder Corner Targets -->
+                <div class="vf-corner top-left"></div>
+                <div class="vf-corner top-right"></div>
+                <div class="vf-corner bottom-left"></div>
+                <div class="vf-corner bottom-right"></div>
+
+                <div class="viewfinder-center-target">
+                    <i class="fa-solid fa-barcode"></i>
+                    <span>Align Blood Bag Barcode Inside Target</span>
+                </div>
+
+                <div class="viewfinder-hud-pill">
+                    <span class="pulse-dot-red"></span>
+                    <span>Laser Scanner Stream: ACTIVE (ISBT-128 Optical)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sample Blood Bag Presets for Instant 1-Click Testing -->
+        <div class="barcode-sample-presets qr-sample-presets">
+            <span class="presets-label"><i class="fa-solid fa-barcode"></i> Quick Test Blood Bag Presets:</span>
+            <div class="preset-buttons-group">
+                <button type="button" class="preset-btn active" onclick="selectBarcodeSample('A_POS')">
+                    <strong>A+</strong> PRBC (BB-2026-8812)
+                </button>
+                <button type="button" class="preset-btn" onclick="selectBarcodeSample('O_NEG')">
+                    <strong>O-</strong> Universal (BB-2026-9904)
+                </button>
+                <button type="button" class="preset-btn" onclick="selectBarcodeSample('BOMBAY')">
+                    <strong>Bombay Oh</strong> Rare (BB-2026-3310)
+                </button>
+                <button type="button" class="preset-btn" onclick="selectBarcodeSample('B_POS')">
+                    <strong>B+</strong> Whole Blood (BB-2026-5541)
+                </button>
+                <button type="button" class="preset-btn" onclick="selectBarcodeSample('AB_POS')">
+                    <strong>AB+</strong> Platelets (BB-2026-7719)
+                </button>
+            </div>
+        </div>
+
+        <!-- Manual Barcode Input Option -->
+        <div class="barcode-manual-input-box qr-manual-input-box">
+            <label for="manualBarcodeInput">
+                <i class="fa-solid fa-barcode"></i> Or Enter / Laser Scan Barcode Manually (ISBT-128 DIN):
+            </label>
+            <div class="manual-input-row">
+                <input
+                    type="text"
+                    id="manualBarcodeInput"
+                    placeholder="e.g. BB-2026-8812 or BB-2026-8812|A+|2026-09-08|2026-10-20|450ml"
+                >
+                <input type="hidden" id="manualQrInput">
+                <button type="button" class="btn-decode-barcode btn-decode-qr" onclick="decodeManualBarcode()">
+                    <i class="fa-solid fa-barcode"></i> Scan &amp; Verify Barcode
+                </button>
+            </div>
+        </div>
+
+        <!-- Decoded Mock Bag Details Card -->
+        <div class="decoded-bag-card" id="decodedBagContainer">
+            <div class="decoded-card-header">
+                <div class="decoded-badge-wrap">
+                    <span class="decoded-blood-badge" id="decBloodGroup">A+</span>
+                    <div>
+                        <h4 id="decBagId">BB-2026-8812</h4>
+                        <span class="decoded-component" id="decComponent">Packed Red Blood Cells (PRBC)</span>
+                    </div>
+                </div>
+                <span class="decoded-clearance-pill">
+                    <i class="fa-solid fa-circle-check"></i> ISBT-128 Barcode Cleared (HIV/HepB/HepC NEG)
+                </span>
+            </div>
+
+            <div class="decoded-meta-grid">
+                <div class="meta-item">
+                    <span class="meta-label">Donor Collection Date</span>
+                    <strong class="meta-val" id="decDonorDate">08 Sep 2026</strong>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Expiry Date (Viability)</span>
+                    <strong class="meta-val text-green" id="decExpiryDate">20 Oct 2026 (42 Days)</strong>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Volume & Anticoagulant</span>
+                    <strong class="meta-val" id="decVolume">450 mL (CPDA-1)</strong>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Cold Storage Status</span>
+                    <strong class="meta-val" id="decColdChain">Compliant (3.8°C Monitored)</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Footer -->
+        <div class="barcode-modal-footer qr-modal-footer">
+            <button type="button" class="hosp-cancel-btn" onclick="closeBarcodeScannerModal()">
+                Close
+            </button>
+            <button type="button" class="hosp-submit-btn btn-red" id="btnConfirmAddStock" onclick="confirmAddBarcodeToStock()">
+                <i class="fa-solid fa-plus-circle"></i>
+                <span>Add to Stock (+1 Unit)</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- Toast Container for Notifications -->
+<div id="hospToastContainer" class="hosp-toast-container"></div>
+
+<script src="script1.js?v=2.6.2"></script>
+
+</body>
+</html>

@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donor Dashboard & Credit Points | LifeFlow</title>
+
+    <!-- LifeFlow Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Custom Modern Dashboard Stylesheet -->
+    <link rel="stylesheet" href="creditstyle.css">
+</head>
+<body>
+
+    <div class="app-container">
+
+        <!-- Off-canvas backdrop overlay for tablet/mobile sidebar -->
+        <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+        <!-- ================= SIDEBAR NAVIGATION ================= -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="/donor-hub.html?from=credit" class="brand-logo" title="Return to Main Dashboard" style="text-decoration: none; color: inherit;">
+                    <div class="brand-icon">
+                        <i class="fa-solid fa-droplet"></i>
+                    </div>
+                    <div class="brand-text">
+                        <h1>Life<span>Flow</span></h1>
+                        <p>Donor Credits</p>
+                    </div>
+                </a>
+                <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close sidebar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section-title">Menu</div>
+                <a href="#overview" class="nav-item active">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#wallet" class="nav-item">
+                    <i class="fa-solid fa-wallet"></i>
+                    <span>Credit Points</span>
+                </a>
+                <a href="#perks" class="nav-item">
+                    <i class="fa-solid fa-prescription-bottle-medical"></i>
+                    <span>Perks & Pharmacy</span>
+                    <span class="nav-badge">4</span>
+                </a>
+                <a href="#history" class="nav-item">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>Credit History</span>
+                </a>
+                <a href="#camps" class="nav-item">
+                    <i class="fa-solid fa-truck-medical"></i>
+                    <span>Blood Camps</span>
+                </a>
+
+                <div class="nav-section-title">Quick Links</div>
+                <a href="javascript:void(0)" class="nav-item" id="navOpenPass">
+                    <i class="fa-solid fa-id-card"></i>
+                    <span>Donor Card</span>
+                </a>
+                <a href="javascript:void(0)" class="nav-item" id="navResetDemo">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <span>Reset Data</span>
+                </a>
+                <a href="/?from=credit" class="nav-item" id="navHomeLink" title="Return to Main Dashboard">
+                    <i class="fa-solid fa-house"></i>
+                    <span>BloodLink Home</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="donor-quick-badge">
+                    <div class="quick-badge-info">
+                        <h5 id="sidebarDonorName">Subrat Kumar Mohanty</h5>
+                        <p id="sidebarDonorId">ID: LF-OD-2026-00125</p>
+                    </div>
+                    <div class="quick-badge-blood" id="sidebarBloodGroup">
+                        O+
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ================= MAIN CONTENT WRAPPER ================= -->
+        <div class="main-wrapper">
+
+            <!-- STICKY TOPBAR -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Toggle sidebar">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="topSearchInput" placeholder="Search blood donations, relations, pharmacy vouchers, hospitals...">
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <button class="header-action-btn btn-primary" id="btnOpenDonateModal">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Donate Blood</span>
+                    </button>
+
+                    <button class="header-action-btn btn-secondary" id="btnOpenTransferModal">
+                        <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                        <span>Transfer Points</span>
+                    </button>
+
+                    <!-- Notifications Dropdown -->
+                    <div style="position: relative;">
+                        <button class="topbar-icon-btn" id="btnNotification" aria-label="Notifications">
+                            <i class="fa-regular fa-bell"></i>
+                            <span class="badge-counter" id="unreadNotifs">2</span>
+                        </button>
+                        <div class="notifications-dropdown" id="notificationsDropdown">
+                            <div class="dropdown-header">
+                                <h4>Notifications</h4>
+                                <span id="markAllRead">Mark all read</span>
+                            </div>
+                            <div class="dropdown-list">
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon"><i class="fa-solid fa-plus"></i></div>
+                                    <div class="dropdown-item-text">
+                                        <p><strong>+30 Points Added</strong> for 1 unit blood donated.</p>
+                                        <span>Yesterday</span>
+                                    </div>
+                                </div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon" style="background:#fee2e2; color:#dc2626;"><i class="fa-solid fa-droplet"></i></div>
+                                    <div class="dropdown-item-text">
+                                        <p><strong>Urgent O+ Blood Needed</strong> at AIIMS Bhubaneswar.</p>
+                                        <span>2 days ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- User Profile Pill & Dropdown -->
+                    <div style="position: relative;">
+                        <div class="user-profile-pill" id="userProfilePill" title="Account & Profile">
+                            <div class="user-avatar" id="donorAvatar">RS</div>
+                            <div class="user-meta">
+                                <div class="user-name" id="topDonorName">Rahul Sharma</div>
+                                <div class="user-tier"><span id="topTierLabel">Gold Donor</span></div>
+                            </div>
+                            <i class="fa-solid fa-chevron-down" style="font-size: 0.68rem; color: var(--text-light); margin-left: 4px;"></i>
+                        </div>
+                        <div class="user-dropdown-menu" id="userProfileDropdown">
+                            <div class="user-dropdown-header">
+                                <div class="dropdown-avatar" id="dropdownAvatar">RS</div>
+                                <div class="dropdown-user-info">
+                                    <h4 id="dropdownUserName">Rahul Sharma</h4>
+                                    <span class="dropdown-badge" id="dropdownBadge"><i class="fa-solid fa-shield-halved"></i> Verified Account</span>
+                                    <p class="dropdown-email" id="dropdownUserEmail">rahul.sharma@gmail.com</p>
+                                </div>
+                            </div>
+                            <div class="user-dropdown-divider"></div>
+                            <div class="user-dropdown-body">
+                                <div class="dropdown-stat-row">
+                                    <span>Available Balance</span>
+                                    <strong style="color: var(--primary);"><span class="currentBalanceDisplay">300</span> Pts</strong>
+                                </div>
+                                <button type="button" class="dropdown-menu-item" onclick="openPassModal()">
+                                    <i class="fa-solid fa-id-card"></i> View Digital Donor Card
+                                </button>
+                                <a href="/donor-hub.html?from=credit" class="dropdown-menu-item" style="text-decoration: none; color: inherit;">
+                                    <i class="fa-solid fa-house"></i> Return to Hub Dashboard
+                                </a>
+                            </div>
+                            <div class="user-dropdown-divider"></div>
+                            <button type="button" class="dropdown-menu-item item-danger" id="btnSignOutCredit">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- DASHBOARD CONTAINER -->
+            <main class="content-container">
+
+                <!-- SECTION: HERO DONOR CARD & STATS -->
+                <section class="hero-grid" id="wallet">
+
+                    <!-- Realistic Donor Card (Only Name, Donor ID, Credit Points, Blood Group) -->
+                    <div class="donor-card-container">
+                        <div class="card-header-flex">
+                            <div class="card-heading">
+                                <i class="fa-solid fa-id-card" style="color: var(--primary);"></i>
+                                Donor Credit Card
+                            </div>
+                            <div class="card-badge" id="cardTierBadge">
+                                <i class="fa-solid fa-crown"></i> GOLD DONOR
+                            </div>
+                        </div>
+
+                        <!-- Clean Realistic Card Visual -->
+                        <div class="digital-card">
+                            <div class="card-top-row">
+                                <div class="card-brand-tag">
+                                    <i class="fa-solid fa-droplet"></i> LIFEFLOW
+                                </div>
+                                <div class="blood-type-pill">
+                                    Blood Group: <strong id="cardBloodGroup">O+</strong>
+                                </div>
+                            </div>
+
+                            <div class="card-balance-section">
+                                <div class="balance-label">Credit Points</div>
+                                <div class="balance-amount">
+                                    <span id="currentPoints">300</span>
+                                    <span>POINTS</span>
+                                </div>
+                            </div>
+
+                            <div class="card-bottom-row">
+                                <div class="card-holder-info">
+                                    <p>Donor Name</p>
+                                    <h3 id="cardDonorName">Subrat Kumar Mohanty</h3>
+                                </div>
+                                <div class="card-id-info">
+                                    <p>Donor ID</p>
+                                    <span id="cardDonorId">LF-OD-2026-00125</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Quick Actions -->
+                        <div class="card-quick-actions">
+                            <button class="card-action-item" onclick="openDonateModal()">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>Donate Blood</span>
+                            </button>
+                            <button class="card-action-item" onclick="openRedeemModal()">
+                                <i class="fa-solid fa-prescription-bottle-medical"></i>
+                                <span>Perks & Discounts</span>
+                            </button>
+                            <button class="card-action-item" onclick="openTransferModal()">
+                                <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                                <span>Transfer</span>
+                            </button>
+                            <button class="card-action-item" onclick="openPassModal()">
+                                <i class="fa-solid fa-print"></i>
+                                <span>View Card</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Simple & Understandable Statistics Grid -->
+                    <div class="metrics-panel">
+                        <div class="stat-cards-grid">
+                            <!-- Metric 1: Total Blood Donated -->
+                            <div class="metric-card">
+                                <div class="metric-header">
+                                    <div class="metric-icon-box green">
+                                        <i class="fa-solid fa-droplet"></i>
+                                    </div>
+                                    <span class="metric-tag positive">+30 Pts / Unit</span>
+                                </div>
+                                <div class="metric-body">
+                                    <h4>Total Blood Donated</h4>
+                                    <div class="metric-number" id="totalDonated">11</div>
+                                </div>
+                                <div class="metric-footer">
+                                    Total Units Given: <strong id="totalDonatedUnitsText">11 Units</strong>
+                                </div>
+                            </div>
+
+                            <!-- Metric 2: Total Blood Received -->
+                            <div class="metric-card">
+                                <div class="metric-header">
+                                    <div class="metric-icon-box red">
+                                        <i class="fa-solid fa-hand-holding-droplet"></i>
+                                    </div>
+                                    <span class="metric-tag info" style="background:#fee2e2; color:#dc2626;">-30 Pts / Unit</span>
+                                </div>
+                                <div class="metric-body">
+                                    <h4>Total Blood Received</h4>
+                                    <div class="metric-number" id="totalReceived">1</div>
+                                </div>
+                                <div class="metric-footer">
+                                    Units Claimed: <strong>1 Unit</strong>
+                                </div>
+                            </div>
+
+                            <!-- Metric 3: Current Points Balance -->
+                            <div class="metric-card">
+                                <div class="metric-header">
+                                    <div class="metric-icon-box gold">
+                                        <i class="fa-solid fa-coins"></i>
+                                    </div>
+                                    <span class="metric-tag positive">Unlocked</span>
+                                </div>
+                                <div class="metric-body">
+                                    <h4>Available Points</h4>
+                                    <div class="metric-number" id="metricCurrentPoints">300</div>
+                                </div>
+                                <div class="metric-footer">
+                                    Perks Status: <strong style="color: var(--success);">Eligible (100+ Pts)</strong>
+                                </div>
+                            </div>
+
+                            <!-- Metric 4: Previous Balance -->
+                            <div class="metric-card">
+                                <div class="metric-header">
+                                    <div class="metric-icon-box blue">
+                                        <i class="fa-solid fa-clock-rotate-left"></i>
+                                    </div>
+                                </div>
+                                <div class="metric-body">
+                                    <h4>Previous Balance</h4>
+                                    <div class="metric-number" id="previousPoints">270</div>
+                                </div>
+                                <div class="metric-footer">
+                                    Last Change: <strong>+30 Points</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION: ANALYTICS CHART & TIER BENEFITS -->
+                <section class="analytics-tier-grid" id="overview">
+                    <!-- Chart Card -->
+                    <div class="dashboard-card">
+                        <div class="card-header-actions">
+                            <div class="card-title-group">
+                                <h3>Blood Donation & Points Activity</h3>
+                                <p>Monthly points earned from blood donations vs. points redeemed</p>
+                            </div>
+                            <select class="chart-period-select" id="chartPeriodSelect" onchange="updateChartData(this.value)">
+                                <option value="6m">Last 6 Months</option>
+                                <option value="1y">Last 12 Months</option>
+                            </select>
+                        </div>
+                        <!-- Clean Chart Legend -->
+                        <div class="chart-legend-row" style="display: flex; flex-wrap: wrap; gap: 16px; margin: 10px 0 14px 0; font-size: 0.78rem; font-weight: 600; color: var(--text-muted);">
+                            <span style="display: inline-flex; align-items: center; gap: 6px;">
+                                <span style="width: 10px; height: 10px; border-radius: 3px; background: #b71c1c; display: inline-block;"></span> Points Earned (Blood Donated)
+                            </span>
+                            <span style="display: inline-flex; align-items: center; gap: 6px;">
+                                <span style="width: 10px; height: 10px; border-radius: 3px; background: #94a3b8; display: inline-block;"></span> Points Used (Transfers / Received / Perks)
+                            </span>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="donationChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Understandable Donor Tier & Benefits Card -->
+                    <div class="dashboard-card tier-progress-card">
+                        <div>
+                            <div class="card-header-actions">
+                                <div class="card-title-group">
+                                    <h3>Donor Tier & Benefits</h3>
+                                    <p>Rewards unlock once you reach 100 to 150 credit points</p>
+                                </div>
+                            </div>
+
+                            <div class="tier-badge-large">
+                                <div class="tier-trophy-icon">
+                                    <i class="fa-solid fa-award"></i>
+                                </div>
+                                <div class="tier-badge-text">
+                                    <h4 id="tierTitle">Gold Donor</h4>
+                                    <p>Eligible: Reached 100 to 150 Points</p>
+                                </div>
+                            </div>
+
+                            <div class="tier-rule-notice">
+                                <i class="fa-solid fa-circle-info"></i> <strong>Rule:</strong> Donating 1 unit of blood gives you <strong>30 points</strong>. You can claim the annual perks and discounts once you reach <strong>100 to 150 points</strong>.
+                            </div>
+
+                            <div class="tier-perks-list">
+                                <div class="perk-item">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    <span><strong>Hospital & Pharmacy Discounts:</strong> 10% to 20% discount on all medicines at partner pharmacies.</span>
+                                </div>
+                                <div class="perk-item">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    <span><strong>Free Health & Blood Checkup:</strong> Complete blood and health checkup claimable with points deduction.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION: PERKS & PHARMACY DISCOUNTS -->
+                <section class="dashboard-card" id="perks" style="margin-bottom: 26px;">
+                    <div class="card-header-actions">
+                        <div class="card-title-group">
+                            <h3><i class="fa-solid fa-prescription-bottle-medical" style="color: var(--primary); margin-right: 6px;"></i> Pharmacy Perks & Health Checkup</h3>
+                            <p>Claimable once you reach 100 to 150 points. Deducts points upon redemption.</p>
+                        </div>
+                        <span style="font-size: 0.85rem; font-weight: 700; color: var(--primary);">
+                            Your Balance: <span class="currentBalanceDisplay">300</span> Points
+                        </span>
+                    </div>
+
+                    <div class="rewards-grid" id="rewardsGrid">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </section>
+
+                <!-- SECTION: TRANSACTION & CREDIT HISTORY TABLE (WITH RELATION COLUMN) -->
+                <section class="transactions-container" id="history">
+                    <div class="table-toolbar">
+                        <div class="table-tabs">
+                            <button class="tab-btn active" onclick="setTableFilter('all', this)">All Activity</button>
+                            <button class="tab-btn" onclick="setTableFilter('donation', this)">Blood Donated (+30)</button>
+                            <button class="tab-btn" onclick="setTableFilter('received', this)">Blood Received (-30)</button>
+                            <button class="tab-btn" onclick="setTableFilter('redeem', this)">Perks Claimed (-)</button>
+                            <button class="tab-btn" onclick="setTableFilter('transfer', this)">Transfers (-)</button>
+                        </div>
+
+                        <div class="table-actions">
+                            <div class="table-search-wrap">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="tableSearchInput" class="table-search-input" placeholder="Search relation, hospital...">
+                            </div>
+                            <button class="export-btn" onclick="exportTransactionsCSV()">
+                                <i class="fa-solid fa-file-arrow-down"></i> Export CSV
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="dashboard-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Activity & Hospital / Pharmacy</th>
+                                    <th>Recipient / Relation</th>
+                                    <th>Blood Group</th>
+                                    <th>Units</th>
+                                    <th>Previous Points</th>
+                                    <th>Points Change</th>
+                                    <th>New Balance</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionTableBody">
+                                <!-- Populated dynamically by credscript.js -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- LOWER SPLIT: BLOOD ACTIVITY & LOCAL CAMPS -->
+                <section class="bottom-split-grid" id="camps">
+                    <!-- Left: Recent Timeline Activity -->
+                    <div class="dashboard-card">
+                        <div class="card-header-actions">
+                            <div class="card-title-group">
+                                <h3><i class="fa-solid fa-clock-rotate-left" style="color: var(--primary); margin-right: 6px;"></i> Recent Blood Activity</h3>
+                                <p>Recent records of blood donations, blood received, and point transfers</p>
+                            </div>
+                        </div>
+                        <div class="timeline-list" id="activityTimeline">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Right: Blood Donation Camps -->
+                    <div class="dashboard-card">
+                        <div class="card-header-actions">
+                            <div class="card-title-group">
+                                <h3><i class="fa-solid fa-truck-medical" style="color: var(--primary); margin-right: 6px;"></i> Upcoming Blood Camps</h3>
+                                <p>Donate 1 unit of blood at these camps to earn 30 points</p>
+                            </div>
+                        </div>
+                        <div class="urgent-drives-list" id="urgentDrivesList">
+                            <div class="drive-card">
+                                <div class="drive-info">
+                                    <h5>Bhubaneswar Mega Blood Donation Camp</h5>
+                                    <p><i class="fa-solid fa-location-dot"></i> Unit-1 Market Building • 8 AM - 2 PM</p>
+                                </div>
+                                <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                                    <button class="drive-contact-btn" onclick="openContactCampModal('Bhubaneswar Mega Blood Donation Camp', '+91 674 247 6789', 'Unit-1 Market Building, Bhubaneswar', 'Red Cross Society')">
+                                        <i class="fa-solid fa-phone"></i> Contact
+                                    </button>
+                                    <a href="https://www.google.com/maps/dir/?api=1&destination=Unit-1+Market+Building%2C+Bhubaneswar" target="_blank" rel="noopener noreferrer" class="drive-directions-btn" title="Get Directions on Google Maps">
+                                        <i class="fa-solid fa-diamond-turn-right"></i> Directions
+                                    </a>
+                                    <button class="drive-pledge-btn" onclick="openPledgeModal('Bhubaneswar Mega Blood Donation Camp')">
+                                        Join Camp
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="drive-card">
+                                <div class="drive-info">
+                                    <h5>Cuttack Mahanagar Blood Drive</h5>
+                                    <p><i class="fa-solid fa-location-dot"></i> Bidanasi Ground, Cantonment Road • 9 AM - 4 PM</p>
+                                </div>
+                                <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                                    <button class="drive-contact-btn" onclick="openContactCampModal('Cuttack Mahanagar Blood Drive', '+91 671 250 5415', 'Bidanasi Ground, Cuttack', 'Cuttack Citizen Forum')">
+                                        <i class="fa-solid fa-phone"></i> Contact
+                                    </button>
+                                    <a href="https://www.google.com/maps/dir/?api=1&destination=Bidanasi+Ground%2C+Cuttack" target="_blank" rel="noopener noreferrer" class="drive-directions-btn" title="Get Directions on Google Maps">
+                                        <i class="fa-solid fa-diamond-turn-right"></i> Directions
+                                    </a>
+                                    <button class="drive-pledge-btn" onclick="openPledgeModal('Cuttack Mahanagar Blood Drive')">
+                                        Join Camp
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="drive-card">
+                                <div class="drive-info">
+                                    <h5>Berhampur Community Blood Camp</h5>
+                                    <p><i class="fa-solid fa-location-dot"></i> Ganjam Kala Parishad, Old Bus Stand • 10 AM - 5 PM</p>
+                                </div>
+                                <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                                    <button class="drive-contact-btn" onclick="openContactCampModal('Berhampur Community Blood Camp', '+91 680 229 2701', 'Ganjam Kala Parishad, Berhampur', 'Ganjam Youth Association')">
+                                        <i class="fa-solid fa-phone"></i> Contact
+                                    </button>
+                                    <a href="https://www.google.com/maps/dir/?api=1&destination=Ganjam+Kala+Parishad%2C+Berhampur" target="_blank" rel="noopener noreferrer" class="drive-directions-btn" title="Get Directions on Google Maps">
+                                        <i class="fa-solid fa-diamond-turn-right"></i> Directions
+                                    </a>
+                                    <button class="drive-pledge-btn" onclick="openPledgeModal('Berhampur Community Blood Camp')">
+                                        Join Camp
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- ================= MODALS SYSTEM ================= -->
+
+    <!-- 1. DONATE BLOOD MODAL (30 POINTS PER UNIT) -->
+    <div class="modal-overlay" id="donateModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-droplet" style="color: var(--primary);"></i> Donate Blood</h3>
+                <button class="modal-close-btn" onclick="closeModal('donateModal')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="donateForm" onsubmit="handleDonateSubmit(event)">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Units of Blood Donated (1 Unit = 30 Points)</label>
+                        <select class="form-control" id="donationUnits" onchange="calculatePointsPreview()">
+                            <option value="1">1 Unit Blood (+30 Points)</option>
+                            <option value="2">2 Units Blood (+60 Points)</option>
+                            <option value="3">3 Units Blood (+90 Points)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Hospital or Blood Bank Name</label>
+                        <input type="text" class="form-control" id="donationFacility" placeholder="e.g. Civil Hospital Blood Bank" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Date of Blood Donation</label>
+                        <input type="date" class="form-control" id="donationDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Blood Donation Receipt / Certificate No.</label>
+                        <input type="text" class="form-control" id="donationCertificate" placeholder="e.g. BL-2026-8921">
+                    </div>
+
+                    <div class="points-preview-box">
+                        <span>Points you will receive:</span>
+                        <strong id="previewPointsDisplay">+30 Points</strong>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-modal-cancel" onclick="closeModal('donateModal')">Cancel</button>
+                    <button type="submit" class="btn-modal-submit">Save Blood Donation</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. REDEEM PERKS MODAL -->
+    <div class="modal-overlay" id="redeemModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-prescription-bottle-medical" style="color: var(--primary);"></i> Claim Perk</h3>
+                <button class="modal-close-btn" onclick="closeModal('redeemModal')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="redeemForm" onsubmit="handleRedeemSubmit(event)">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Select Perk</label>
+                        <select class="form-control" id="redeemSelect" onchange="updateRedeemCost(this.value)">
+                            <!-- Populated via JS -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Beneficiary Name</label>
+                        <input type="text" class="form-control" id="redeemBeneficiary" value="Subrat Kumar Mohanty" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Partner Facility</label>
+                        <input type="text" class="form-control" id="redeemPartner" value="Apollo Pharmacy & MedPlus" readonly>
+                    </div>
+
+                    <div class="points-preview-box">
+                        <span>Points to be deducted:</span>
+                        <strong id="redeemCostDisplay" style="color: var(--danger);">-30 Points</strong>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-modal-cancel" onclick="closeModal('redeemModal')">Cancel</button>
+                    <button type="submit" class="btn-modal-submit">Claim Voucher</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 3. TRANSFER POINTS MODAL (WITH RELATION EXTRA BOX) -->
+    <div class="modal-overlay" id="transferModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-arrow-right-arrow-left" style="color: var(--primary);"></i> Transfer Credit Points</h3>
+                <button class="modal-close-btn" onclick="closeModal('transferModal')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="transferForm" onsubmit="handleTransferSubmit(event)">
+                <div class="modal-body">
+                    <!-- QUICK DEMO POINT TRANSFER BANNER -->
+                    <div class="demo-transfer-banner">
+                        <div class="demo-transfer-banner-info">
+                            <h5><i class="fa-solid fa-wand-magic-sparkles"></i> DEMO Point Transfer</h5>
+                            <p>Randomly selects recipient, relation, points &amp; runs live animated simulation.</p>
+                        </div>
+                        <button type="button" class="btn-demo-banner-trigger" onclick="startDemoTransferFlow()">
+                            <i class="fa-solid fa-bolt"></i> Run Demo
+                        </button>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Recipient Donor ID</label>
+                        <input type="text" class="form-control" id="transferRecipientId" placeholder="e.g. BL-2026-00340" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Recipient Full Name</label>
+                        <input type="text" class="form-control" id="transferRecipientName" placeholder="e.g. Ramesh Das" required>
+                    </div>
+
+                    <!-- EXTRA BOX: RELATION TO RECIPIENT -->
+                    <div class="form-group">
+                        <label>Relation (Who are the points for?)</label>
+                        <select class="form-control" id="transferRelation" required>
+                            <option value="Father">Father</option>
+                            <option value="Mother">Mother</option>
+                            <option value="Brother">Brother</option>
+                            <option value="Sister">Sister</option>
+                            <option value="Spouse">Spouse</option>
+                            <option value="Son">Son</option>
+                            <option value="Daughter">Daughter</option>
+                            <option value="Relative">Relative</option>
+                            <option value="Friend">Friend</option>
+                            <option value="Other / Emergency Patient">Other / Emergency Patient</option>
+                        </select>
+                        <div class="form-helper-text">
+                            This relation will be clearly shown in your transaction history so you can see whom you gave the points to.
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Points to Transfer</label>
+                        <input type="number" class="form-control" id="transferAmount" min="10" max="500" step="10" value="30" required>
+                        <div class="form-helper-text">
+                            Current balance: <strong class="currentBalanceDisplay">300</strong> points
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-modal-demo" onclick="startDemoTransferFlow()">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> DEMO Transfer
+                    </button>
+                    <button type="button" class="btn-modal-cancel" onclick="closeModal('transferModal')">Cancel</button>
+                    <button type="submit" class="btn-modal-submit">Transfer Points</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 3B. ANIMATED DEMO TRANSFER MODAL -->
+    <div class="modal-overlay" id="demoTransferModal">
+        <div class="modal-box demo-animation-box">
+            <div class="demo-animation-header">
+                <h3>
+                    <i class="fa-solid fa-bolt-lightning" style="color: #facc15;"></i>
+                    <span>Live Point Transfer</span>
+                    <span class="live-badge">Simulated P2P</span>
+                </h3>
+                <button class="modal-close-btn" id="demoModalCloseBtn" onclick="closeDemoTransferModal()" style="color: white;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="transfer-stage-arena">
+                <!-- Arena with Sender, Track, Recipient -->
+                <div class="transfer-parties-row">
+                    <!-- Sender Card -->
+                    <div class="transfer-party-card" id="demoSenderCard">
+                        <div class="transfer-party-avatar sender">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </div>
+                        <h4 id="demoSenderName">Subrat K. Mohanty</h4>
+                        <span class="transfer-party-role">Donor (Self) &bull; O+</span>
+                        <div class="transfer-party-points deduct">
+                            <i class="fa-solid fa-coins"></i>
+                            <span id="demoSenderBalance">300</span> Pts
+                        </div>
+                    </div>
+
+                    <!-- Connection Track & Flying Coins -->
+                    <div class="transfer-connection-track">
+                        <div class="transfer-amount-pill" id="demoTransferAmountPill">
+                            <i class="fa-solid fa-arrow-right"></i> <span id="demoPillAmount">30</span> Pts
+                        </div>
+                        <div class="transfer-wire">
+                            <div class="transfer-wire-flow"></div>
+                        </div>
+                        <!-- 3 Animated Flying Tokens -->
+                        <div class="transfer-coin active-coin-1"><i class="fa-solid fa-droplet"></i></div>
+                        <div class="transfer-coin active-coin-2"><i class="fa-solid fa-bolt"></i></div>
+                        <div class="transfer-coin active-coin-3"><i class="fa-solid fa-gem"></i></div>
+                    </div>
+
+                    <!-- Recipient Card -->
+                    <div class="transfer-party-card" id="demoRecipientCard">
+                        <div class="transfer-party-avatar recipient">
+                            <i class="fa-solid fa-user-heart" id="demoRecipientIcon"></i>
+                        </div>
+                        <h4 id="demoRecipientName">Priya Mohapatra</h4>
+                        <span class="transfer-party-role" id="demoRecipientRole">Sister &bull; O+</span>
+                        <div class="transfer-party-points credit">
+                            <i class="fa-solid fa-plus"></i>
+                            <span id="demoRecipientCredits">0</span> Pts
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status Step & Progress Bar -->
+                <div class="transfer-status-box" id="demoStatusBox">
+                    <div class="status-step-label">
+                        <span id="demoStatusText">
+                            <i class="fa-solid fa-circle-notch fa-spin" style="color: #7c3aed;"></i>
+                            Establishing secure donor peer channel...
+                        </span>
+                        <span class="status-step-percent" id="demoProgressPercent">15%</span>
+                    </div>
+                    <div class="transfer-progress-track">
+                        <div class="transfer-progress-fill" id="demoProgressFill"></div>
+                    </div>
+                </div>
+
+                <!-- Completed Celebration View -->
+                <div class="demo-success-view" id="demoSuccessView">
+                    <div class="demo-success-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <h4 id="demoSuccessTitle">Points Transferred Successfully!</h4>
+                    <p id="demoSuccessSubtitle">Points have been deducted and verified on the local offline ledger.</p>
+
+                    <div class="demo-tx-meta" id="demoTxMeta">
+                        <div class="demo-tx-meta-row">
+                            <span style="color: var(--text-muted);">Transaction Ref:</span>
+                            <strong id="demoMetaTxRef">TRF-OD-2026-9482</strong>
+                        </div>
+                        <div class="demo-tx-meta-row">
+                            <span style="color: var(--text-muted);">Beneficiary:</span>
+                            <strong id="demoMetaRecipient">Priya Mohapatra (Sister)</strong>
+                        </div>
+                        <div class="demo-tx-meta-row">
+                            <span style="color: var(--text-muted);">Points Deducted:</span>
+                            <strong style="color: var(--danger);" id="demoMetaAmount">-30 Points</strong>
+                        </div>
+                        <div class="demo-tx-meta-row">
+                            <span style="color: var(--text-muted);">New Donor Balance:</span>
+                            <strong style="color: var(--primary);" id="demoMetaNewBalance">270 Points</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer" id="demoModalFooter">
+                <button type="button" class="btn-modal-cancel" id="btnCancelDemoTransfer" onclick="closeDemoTransferModal()">Cancel</button>
+                <button type="button" class="btn-modal-demo" id="btnTransferAnother" onclick="startDemoTransferFlow()" style="display: none;">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Transfer Again
+                </button>
+                <button type="button" class="btn-modal-submit" id="btnFinishDemoTransfer" onclick="closeDemoTransferModal()" style="display: none;">
+                    <i class="fa-solid fa-check"></i> Done
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. DONOR ID CARD MODAL -->
+    <div class="modal-overlay" id="passModal">
+        <div class="modal-box" style="max-width: 440px;">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-id-card" style="color: var(--primary);"></i> Donor ID Card</h3>
+                <button class="modal-close-btn" onclick="closeModal('passModal')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div style="border: 2px solid var(--primary); border-radius: 12px; padding: 20px; background: white;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 12px; margin-bottom: 14px;">
+                        <div>
+                            <h4 style="color: var(--primary); font-size: 1.1rem; font-weight: 800;">LifeFlow Card</h4>
+                            <p style="font-size: 0.75rem; color: var(--text-muted);">Verified Blood Donor</p>
+                        </div>
+                        <div style="background: var(--primary); color: white; padding: 4px 12px; border-radius: 20px; font-weight: 800; font-size: 1rem;">
+                            O+
+                        </div>
+                    </div>
+                    <div style="font-size: 0.88rem; line-height: 1.8;">
+                        <div><strong>Name:</strong> <span id="modalCardDonorName">Subrat Kumar Mohanty</span></div>
+                        <div><strong>Donor ID:</strong> LF-OD-2026-00125</div>
+                        <div><strong>Blood Group:</strong> O+</div>
+                        <div><strong>Credit Points:</strong> <span class="currentBalanceDisplay">300</span> Points</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-modal-cancel" onclick="closeModal('passModal')">Close</button>
+                <button type="button" class="btn-modal-submit" onclick="printPass()"><i class="fa-solid fa-print"></i> Print Card</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. BLOOD CAMP PLEDGE MODAL -->
+    <div class="modal-overlay" id="pledgeModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-hand-holding-droplet" style="color: var(--primary);"></i> Join Blood Camp</h3>
+                <button class="modal-close-btn" onclick="closeModal('pledgeModal')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <h4 id="pledgeDriveTitle" style="font-size: 1.05rem; font-weight: 700; color: var(--text-main); margin-bottom: 10px;">Camp Name</h4>
+                <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 14px;">
+                    Donating 1 unit of blood at this camp will credit <strong>30 points</strong> to your account.
+                </p>
+                <div class="form-group">
+                    <label>Preferred Time Slot</label>
+                    <select class="form-control">
+                        <option>Morning (10:00 AM - 12:00 PM)</option>
+                        <option>Afternoon (12:00 PM - 02:00 PM)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-modal-cancel" onclick="closeModal('pledgeModal')">Cancel</button>
+                <button type="button" class="btn-modal-submit" onclick="confirmPledge()">Confirm Participation</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. CONTACT CAMP MODAL -->
+    <div class="modal-overlay" id="contactCampModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-phone-volume" style="color: var(--primary);"></i> Contact Donation Camp</h3>
+                <button class="modal-close-btn" onclick="closeModal('contactCampModal')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div style="background: var(--primary-soft); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 16px; border: 1px solid var(--primary-border);">
+                    <h4 id="contactCampTitle" style="font-size: 1.05rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">Camp Name</h4>
+                    <p id="contactCampLocation" style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px;"><i class="fa-solid fa-location-dot"></i> Location</p>
+                    <p id="contactCampOrganizer" style="font-size: 0.8rem; color: var(--text-muted);"><i class="fa-solid fa-users"></i> Organizer</p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 16px;">
+                    <a id="campPhoneLink" href="tel:+916742476789" class="btn-modal-cancel" style="display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; padding: 10px 4px; font-size: 0.8rem; font-weight: 700; color: var(--primary); background: var(--primary-soft); border: 1px solid var(--primary-border); border-radius: var(--radius-sm);">
+                        <i class="fa-solid fa-phone"></i> Call
+                    </a>
+                    <a id="campWhatsappLink" href="https://wa.me/" target="_blank" class="btn-modal-cancel" style="display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; padding: 10px 4px; font-size: 0.8rem; font-weight: 700; color: #16a34a; background: #dcfce7; border: 1px solid #bbf7d0; border-radius: var(--radius-sm);">
+                        <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                    </a>
+                    <a id="campDirectionsLink" href="https://www.google.com/maps/dir/?api=1" target="_blank" rel="noopener noreferrer" class="btn-modal-cancel" style="display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; padding: 10px 4px; font-size: 0.8rem; font-weight: 700; color: #1d4ed8; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: var(--radius-sm);">
+                        <i class="fa-solid fa-diamond-turn-right"></i> Directions
+                    </a>
+                </div>
+
+                <form id="campInquiryForm" onsubmit="handleCampInquirySubmit(event)">
+                    <div class="form-group">
+                        <label>Your Name</label>
+                        <input type="text" class="form-control" id="inquiryDonorName" value="Subrat Kumar Mohanty" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone / WhatsApp Number</label>
+                        <input type="tel" class="form-control" id="inquiryDonorPhone" value="+91 94371 88201" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Message or Query</label>
+                        <textarea class="form-control" id="inquiryMessage" rows="2">Hi, I want to inquire about donating blood at this camp.</textarea>
+                    </div>
+                    <div class="modal-footer" style="padding-left: 0; padding-right: 0; padding-bottom: 0; background: transparent; border-top: none;">
+                        <button type="button" class="btn-modal-cancel" onclick="closeModal('contactCampModal')">Cancel</button>
+                        <button type="submit" class="btn-modal-submit"><i class="fa-solid fa-paper-plane"></i> Send Inquiry</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- SCRIPT -->
+    <script src="credscript.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "lifeflow-root",
+  "version": "1.0.0",
+  "private": true,
+  "description": "LifeFlow Blood Network Platform Root Proxy",
+  "scripts": {
+    "dev": "npm --prefix Site run dev",
+    "start": "npm --prefix Site run dev",
+    "build": "npm --prefix Site run build",
+    "preview": "npm --prefix Site run preview"
+  }
+}
