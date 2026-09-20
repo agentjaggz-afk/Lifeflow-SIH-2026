@@ -80,8 +80,8 @@ export function DonorReceiverView({ city, coords, onBack, onSelectHospital }: Do
         <div className="flex flex-1 flex-col min-h-0 overflow-y-auto">
           {/* Logo */}
           <a href="/index.html" className="flex items-center gap-2.5 px-5 py-5 shrink-0 hover:opacity-85 transition-opacity cursor-pointer" title="Return to Portal Gateway">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white p-1 border border-gray-100 shadow-sm">
-              <img src="/logo-icon.png" alt="LifeFlow Logo" className="h-full w-full object-contain" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-600 shadow-sm">
+              <Droplet className="h-5 w-5 text-white" fill="white" />
             </div>
             <span className="text-lg font-bold text-gray-900">LifeFlow</span>
           </a>

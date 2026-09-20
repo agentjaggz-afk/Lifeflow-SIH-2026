@@ -187,8 +187,8 @@ export const NgoSidebar: React.FC<Props> = ({
               className="flex items-center gap-2.5 hover:opacity-85 transition-opacity cursor-pointer"
               title="Return to LifeFlow Portal Gateway"
             >
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white p-1 border border-gray-100 shadow-sm">
-                <img src="/logo-icon.png" alt="LifeFlow Logo" className="h-full w-full object-contain" />
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-600 shadow-sm">
+                <Droplet className="h-5 w-5 text-white" fill="white" />
               </div>
               <div className="flex flex-col min-w-0">
                 <span className="text-lg font-bold text-gray-900 leading-tight">LifeFlow</span>
