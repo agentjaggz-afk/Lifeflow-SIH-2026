@@ -79,11 +79,8 @@ export function DonorReceiverView({ city, coords, onBack, onSelectHospital }: Do
         {/* Top Scrollable Navigation Section */}
         <div className="flex flex-1 flex-col min-h-0 overflow-y-auto">
           {/* Logo */}
-          <a href="/index.html" className="flex items-center gap-2.5 px-5 py-5 shrink-0 hover:opacity-85 transition-opacity cursor-pointer" title="Return to Portal Gateway">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-600 shadow-sm">
-              <Droplet className="h-5 w-5 text-white" fill="white" />
-            </div>
-            <span className="text-lg font-bold text-gray-900">LifeFlow</span>
+          <a href="/index.html" className="flex items-center px-5 py-4 shrink-0 hover:opacity-85 transition-opacity cursor-pointer" title="Return to Portal Gateway">
+            <img src="/lifeflow-logo.png" alt="Life Flow" className="h-14 w-auto object-contain" />
           </a>
 
           {/* Location badge */}

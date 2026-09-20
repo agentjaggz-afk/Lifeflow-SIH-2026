@@ -55,15 +55,9 @@ export function HospitalView({ hospital, city, onBack }: HospitalViewProps) {
         {/* Top Scrollable Navigation Section */}
         <div className="flex flex-1 flex-col min-h-0 overflow-y-auto">
           {/* Logo */}
-          <div className="flex items-center gap-2.5 px-5 py-5 shrink-0">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-600 shadow-sm">
-              <Droplet className="h-5 w-5 text-white" fill="white" />
-            </div>
-            <div>
-              <span className="text-lg font-bold text-gray-900 leading-none block">LifeFlow</span>
-              <span className="text-[10px] text-gray-400 font-medium">Hospital Blood Metrics</span>
-            </div>
-          </div>
+          <a href="/index.html" className="flex items-center px-5 py-4 shrink-0 hover:opacity-85 transition-opacity cursor-pointer" title="Return to Portal Gateway">
+            <img src="/lifeflow-logo.png" alt="Life Flow" className="h-14 w-auto object-contain" />
+          </a>
 
           {/* Hospital badge */}
           <div className="mx-4 mb-3 rounded-2xl bg-primary-50 p-3.5 ring-1 ring-primary-100 shrink-0">

@@ -12,7 +12,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="shortcut icon" href="/favicon.ico">
 
-    <link rel="stylesheet" href="style1.css?v=4.0.0">
+    <link rel="stylesheet" href="style1.css?v=4.0.1">
 
     <style>
         /* LifeFlow Crimson Gateway Buttons */
@@ -40,8 +40,30 @@
         .gateway-btn.btn-red:active {
             transform: translateY(0) !important;
         }
-    </style>
 
+        /* LifeFlow Navbar Logo Size constraint */
+        .lifeflow-nav-logo {
+            height: 40px !important;
+            max-height: 40px !important;
+            width: auto !important;
+            object-fit: contain !important;
+            border-radius: 8px !important;
+            background: #ffffff !important;
+            padding: 2px 5px !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+            display: block !important;
+            transition: transform 0.2s ease !important;
+        }
+
+        @media (max-width: 768px) {
+            .lifeflow-nav-logo {
+                height: 34px !important;
+                max-height: 34px !important;
+                padding: 1px 4px !important;
+                border-radius: 6px !important;
+            }
+        }
+    </style>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -64,13 +86,7 @@
     <!-- TOP NAVIGATION HEADER (Exact matching screenshot layout) -->
     <header class="landing-header">
         <a href="/index.html" class="header-brand" title="LifeFlow Blood Network Platform">
-            <div class="logo-drop">
-                <i class="fa-solid fa-droplet"></i>
-            </div>
-            <div class="brand-text-block">
-                <span class="brand-name">LifeFlow</span>
-                <span class="brand-tagline">Blood Network Platform</span>
-            </div>
+            <img src="/lifeflow-logo.png" alt="Life Flow" class="lifeflow-nav-logo" style="height: 40px; max-height: 40px; width: auto; object-fit: contain; border-radius: 8px; background: #ffffff; padding: 2px 5px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); display: block;" />
         </a>
 
         <div class="header-actions">
@@ -673,10 +689,9 @@
 
     <aside class="sidebar">
 
-        <div class="brand">
-            <div class="brand-icon">♥</div>
-            <span>BloodLink</span>
-        </div>
+        <a href="/index.html" class="brand" title="LifeFlow Blood Network Platform">
+            <img src="/lifeflow-logo.png" alt="Life Flow" class="sidebar-brand-logo" />
+        </a>
 
 
         <nav>
@@ -1497,15 +1512,9 @@
 <div id="hospitalHubSection" class="hospital-hub-section hidden">
     <!-- Hub Top Navigation -->
     <header class="hub-navbar">
-        <div class="hub-nav-brand">
-            <div class="hosp-logo-icon">
-                <i class="fa-solid fa-droplet"></i>
-            </div>
-            <div>
-                <span class="hub-brand-title">LifeFlow</span>
-                <span class="hub-brand-subtitle">Blood Network Platform</span>
-            </div>
-        </div>
+        <a href="/index.html" class="hub-nav-brand" title="LifeFlow Blood Network Platform">
+            <img src="/lifeflow-logo.png" alt="Life Flow" class="hub-nav-logo" />
+        </a>
 
         <div class="hub-nav-center">
             <div class="hub-facility-chip">

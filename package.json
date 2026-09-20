@@ -8,6 +8,8 @@
     "start": "npm --prefix Site run dev",
     "build": "npm --prefix Site install && npm --prefix Site run build && node -e \"const fs=require('fs'); if(fs.existsSync('Site/dist')){fs.cpSync('Site/dist', 'dist', {recursive: true, force: true});}\"",
     "deploy": "npm run build && npx --yes wrangler deploy",
+    "deploy:pages": "npm run build && npx --yes wrangler pages deploy dist",
+    "deploy:workers": "npm run build && npx --yes wrangler deploy",
     "preview": "npm --prefix Site run preview"
   }
 }

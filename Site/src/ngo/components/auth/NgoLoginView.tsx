@@ -71,12 +71,12 @@ export const NgoLoginView: React.FC<Props> = ({
       <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-rose-600/15 rounded-full blur-3xl pointer-events-none" />
 
       {/* Brand Header */}
-      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center z-10">
-        <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-red-600 to-rose-700 text-white shadow-xl shadow-red-500/20 mb-3">
-          <i className="fa-solid fa-droplet text-2xl"></i>
-        </div>
-        <h1 className="text-2xl font-black text-white tracking-tight">
-          LifeFlow <span className="text-red-500 font-extrabold">NGO Portal</span>
+      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center z-10 flex flex-col items-center">
+        <a href="/index.html" className="inline-block mb-3 hover:opacity-90 transition-opacity" title="Life Flow">
+          <img src="/lifeflow-logo.png" alt="Life Flow" className="h-20 w-auto rounded-2xl bg-white p-2 shadow-xl object-contain mx-auto" />
+        </a>
+        <h1 className="text-xl font-black text-white tracking-tight">
+          <span className="text-red-500 font-extrabold">NGO Portal</span>
         </h1>
         <p className="mt-1 text-xs text-slate-400">
           Institutional Access for Registered Blood Banks & Relief NGOs

@@ -86,46 +86,36 @@
             z-index: 2;
         }
 
-        .hosp-logo-icon {
-            width: 48px;
-            height: 48px;
-            background: rgba(255, 255, 255, 0.18);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1.5px solid rgba(255, 255, 255, 0.28);
-            color: #FFFFFF;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-            flex-shrink: 0;
+        .lifeflow-nav-logo {
+            height: 40px !important;
+            max-height: 40px !important;
+            width: auto !important;
+            object-fit: contain !important;
+            border-radius: 8px !important;
+            background: #ffffff !important;
+            padding: 2px 5px !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+            display: block !important;
+            transition: transform 0.2s ease !important;
         }
 
-        .brand-text-block {
-            display: flex;
-            flex-direction: column;
-            text-align: left;
+        .lifeflow-nav-logo:hover {
+            transform: scale(1.02);
         }
 
-        .brand-name {
-            font-size: 26px;
-            font-weight: 800;
-            color: #ffffff;
-            line-height: 1.15;
-            letter-spacing: -0.4px;
-            font-family: 'Inter', system-ui, sans-serif;
+        .hub-nav-logo {
+            height: 52px;
+            width: auto;
+            object-fit: contain;
+            display: block;
         }
 
-        .brand-tagline {
-            font-size: 13px;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.88);
-            letter-spacing: 0.1px;
-            line-height: 1.2;
-            margin-top: 2px;
-            font-family: 'Inter', system-ui, sans-serif;
+        .hosp-sidebar-logo {
+            height: 54px;
+            max-width: 180px;
+            width: auto;
+            object-fit: contain;
+            display: block;
         }
 
         .hosp-hero-body {
@@ -1249,13 +1239,7 @@
     <!-- TOP NAVIGATION HEADER (Matching screenshot layout) -->
     <header class="landing-header">
         <a href="/index.html" class="header-brand" title="LifeFlow Blood Network Platform">
-            <div class="logo-drop">
-                <i class="fa-solid fa-droplet"></i>
-            </div>
-            <div class="brand-text-block">
-                <span class="brand-name">LifeFlow</span>
-                <span class="brand-tagline">Blood Network Platform</span>
-            </div>
+            <img src="/lifeflow-logo.png" alt="Life Flow" class="lifeflow-nav-logo" style="height: 40px; max-height: 40px; width: auto; object-fit: contain; border-radius: 8px; background: #ffffff; padding: 2px 5px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); display: block;" />
         </a>
 
         <div class="header-actions">
@@ -1584,15 +1568,9 @@
 <div id="hospitalHubSection" class="hospital-hub-section hidden">
     <!-- Hub Top Navigation -->
     <header class="hub-navbar">
-        <div class="hub-nav-brand">
-            <div class="hosp-logo-icon">
-                <i class="fa-solid fa-droplet"></i>
-            </div>
-            <div>
-                <span class="hub-brand-title">LifeFlow</span>
-                <span class="hub-brand-subtitle">Blood Network Platform</span>
-            </div>
-        </div>
+        <a href="/index.html" class="hub-nav-brand" title="LifeFlow Blood Network Platform">
+            <img src="/lifeflow-logo.png" alt="Life Flow" class="hub-nav-logo" />
+        </a>
 
         <div class="hub-nav-center">
             <div class="hub-facility-chip">
@@ -1841,15 +1819,9 @@
             <div>
                 <!-- Brand Header -->
                 <div class="sidebar-header" style="display: flex; align-items: center; justify-content: space-between;">
-                    <div class="sidebar-brand">
-                        <div class="sidebar-brand-icon">
-                            <i class="fa-solid fa-droplet"></i>
-                        </div>
-                        <div class="sidebar-brand-text">
-                            <h2>LifeFlow</h2>
-                            <span>Hospital Portal</span>
-                        </div>
-                    </div>
+                    <a href="/index.html" class="sidebar-brand" title="LifeFlow Hospital Portal" style="text-decoration: none;">
+                        <img src="/lifeflow-logo.png" alt="Life Flow" class="hosp-sidebar-logo" />
+                    </a>
                     <button type="button" class="sidebar-close-btn" id="btnSidebarClose" onclick="closeMobileSidebar()" aria-label="Close Navigation Menu">
                         <i class="fa-solid fa-xmark"></i>
                     </button>

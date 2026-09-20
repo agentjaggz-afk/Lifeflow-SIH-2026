@@ -101,14 +101,8 @@ export function LocationGate({ onLocationSet, currentCity, onCancel }: LocationG
       <div className="relative z-10 flex min-h-screen flex-col">
         {/* Header */}
         <header className="flex items-center justify-between px-6 py-5 md:px-12">
-          <a href="/index.html" className="flex items-center gap-3 hover:opacity-85 transition-opacity cursor-pointer" title="Return to Portal Gateway">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-sm ring-1 ring-white/20">
-              <Droplet className="h-6 w-6 text-white" fill="white" />
-            </div>
-            <div>
-              <h1 className="text-lg font-bold text-white tracking-tight">LifeFlow</h1>
-              <p className="text-xs text-white/60">Blood Network Platform</p>
-            </div>
+          <a href="/index.html" className="flex items-center hover:opacity-90 transition-opacity cursor-pointer" title="Return to Portal Gateway">
+            <img src="/lifeflow-logo.png" alt="Life Flow" className="h-14 w-auto rounded-xl bg-white p-1.5 shadow-md object-contain" />
           </a>
           <div className="flex items-center gap-3">
             <UserProfileMenu variant="dark" currentCity={currentCity} />

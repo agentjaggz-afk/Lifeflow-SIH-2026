@@ -181,19 +181,13 @@ export const NgoSidebar: React.FC<Props> = ({
         {/* Top Scrollable Navigation Section */}
         <div className="flex flex-1 flex-col min-h-0 overflow-y-auto">
           {/* Logo & Platform Header */}
-          <div className="flex items-center justify-between px-5 py-5 shrink-0">
+          <div className="flex items-center justify-between px-5 py-4 shrink-0">
             <a
               href="/index.html"
-              className="flex items-center gap-2.5 hover:opacity-85 transition-opacity cursor-pointer"
+              className="flex items-center hover:opacity-85 transition-opacity cursor-pointer"
               title="Return to LifeFlow Portal Gateway"
             >
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-600 shadow-sm">
-                <Droplet className="h-5 w-5 text-white" fill="white" />
-              </div>
-              <div className="flex flex-col min-w-0">
-                <span className="text-lg font-bold text-gray-900 leading-tight">LifeFlow</span>
-                <span className="text-[10px] font-semibold text-primary-600 tracking-wider uppercase">NGO Portal (Odisha)</span>
-              </div>
+              <img src="/lifeflow-logo.png" alt="Life Flow" className="h-14 w-auto object-contain" />
             </a>
 
             {/* Mobile Close Button */}

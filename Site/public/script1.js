@@ -186,7 +186,7 @@ function openHospitalPortal(role = "hospital") {
 
     // If invoked from index.html or index1.html, route directly to the dedicated Hospital & NGO Portal
     if (window.location.pathname.indexOf("hospital-auth.html") === -1 && !document.getElementById("hospMainSidebar")) {
-        window.location.href = currentRole === "ngo" ? "hospital-auth.html?role=ngo" : "hospital-auth.html";
+        window.location.href = currentRole === "ngo" ? "/hospital-auth.html?role=ngo" : "/hospital-auth.html";
         return;
     }
 
@@ -574,7 +574,7 @@ function handleHospitalSignIn(event) {
 
         setTimeout(() => {
             if (facilityRole === "ngo") {
-                window.location.href = "ngo-portal.html#/dashboard";
+                window.location.href = "/ngo-portal.html#/dashboard";
                 return;
             }
             openHospitalDashboard(facilityName, licenseNumber);
@@ -1029,7 +1029,7 @@ function loginUser(event) {
             localStorage.setItem("bloodlinkNgoLicense", "NGO-OD-8821");
             showMessage("Opening LifeFlow NGO Management Platform...", "success");
             setTimeout(function () {
-                window.location.href = "ngo-portal.html#/dashboard";
+                window.location.href = "/ngo-portal.html#/dashboard";
             }, 400);
         };
 
@@ -1052,7 +1052,7 @@ function loginUser(event) {
 
                     showMessage(`Authenticated as ${ngoName}! Launching Real-Time NGO Platform...`, "success");
                     setTimeout(function () {
-                        window.location.href = "ngo-portal.html#/dashboard";
+                        window.location.href = "/ngo-portal.html#/dashboard";
                     }, 400);
                 } else {
                     if (submitBtn) {
@@ -5164,7 +5164,20 @@ function acknowledgeEmergencyAlert(alertId) {
         ngoName: currentNgoName
     };
 
-    fetch(`${getBackendBaseUrl()}/api/network/alerts/acknowledge`, {
+    const backendBase = getBackendBaseUrl();
+    if (!backendBase) {
+        if (alert) {
+            alert.status = "IN_DISPATCH";
+            alert.claimedBy = currentNgoName;
+        }
+        playSuccessChime();
+        showToast(`Custody Secured: Emergency Requisition ${alertId} assigned to ${currentNgoName} (IN_DISPATCH)`, "success");
+        renderAllEmergencyAlerts();
+        updateNotificationBadge();
+        return;
+    }
+
+    fetch(`${backendBase}/api/network/alerts/acknowledge`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
@@ -5213,7 +5226,31 @@ function triggerSimulatedEmergencyAlert() {
 
     showToast("Simulating code-red hospital requisition...", "info");
 
-    fetch(`${getBackendBaseUrl()}/api/network/alerts/simulate`, {
+    const localFallback = () => {
+        const localSim = {
+            alertId: `ALT-2026-${Math.floor(Math.random() * 9000 + 1000)}`,
+            hospitalName: "City Care Multi-Specialty Hospital Blood Bank",
+            hospitalLicense: "LIC-2026-001",
+            bloodGroup: randomBg,
+            unitsRequired: units,
+            urgencyLevel: "CRITICAL_OT",
+            distanceKm: 3.8,
+            contactPerson: "Dr. S. Roy (Blood Transfusion Officer)",
+            directDeskPhone: "+91-9876543210",
+            hospitalAddress: "Plot 14, Main Medical Road, Near City Center",
+            timestamp: new Date().toISOString(),
+            status: "AWAITING_RESPONSE"
+        };
+        handleIncomingEmergencyAlert(localSim, true);
+    };
+
+    const backendBase = getBackendBaseUrl();
+    if (!backendBase) {
+        localFallback();
+        return;
+    }
+
+    fetch(`${backendBase}/api/network/alerts/simulate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

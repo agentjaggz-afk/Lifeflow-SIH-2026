@@ -7,8 +7,10 @@
 
     <link rel="stylesheet" href="style1.css">
 
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <link
@@ -27,15 +29,9 @@
 
     <div class="auth-left">
 
-        <div class="auth-brand">
-            <div class="logo-drop">
-                <i class="fa-solid fa-droplet"></i>
-            </div>
-            <div class="brand-text-block">
-                <span class="brand-name">LifeFlow</span>
-                <span class="brand-tagline">Blood Network Platform</span>
-            </div>
-        </div>
+        <a href="/index.html" class="auth-brand" title="LifeFlow Blood Network Platform" style="text-decoration: none;">
+            <img src="/lifeflow-logo.png" alt="Life Flow" class="lifeflow-nav-logo" />
+        </a>
 
         <div class="auth-content">
             <h1>Connecting Blood.<br><span>Saving Lives.</span></h1>
@@ -75,15 +71,9 @@
 
         <div class="auth-box">
 
-            <div class="mobile-brand">
-                <div class="logo-drop">
-                    <i class="fa-solid fa-droplet"></i>
-                </div>
-                <div class="brand-text-block">
-                    <span class="brand-name">LifeFlow</span>
-                    <span class="brand-tagline">Blood Network Platform</span>
-                </div>
-            </div>
+            <a href="/index.html" class="mobile-brand" title="LifeFlow Blood Network Platform" style="text-decoration: none;">
+                <img src="/lifeflow-logo.png" alt="Life Flow" class="lifeflow-nav-logo" />
+            </a>
 
             <div id="roleSelection">
 
@@ -97,7 +87,7 @@
                 <div class="portal-gateway-grid">
 
                     <!-- SECTION 1: Donor & Consumer Hub -->
-                    <div class="gateway-card individual-gateway-card">
+                    <div class="gateway-card individual-gateway-card" id="cardDonorConsumerHub" onclick="selectRole('donor', 'login')" role="button" tabindex="0" title="Click to access Donor & Consumer Hub">
                         <div class="gateway-card-top">
                             <div class="gateway-header-row">
                                 <div class="gateway-icon-box donor-consumer-icon">
@@ -121,11 +111,11 @@
                         </div>
 
                         <div class="gateway-actions">
-                            <button type="button" class="gateway-btn btn-red" id="btnGatewayDonate" onclick="selectRole('donor', 'signup')">
+                            <button type="button" class="gateway-btn btn-red" id="btnGatewayDonate" onclick="event.stopPropagation(); selectRole('donor', 'signup')">
                                 <i class="fa-solid fa-heart-circle-bolt"></i>
                                 <span>Donate Blood</span>
                             </button>
-                            <button type="button" class="gateway-btn btn-red-secondary" id="btnGatewayFindBlood" onclick="selectRole('consumer')">
+                            <button type="button" class="gateway-btn btn-red-secondary" id="btnGatewayFindBlood" onclick="event.stopPropagation(); selectRole('consumer', 'login')">
                                 <i class="fa-solid fa-droplet"></i>
                                 <span>Find / Request Blood</span>
                             </button>
@@ -281,6 +271,19 @@
                         Login
                         <i class="fa-solid fa-arrow-right"></i>
                     </button>
+
+                    <div id="ngoDemoCredentialsBox" class="hosp-demo-box hidden" style="margin-top: 16px;">
+                        <div class="demo-title">
+                            <i class="fa-solid fa-bolt"></i> NGO Evaluation Demo Account
+                        </div>
+                        <p>Auto-fill verified NGO credentials:</p>
+                        <button type="button" class="demo-fill-btn" onclick="fillDemoNgoCredentials('LIC-NGO-OD-9021', 'Pass@123')">
+                            <i class="fa-solid fa-key"></i> Auto-fill (LIC-NGO-OD-9021 / Pass@123)
+                        </button>
+                        <button type="button" class="demo-fill-btn" style="margin-top: 6px;" onclick="fillDemoNgoCredentials('NGO-RED-001', 'Pass@123')">
+                            <i class="fa-solid fa-key"></i> Auto-fill Delhi (NGO-RED-001 / Pass@123)
+                        </button>
+                    </div>
 
                 </form>
 
@@ -606,10 +609,9 @@
 
     <aside class="sidebar">
 
-        <div class="brand">
-            <div class="brand-icon">♥</div>
-            <span>BloodLink</span>
-        </div>
+        <a href="/index.html" class="brand" title="LifeFlow Blood Network Platform">
+            <img src="/lifeflow-logo.png" alt="Life Flow" class="sidebar-brand-logo" />
+        </a>
 
 
         <nav>
@@ -767,7 +769,37 @@
 
             </div>
 
+            <!-- =====================================================
+                 NGO REAL-TIME EMERGENCY BLOOD RECEPTION ENGINE
+                 (Active for NGO Sessions)
+            ===================================================== -->
+            <div id="ngoEmergencyReceptionPanel" class="ngo-emergency-reception-container hidden">
+                <div class="emergency-panel-header">
+                    <div class="emergency-panel-title-group">
+                        <div class="emergency-beacon-badge">
+                            <span class="pulse-beacon"></span>
+                            <i class="fa-solid fa-truck-medical"></i>
+                        </div>
+                        <div>
+                            <div class="panel-kicker">Hospital Blood Banks &amp; NGO Network</div>
+                            <h2 class="panel-heading">Real-Time Emergency Blood Reception Queue</h2>
+                            <p class="panel-subtext">Active code-red broadcasts and urgent shortage requisitions within response radius</p>
+                        </div>
+                    </div>
+                    <div class="emergency-panel-controls">
+                        <span id="sseConnectionStatusBadge" class="sse-status-badge sse-connecting">
+                            <span class="status-dot"></span> <span id="sseStatusText" class="status-text">Connecting SSE...</span>
+                        </span>
+                        <button type="button" class="btn-simulate-alert" onclick="triggerSimulatedEmergencyAlert()" title="Simulate an incoming hospital shortage call">
+                            <i class="fa-solid fa-bolt"></i> Simulate Inflow
+                        </button>
+                    </div>
+                </div>
 
+                <div id="ngoEmergencyAlertsList" class="emergency-alerts-grid">
+                    <!-- Populated dynamically via SSE stream / active alerts poller -->
+                </div>
+            </div>
 
             <!-- QUICK ACTIONS -->
 
@@ -1202,6 +1234,9 @@
 
             <div class="notification-list">
 
+                <!-- NGO Emergency Blood Reception Feed for Notifications Center -->
+                <div id="ngoNotificationEmergencyFeed"></div>
+
                 <div class="notification-card">
 
                     <i class="fa-solid fa-droplet"></i>
@@ -1364,15 +1399,9 @@
 <div id="hospitalHubSection" class="hospital-hub-section hidden">
     <!-- Hub Top Navigation -->
     <header class="hub-navbar">
-        <div class="hub-nav-brand">
-            <div class="hosp-logo-icon">
-                <i class="fa-solid fa-droplet"></i>
-            </div>
-            <div>
-                <span class="hub-brand-title">LifeFlow</span>
-                <span class="hub-brand-subtitle">Blood Network Platform</span>
-            </div>
-        </div>
+        <a href="/index.html" class="hub-nav-brand" title="LifeFlow Blood Network Platform">
+            <img src="/lifeflow-logo.png" alt="Life Flow" class="hub-nav-logo" />
+        </a>
 
         <div class="hub-nav-center">
             <div class="hub-facility-chip">
@@ -1461,41 +1490,41 @@
                 </div>
             </div>
 
-            <!-- Service Card B: Blood Request / Take Blood -->
-            <div class="hub-service-card card-request-blood" id="serviceCardRequest">
-                <div class="service-card-tag priority-tag">
-                    <i class="fa-solid fa-truck-medical"></i> Clinical Requisition Channel
+                        <!-- Service Card C: Hospital Blood Banks & NGO Network -->
+            <div class="hub-service-card card-ngo-network" id="serviceCardNgo">
+                <div class="service-card-tag" style="background:#EFF6FF; color:#1D4ED8; border:1px solid #BFDBFE;">
+                    <i class="fa-solid fa-handshake-angle"></i> Hospital Blood Banks & NGO Network
                 </div>
-                <div class="service-card-icon-wrap icon-priority">
-                    <i class="fa-solid fa-hand-holding-medical"></i>
+                <div class="service-card-icon-wrap" style="background:linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%); color:#FFF;">
+                    <i class="fa-solid fa-building-ngo"></i>
                 </div>
                 <div class="service-card-body">
-                    <h2 class="service-card-title">Blood Request / Take Blood</h2>
+                    <h2 class="service-card-title">Hospital Blood Banks & NGO Network</h2>
                     <p class="service-card-desc">
-                        Issue immediate or scheduled transfusion requisitions for inpatient wards, ICUs, and emergency surgical theaters. Direct link to hospital cross-matching laboratory and dispatch queue.
+                        Link your hospital facility with statutory blood-donation NGOs and regional blood banks. Establish mutual aid affiliations, monitor real-time stock availability, and coordinate rapid emergency SOS blood response.
                     </p>
                     <div class="service-card-features">
                         <div class="sc-feat-item">
                             <i class="fa-solid fa-circle-check"></i>
-                            <span>STAT Emergency & Elective Transfusion Orders</span>
+                            <span>Statutory NGO License Validation & Bilateral Affiliation</span>
                         </div>
                         <div class="sc-feat-item">
                             <i class="fa-solid fa-circle-check"></i>
-                            <span>Patient & Ward Cross-Match Allocation</span>
+                            <span>Emergency SOS Broadcast & Priority Intercept</span>
                         </div>
                         <div class="sc-feat-item">
                             <i class="fa-solid fa-circle-check"></i>
-                            <span>Direct Inventory Deduction & Audit Tracking</span>
+                            <span>Centralized Inter-Facility Regional Collaboration</span>
                         </div>
                     </div>
                 </div>
                 <div class="service-card-footer">
-                    <button type="button" class="hub-action-btn btn-red" id="btnOpenBloodRequest" onclick="openBloodRequestAuth()">
-                        <span>Blood Request / Take Blood</span>
+                    <button type="button" class="hub-action-btn" style="background:linear-gradient(135deg, #1E40AF 0%, #2563EB 100%); color:#FFF;" id="btnOpenNgoNetworkHub" onclick="openNgoNetworkView()">
+                        <span>NGO Network & Collaboration</span>
                         <i class="fa-solid fa-arrow-right"></i>
                     </button>
                     <span class="service-auth-hint">
-                        <i class="fa-solid fa-clock-rotate-left"></i> Typical dispatch within 15 mins
+                        <i class="fa-solid fa-shield-halved"></i> Verified Regional Network Active
                     </span>
                 </div>
             </div>
@@ -1873,555 +1902,6 @@
     </div>
 </div>
 
-<!-- =====================================================
-     5. BLOOD REQUEST / TAKE BLOOD REQUISITION MODAL
-===================================================== -->
-<div id="hospBloodRequestModal" class="hosp-modal-overlay hidden">
-    <div class="hosp-request-card" role="dialog" aria-modal="true" aria-labelledby="reqModalTitle">
-        <button type="button" class="modal-close-btn" onclick="closeBloodRequestModal()" title="Close request modal">
-            <i class="fa-solid fa-xmark"></i>
-        </button>
-
-        <div class="request-card-header">
-            <div class="request-cross-icon">
-                <i class="fa-solid fa-hand-holding-medical"></i>
-            </div>
-            <div>
-                <h2 id="reqModalTitle">Clinical Blood Requisition</h2>
-                <p>Issue an emergency or scheduled blood request for ward, ICU, or operation theater allocation.</p>
-            </div>
-        </div>
-
-        <form id="hospBloodRequestForm" onsubmit="handleBloodRequestSubmit(event)">
-            <div class="hosp-form-row">
-                <div class="hosp-form-group">
-                    <label for="reqPatientName">
-                        Patient Full Name <span class="required">*</span>
-                    </label>
-                    <div class="hosp-input-wrapper">
-                        <i class="fa-solid fa-user"></i>
-                        <input
-                            type="text"
-                            id="reqPatientName"
-                            placeholder="e.g. Ramesh Chandra Sharma"
-                            required
-                        >
-                    </div>
-                </div>
-
-                <div class="hosp-form-group">
-                    <label for="reqPatientId">
-                        Hospital / IPD Patient ID <span class="required">*</span>
-                    </label>
-                    <div class="hosp-input-wrapper">
-                        <i class="fa-solid fa-id-card-clip"></i>
-                        <input
-                            type="text"
-                            id="reqPatientId"
-                            placeholder="e.g. IPD-89410 or CR-1102"
-                            required
-                        >
-                    </div>
-                </div>
-            </div>
-
-            <div class="hosp-form-row">
-                <div class="hosp-form-group">
-                    <label for="reqWard">
-                        Ward / Department Location <span class="required">*</span>
-                    </label>
-                    <div class="hosp-input-wrapper">
-                        <i class="fa-solid fa-hospital-user"></i>
-                        <input
-                            type="text"
-                            id="reqWard"
-                            placeholder="e.g. Emergency OT-3 / ICU Bed 08"
-                            required
-                        >
-                    </div>
-                </div>
-
-                <div class="hosp-form-group">
-                    <label for="reqBloodGroup">
-                        Required Blood Group <span class="required">*</span>
-                    </label>
-                    <div class="hosp-input-wrapper select-wrapper">
-                        <i class="fa-solid fa-droplet"></i>
-                        <select id="reqBloodGroup" required>
-                            <option value="A+">A+ (A Positive)</option>
-                            <option value="A-">A- (A Negative)</option>
-                            <option value="B+">B+ (B Positive)</option>
-                            <option value="B-">B- (B Negative)</option>
-                            <option value="AB+">AB+ (AB Positive)</option>
-                            <option value="AB-">AB- (AB Negative)</option>
-                            <option value="O+">O+ (O Positive)</option>
-                            <option value="O-">O- (O Negative - Universal)</option>
-                            <option value="Bombay Oh">Bombay Blood Group (Oh) - Ultra Rare</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="hosp-form-row">
-                <div class="hosp-form-group">
-                    <label for="reqUnits">
-                        Units Required (Bags) <span class="required">*</span>
-                    </label>
-                    <div class="hosp-input-wrapper">
-                        <i class="fa-solid fa-boxes-stacked"></i>
-                        <input
-                            type="number"
-                            id="reqUnits"
-                            min="1"
-                            max="10"
-                            value="1"
-                            required
-                        >
-                    </div>
-                </div>
-
-                <div class="hosp-form-group">
-                    <label for="reqPriority">
-                        Urgency Level <span class="required">*</span>
-                    </label>
-                    <div class="hosp-input-wrapper select-wrapper">
-                        <i class="fa-solid fa-triangle-exclamation"></i>
-                        <select id="reqPriority" required>
-                            <option value="STAT">STAT Emergency (&lt; 15 Mins)</option>
-                            <option value="Urgent">Urgent (&lt; 2 Hours)</option>
-                            <option value="Routine">Routine Elective (Next 24 Hours)</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="hosp-form-group">
-                <label for="reqDoctor">
-                    Prescribing Doctor / Consultant <span class="required">*</span>
-                </label>
-                <div class="hosp-input-wrapper">
-                    <i class="fa-solid fa-user-doctor"></i>
-                    <input
-                        type="text"
-                        id="reqDoctor"
-                        placeholder="e.g. Dr. A. K. Verma, MD Hematology"
-                        required
-                    >
-                </div>
-            </div>
-
-            <div class="request-modal-actions">
-                <button type="button" class="hosp-cancel-btn" onclick="closeBloodRequestModal()">
-                    Cancel
-                </button>
-                <button type="submit" class="hosp-submit-btn btn-red" id="btnSubmitBloodRequest">
-                    <i class="fa-solid fa-paper-plane"></i>
-                    <span>Dispatch Blood Request</span>
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- =====================================================
-     6. VERIFICATION GATE FOR BLOOD REQUEST MODAL
-===================================================== -->
-<div id="hospBloodReqAuthModal" class="hosp-modal-overlay hidden">
-    <div class="hosp-security-card" role="dialog" aria-modal="true" aria-labelledby="reqAuthModalTitle">
-        <button type="button" class="modal-close-btn" onclick="closeBloodRequestAuth()" title="Cancel and return to hub">
-            <i class="fa-solid fa-xmark"></i>
-        </button>
-
-        <div class="security-card-header">
-            <div class="security-shield-icon" style="background: #FFF0F1; border-color: #FFCDD2; color: #D32F2F;">
-                <i class="fa-solid fa-hand-holding-medical"></i>
-            </div>
-            <h2 id="reqAuthModalTitle">Hospital Transfer Authorization</h2>
-            <p>
-                Authorized medical personnel verification required to enter the <strong>Hospital-to-Hospital Blood Transfer & Requisition Network</strong>.
-            </p>
-        </div>
-
-        <form id="hospBloodReqAuthForm" onsubmit="verifyBloodRequestAuth(event)">
-            <div class="hosp-form-group">
-                <label for="hospReqAuthLicense">
-                    Hospital ID / Licence Number <span class="required">*</span>
-                </label>
-                <div class="hosp-input-wrapper">
-                    <i class="fa-solid fa-id-card"></i>
-                    <input
-                        type="text"
-                        id="hospReqAuthLicense"
-                        placeholder="e.g. LIC-2026-001 or HOSP-DL-4821"
-                        required
-                        autocomplete="username"
-                    >
-                </div>
-                <span class="field-hint">Enter your hospital's registered statutory licence identifier</span>
-            </div>
-
-            <div class="hosp-form-group">
-                <div class="label-row">
-                    <label for="hospReqAuthPassword">
-                        Password <span class="required">*</span>
-                    </label>
-                </div>
-                <div class="hosp-input-wrapper">
-                    <i class="fa-solid fa-lock"></i>
-                    <input
-                        type="password"
-                        id="hospReqAuthPassword"
-                        placeholder="Enter authorized password"
-                        required
-                        autocomplete="current-password"
-                    >
-                    <button
-                        type="button"
-                        class="password-toggle"
-                        onclick="togglePassword('hospReqAuthPassword', this)"
-                        title="Toggle password visibility">
-                        <i class="fa-solid fa-eye"></i>
-                    </button>
-                </div>
-                <span class="field-hint">Your secure clinical portal authorization password</span>
-            </div>
-
-            <div class="hosp-demo-box">
-                <div class="demo-title">
-                    <i class="fa-solid fa-bolt"></i> Quick Evaluation Credentials
-                </div>
-                <p>Click below to pre-populate registered hospital credentials:</p>
-                <button type="button" class="demo-fill-btn" onclick="fillDemoBloodReqAuth()">
-                    <i class="fa-solid fa-key"></i> Auto-fill (LIC-2026-001 / Pass@123)
-                </button>
-            </div>
-
-            <div class="security-modal-actions">
-                <button type="button" class="hosp-cancel-btn" onclick="closeBloodRequestAuth()">
-                    Cancel
-                </button>
-                <button type="submit" class="hosp-submit-btn btn-red" id="btnSubmitReqAuth">
-                    <span>Authorize & Proceed</span>
-                    <i class="fa-solid fa-arrow-right"></i>
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- =====================================================
-     7. SEARCH & SELECT DONOR HOSPITAL SCREEN
-===================================================== -->
-<div id="hospitalTransferSection" class="hospital-transfer-section hidden">
-    <!-- Transfer Topbar -->
-    <header class="transfer-topbar">
-        <div class="transfer-topbar-left">
-            <button type="button" class="transfer-back-btn" id="btnBackToHubFromTransfer" onclick="backToHubFromTransfer()">
-                <i class="fa-solid fa-arrow-left"></i>
-                <span>Back to Operations Hub</span>
-            </button>
-            <div class="transfer-title-group">
-                <h1>Request Blood from Partner Hospitals</h1>
-                <p id="transferCurrentHospitalBadge">Requesting as: City Care Blood Centre • Licence: LIC-2026-001</p>
-            </div>
-        </div>
-
-        <div class="transfer-network-badge">
-            <i class="fa-solid fa-circle-check"></i>
-            <span>Verified Inter-Hospital Network Active</span>
-        </div>
-    </header>
-
-    <main class="transfer-main-container">
-        <!-- Filter & Search Card -->
-        <div class="transfer-filter-card">
-            <div class="filter-header-row">
-                <h2><i class="fa-solid fa-magnifying-glass-location"></i> Search & Filter Registered Blood Banks</h2>
-                <span class="active-count-chip" id="partnerHospCountChip">4 Partner Hospitals Online</span>
-            </div>
-
-            <div class="filter-inputs-row">
-                <!-- Dropdown for Location / City / Area -->
-                <div class="transfer-select-group">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <select id="transferLocationFilter" onchange="filterPartnerHospitals()">
-                        <option value="">All Locations / Cities</option>
-                        <option value="Central Delhi">Central Delhi</option>
-                        <option value="South Delhi">South Delhi</option>
-                        <option value="Gurugram">Gurugram / NCR</option>
-                        <option value="Noida">Noida / East NCR</option>
-                    </select>
-                </div>
-
-                <!-- Input for Hospital Licence Number or Hospital Name -->
-                <div class="transfer-search-group">
-                    <i class="fa-solid fa-hospital"></i>
-                    <input
-                        type="text"
-                        id="transferSearchInput"
-                        placeholder="Search by Hospital Name or Licence Number (e.g. Apollo, LIC-DEL-4821)..."
-                        oninput="filterPartnerHospitals()"
-                    >
-                </div>
-
-                <!-- Reset Filters Button -->
-                <button type="button" class="btn-reset-filter" onclick="resetPartnerFilters()">
-                    <i class="fa-solid fa-rotate-left"></i>
-                    <span>Reset</span>
-                </button>
-            </div>
-
-            <!-- Quick Filter Chips -->
-            <div class="quick-tags-row">
-                <span class="quick-tag-label"><i class="fa-solid fa-filter"></i> Quick Filters:</span>
-                <button type="button" class="filter-tag-btn active" onclick="applyQuickTagFilter('all', this)">
-                    All Hospitals
-                </button>
-                <button type="button" class="filter-tag-btn" onclick="applyQuickTagFilter('high_stock', this)">
-                    High Stock (> 100 Units)
-                </button>
-                <button type="button" class="filter-tag-btn" onclick="applyQuickTagFilter('emergency_ready', this)">
-                    Emergency STAT Ready (&lt; 15 Mins)
-                </button>
-                <button type="button" class="filter-tag-btn" onclick="applyQuickTagFilter('universal', this)">
-                    O- Universal Available
-                </button>
-            </div>
-        </div>
-
-        <!-- Partner Hospitals Grid (Dynamically Populated) -->
-        <div class="partner-hospitals-grid" id="partnerHospitalsGrid">
-            <!-- Dynamically populated via JavaScript -->
-        </div>
-    </main>
-</div>
-
-<!-- =====================================================
-     8. SELECTED HOSPITAL'S LIVE INVENTORY VIEW MODAL
-===================================================== -->
-<div id="partnerHospitalBankModal" class="hosp-modal-overlay hidden">
-    <div class="selected-bank-modal-card" role="dialog" aria-modal="true" aria-labelledby="partnerBankTitle">
-        <button type="button" class="modal-close-btn" onclick="closePartnerHospitalBankModal()" title="Close live inventory view">
-            <i class="fa-solid fa-xmark"></i>
-        </button>
-
-        <!-- Prominent Emergency Dispatch Hotline Banner at the Top -->
-        <div class="emergency-dispatch-banner">
-            <div class="dispatch-banner-info">
-                <div class="dispatch-phone-icon">
-                    <i class="fa-solid fa-phone-volume"></i>
-                </div>
-                <div>
-                    <span class="dispatch-banner-title"><i class="fa-solid fa-truck-medical"></i> 24/7 Direct Emergency Dispatch Hotline:</span>
-                    <span class="dispatch-banner-number" id="partnerDispatchNumberDisplay">+91 11 2692 5858</span>
-                </div>
-            </div>
-            <a href="tel:+911126925858" class="btn-dispatch-call" id="partnerDispatchCallLink">
-                <i class="fa-solid fa-phone"></i>
-                <span>Call Dispatch Desk</span>
-            </a>
-        </div>
-
-        <!-- Selected Hospital Title Header -->
-        <div class="selected-bank-header">
-            <div>
-                <h2 id="partnerBankTitle">Apollo Indraprastha Blood Centre</h2>
-                <p id="partnerBankLocationBadge">Sarita Vihar, South Delhi • Licence: LIC-DEL-4821</p>
-            </div>
-            <span class="stock-status-indicator safe">
-                <span class="pulse-dot-green"></span> Live Bank Synchronized
-            </span>
-        </div>
-
-        <!-- Live Blood Types Grid (8 groups: A+, A-, B+, B-, AB+, AB-, O+, O-) -->
-        <div class="selected-blood-grid" id="partnerLiveBloodGrid">
-            <!-- Rendered dynamically with vibrant green badges -->
-        </div>
-
-        <!-- Unit Selection & Request Form -->
-        <div class="transfer-form-section">
-            <h3><i class="fa-solid fa-file-signature"></i> Inter-Hospital Blood Requisition Form</h3>
-            <p>Select the needed blood group and units. Requested units will be allocated and prepared for ambulance cold-chain transfer.</p>
-
-            <div class="stock-validation-alert" id="stockValidationAlert">
-                <i class="fa-solid fa-triangle-exclamation"></i>
-                <span id="stockValidationMsg">Requested units exceed available inventory!</span>
-            </div>
-
-            <form id="partnerBloodRequestForm" onsubmit="handleSendBloodRequest(event)">
-                <div class="hosp-form-row">
-                    <div class="hosp-form-group">
-                        <label for="transferBloodGroup">
-                            Needed Blood Group <span class="required">*</span>
-                        </label>
-                        <div class="hosp-input-wrapper select-wrapper">
-                            <i class="fa-solid fa-droplet"></i>
-                            <select id="transferBloodGroup" onchange="onTransferBloodGroupChange()" required>
-                                <option value="A+">A+ (A Positive)</option>
-                                <option value="A-">A- (A Negative)</option>
-                                <option value="B+">B+ (B Positive)</option>
-                                <option value="B-">B- (B Negative)</option>
-                                <option value="AB+">AB+ (AB Positive)</option>
-                                <option value="AB-">AB- (AB Negative)</option>
-                                <option value="O+">O+ (O Positive)</option>
-                                <option value="O-">O- (O Negative - Universal)</option>
-                            </select>
-                        </div>
-                        <span class="available-stock-hint" id="transferAvailableHint">Available in stock: 24 Units</span>
-                    </div>
-
-                    <div class="hosp-form-group">
-                        <label for="transferUnits">
-                            Units Required <span class="required">*</span>
-                        </label>
-                        <div class="hosp-input-wrapper">
-                            <i class="fa-solid fa-boxes-stacked"></i>
-                            <input
-                                type="number"
-                                id="transferUnits"
-                                min="1"
-                                max="24"
-                                value="2"
-                                oninput="validateTransferUnits()"
-                                required
-                            >
-                        </div>
-                        <span class="field-hint">Enter required bags (capped at hospital's current reserve)</span>
-                    </div>
-                </div>
-
-                <div class="hosp-form-row">
-                    <div class="hosp-form-group">
-                        <label for="transferUrgency">
-                            Urgency Level <span class="required">*</span>
-                        </label>
-                        <div class="hosp-input-wrapper select-wrapper">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
-                            <select id="transferUrgency" required>
-                                <option value="Emergency STAT (&lt; 15 Mins - Direct Ambulance Dispatch)">Emergency STAT (&lt; 15 Mins - Ambulance Dispatch)</option>
-                                <option value="Priority (&lt; 2 Hours - Clinical Transfer)">Priority (&lt; 2 Hours - Clinical Transfer)</option>
-                                <option value="Routine Elective (Next 24 Hours)">Routine Elective (Next 24 Hours)</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="hosp-form-group">
-                        <label for="transferPatientRef">
-                            Patient / Case Reference ID (Optional)
-                        </label>
-                        <div class="hosp-input-wrapper">
-                            <i class="fa-solid fa-file-medical"></i>
-                            <input
-                                type="text"
-                                id="transferPatientRef"
-                                placeholder="e.g. CR-2026-89410 or ICU-OT-04"
-                            >
-                        </div>
-                    </div>
-                </div>
-
-                <div class="hosp-form-group">
-                    <label for="transferDeptNotes">
-                        Receiving Department / Transfusion Clinical Notes
-                    </label>
-                    <div class="hosp-input-wrapper">
-                        <i class="fa-solid fa-notes-medical"></i>
-                        <input
-                            type="text"
-                            id="transferDeptNotes"
-                            placeholder="e.g. Emergency Cardiac Surgery Ward - Cold-chain transport container required"
-                        >
-                    </div>
-                </div>
-
-                <div class="security-modal-actions">
-                    <button type="button" class="hosp-cancel-btn" onclick="closePartnerHospitalBankModal()">
-                        Cancel
-                    </button>
-                    <button type="submit" class="hosp-submit-btn btn-red" id="btnSendBloodRequest">
-                        <i class="fa-solid fa-truck-medical"></i>
-                        <span>Send Blood Request</span>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- =====================================================
-     9. TRANSFER CONFIRMATION & SUCCESS FEEDBACK MODAL
-===================================================== -->
-<div id="hospTransferSuccessModal" class="hosp-modal-overlay hidden">
-    <div class="transfer-success-card" role="dialog" aria-modal="true" aria-labelledby="successModalTitle">
-        <button type="button" class="modal-close-btn" onclick="closeTransferSuccessModal()" title="Close">
-            <i class="fa-solid fa-xmark"></i>
-        </button>
-
-        <div class="success-badge-header">
-            <div class="success-check-icon">
-                <i class="fa-solid fa-circle-check"></i>
-            </div>
-            <h2 id="successModalTitle">Blood Request Successfully Dispatched!</h2>
-            <p>Your inter-hospital transfer requisition has been transmitted to the supplying facility's dispatch desk.</p>
-            <div class="status-badge-pending">
-                <span class="pulse-dot-amber"></span>
-                <span>Status: Pending Dispatch Confirmation</span>
-            </div>
-        </div>
-
-        <!-- Official Printable Requisition Slip Box -->
-        <div class="requisition-slip-box" id="requisitionSlipBox">
-            <div class="slip-title-row">
-                <div>
-                    <span class="slip-req-id" id="slipRequestId">REQUEST ID: TRX-2026-8841</span>
-                </div>
-                <div class="slip-date" id="slipDate">08 Sep 2026 • 19:15</div>
-            </div>
-
-            <div class="slip-details-grid">
-                <div class="slip-field">
-                    <span class="slip-field-label">Supplying Hospital</span>
-                    <span class="slip-field-value" id="slipSupplyingHospital">Apollo Indraprastha Blood Centre</span>
-                </div>
-
-                <div class="slip-field">
-                    <span class="slip-field-label">Emergency Dispatch Phone</span>
-                    <span class="slip-field-value highlight-red" id="slipSupplyingPhone">+91 11 2692 5858</span>
-                </div>
-
-                <div class="slip-field">
-                    <span class="slip-field-label">Requesting Hospital</span>
-                    <span class="slip-field-value" id="slipRequestingHospital">City Care Blood Centre & Hospital (LIC-2026-001)</span>
-                </div>
-
-                <div class="slip-field">
-                    <span class="slip-field-label">Requested Blood Type & Units</span>
-                    <span class="slip-field-value highlight-green" id="slipBloodGroupUnits">A+ • 2 Units (Packed RBC)</span>
-                </div>
-
-                <div class="slip-field">
-                    <span class="slip-field-label">Urgency Priority</span>
-                    <span class="slip-field-value" id="slipUrgency">Emergency STAT (&lt; 15 Mins)</span>
-                </div>
-
-                <div class="slip-field">
-                    <span class="slip-field-label">Case Reference / Patient ID</span>
-                    <span class="slip-field-value" id="slipPatientRef">CR-2026-89410</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="success-modal-actions">
-            <button type="button" class="hosp-submit-btn btn-red" id="btnDownloadSlip" onclick="downloadRequestSlip()">
-                <i class="fa-solid fa-download"></i>
-                <span>Download Request Slip</span>
-            </button>
-            <button type="button" class="hosp-cancel-btn" id="btnReturnToPortal" onclick="closeTransferSuccessModal()">
-                <span>Return to Portal</span>
-            </button>
-        </div>
-    </div>
-</div>
 
 <!-- Toast Container for Notifications -->
 <div id="hospToastContainer" class="hosp-toast-container"></div>

@@ -113,50 +113,44 @@ a {
     opacity: 0.9;
 }
 
-.logo-drop {
-    width: 46px;
-    height: 46px;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1.5px solid rgba(255, 255, 255, 0.28);
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 14px;
-    font-size: 20px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
-    flex-shrink: 0;
+.lifeflow-nav-logo {
+    height: 40px;
+    max-height: 40px;
+    width: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    background: #ffffff;
+    padding: 2px 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    display: block;
+    transition: transform 0.2s ease;
 }
 
-.logo-drop i {
-    color: #ffffff;
+.lifeflow-nav-logo:hover {
+    transform: scale(1.02);
 }
 
-.brand-text-block {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
+.hub-nav-logo {
+    height: 52px;
+    width: auto;
+    object-fit: contain;
+    display: block;
 }
 
-.brand-name {
-    font-size: 24px;
-    font-weight: 800;
-    color: #ffffff;
-    line-height: 1.15;
-    letter-spacing: -0.4px;
-    font-family: 'Inter', system-ui, sans-serif;
+.sidebar-brand-logo {
+    height: 56px;
+    max-width: 170px;
+    width: auto;
+    object-fit: contain;
+    display: block;
 }
 
-.brand-tagline {
-    font-size: 12px;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.78);
-    letter-spacing: 0.1px;
-    line-height: 1.2;
-    margin-top: 2px;
-    font-family: 'Inter', system-ui, sans-serif;
+.hosp-sidebar-logo {
+    height: 54px;
+    max-width: 180px;
+    width: auto;
+    object-fit: contain;
+    display: block;
 }
 
 .header-actions {
@@ -834,21 +828,8 @@ select:focus {
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 23px;
-    font-weight: 800;
-    color: #d9273f;
-    padding: 5px 12px 35px;
-}
-
-.brand-icon {
-    width: 39px;
-    height: 39px;
-    background: #d9273f;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 5px 12px 30px;
+    text-decoration: none;
 }
 
 
@@ -1604,26 +1585,19 @@ body.dark-mode .setting-row p {
         margin-bottom: 25px;
     }
 
-    .mobile-brand .logo-drop {
-        width: 44px;
+    .mobile-brand .lifeflow-nav-logo,
+    .lifeflow-nav-logo {
         height: 44px;
-        background: linear-gradient(135deg, #E53935 0%, #D32F2F 100%);
-        border: none;
-        color: #ffffff;
-        border-radius: 13px;
-        box-shadow: 0 4px 14px rgba(211, 47, 47, 0.3);
+        padding: 2px 4px;
+        border-radius: 9px;
     }
 
-    .mobile-brand .brand-name {
-        color: #0F172A;
-        font-size: 22px;
-        font-weight: 800;
+    .hub-nav-logo {
+        height: 42px;
     }
 
-    .mobile-brand .brand-tagline {
-        color: #64748B;
-        font-size: 11.5px;
-        font-weight: 600;
+    .sidebar-brand-logo {
+        height: 46px;
     }
 
     .role-grid {

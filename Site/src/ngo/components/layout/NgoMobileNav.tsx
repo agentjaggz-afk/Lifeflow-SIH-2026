@@ -69,12 +69,9 @@ export const NgoMobileNav: React.FC<Props> = ({
           {/* Drawer Content */}
           <div className="relative flex-1 flex flex-col max-w-xs w-full bg-white shadow-2xl z-10 animate-in slide-in-from-left duration-200">
             <div className="p-4 border-b border-slate-100 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center text-white">
-                  <i className="fa-solid fa-droplet text-sm"></i>
-                </div>
-                <span className="font-bold text-slate-900 text-sm">LifeFlow NGO</span>
-              </div>
+              <a href="/index.html" className="flex items-center hover:opacity-85 transition-opacity" title="Life Flow">
+                <img src="/lifeflow-logo.png" alt="Life Flow" className="h-12 w-auto object-contain" />
+              </a>
               <button
                 onClick={onClose}
                 className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100"

@@ -59,10 +59,10 @@ export const NgoRegisterView: React.FC<Props> = ({
       <div className="absolute top-10 left-10 w-96 h-96 bg-red-600/15 rounded-full blur-3xl pointer-events-none" />
 
       {/* Brand Header */}
-      <div className="max-w-2xl mx-auto text-center mb-6 z-10 relative">
-        <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-red-600 to-rose-700 text-white shadow-xl mb-2">
-          <i className="fa-solid fa-droplet text-xl"></i>
-        </div>
+      <div className="max-w-2xl mx-auto text-center mb-6 z-10 relative flex flex-col items-center">
+        <a href="/index.html" className="inline-block mb-2 hover:opacity-90 transition-opacity" title="Life Flow">
+          <img src="/lifeflow-logo.png" alt="Life Flow" className="h-16 w-auto rounded-2xl bg-white p-1.5 shadow-xl object-contain mx-auto" />
+        </a>
         <h1 className="text-2xl font-black text-white tracking-tight">
           Register NGO & Blood Bank Entity
         </h1>

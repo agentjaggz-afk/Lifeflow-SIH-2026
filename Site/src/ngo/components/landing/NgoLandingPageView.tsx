@@ -31,19 +31,9 @@ export const NgoLandingPageView: React.FC<Props> = ({
       {/* Top Promotional Header */}
       <header className="border-b border-slate-100 bg-white/95 backdrop-blur-xs sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 to-rose-700 text-white flex items-center justify-center shadow-sm">
-              <i className="fa-solid fa-droplet text-lg"></i>
-            </div>
-            <div>
-              <span className="text-base font-black text-slate-900 tracking-tight leading-none block">
-                LifeFlow <span className="text-red-600">Blood Network</span>
-              </span>
-              <span className="text-[10px] text-slate-500 font-medium">
-                National Healthcare Logistics Infrastructure
-              </span>
-            </div>
-          </div>
+          <a href="/index.html" className="flex items-center hover:opacity-85 transition-opacity" title="Life Flow Blood Network">
+            <img src="/lifeflow-logo.png" alt="Life Flow" className="h-12 w-auto object-contain" />
+          </a>
 
           <div className="flex items-center gap-2 sm:gap-3">
             <a
