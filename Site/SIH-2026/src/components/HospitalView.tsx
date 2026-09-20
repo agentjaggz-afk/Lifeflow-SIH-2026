@@ -56,8 +56,8 @@ export function HospitalView({ hospital, city, onBack }: HospitalViewProps) {
         <div className="flex flex-1 flex-col min-h-0 overflow-y-auto">
           {/* Logo */}
           <div className="flex items-center gap-2.5 px-5 py-5 shrink-0">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-600 shadow-sm">
-              <Droplet className="h-5 w-5 text-white" fill="white" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white p-1 border border-gray-100 shadow-sm">
+              <img src="/logo-icon.png" alt="LifeFlow Logo" className="h-full w-full object-contain" />
             </div>
             <div>
               <span className="text-lg font-bold text-gray-900 leading-none block">LifeFlow</span>
@@ -195,11 +195,11 @@ function MetricsTab({ hospital, inventory }: { hospital: Hospital; inventory: Bl
   }, [inventory]);
 
   const outOfStockGroups = useMemo(() => {
-    return groupStats.filter((g) => g.available === 0).length;
+    return groupStats.filter((g) => g.available < 100).length;
   }, [groupStats]);
 
   const inStockGroups = useMemo(() => {
-    return groupStats.filter((g) => g.available >= 10).length;
+    return groupStats.filter((g) => g.available > 150).length;
   }, [groupStats]);
 
   // Filtered inventory items for the table
@@ -212,9 +212,9 @@ function MetricsTab({ hospital, inventory }: { hospital: Hospital; inventory: Bl
       const matchComponent = filterComponent === 'all' || item.component === filterComponent;
       
       let matchStatus = true;
-      if (filterStatus === 'out-of-stock') matchStatus = item.units_available === 0;
-      else if (filterStatus === 'low-stock') matchStatus = item.units_available > 0 && item.units_available < 10;
-      else if (filterStatus === 'in-stock') matchStatus = item.units_available >= 10;
+      if (filterStatus === 'out-of-stock') matchStatus = item.units_available < 100;
+      else if (filterStatus === 'low-stock') matchStatus = item.units_available >= 100 && item.units_available <= 150;
+      else if (filterStatus === 'in-stock') matchStatus = item.units_available > 150;
 
       return matchSearch && matchGroup && matchComponent && matchStatus;
     });
@@ -282,14 +282,14 @@ function MetricsTab({ hospital, inventory }: { hospital: Hospital; inventory: Bl
             <CheckCircle2 className="h-5 w-5 text-success-600" />
           </div>
           <p className="mt-3 text-3xl font-extrabold text-gray-900">{inStockGroups} / 8</p>
-          <p className="text-xs font-medium text-gray-500">Groups In Adequate Stock</p>
+          <p className="text-xs font-medium text-gray-500">Optimal Stock Groups (&gt; 150 Units)</p>
         </div>
         <div className="card p-5 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg cursor-default">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-error-50 transition-transform duration-200 hover:scale-110">
             <ShieldCheck className="h-5 w-5 text-error-600" />
           </div>
           <p className="mt-3 text-3xl font-extrabold text-gray-900">{outOfStockGroups}</p>
-          <p className="text-xs font-medium text-gray-500">Out of Stock Groups</p>
+          <p className="text-xs font-medium text-gray-500">Critical Shortage Groups (&lt; 100 Units)</p>
         </div>
       </div>
 
@@ -302,31 +302,37 @@ function MetricsTab({ hospital, inventory }: { hospital: Hospital; inventory: Bl
           </div>
           <div className="flex items-center gap-3 text-xs">
             <span className="flex items-center gap-1">
-              <span className="h-2.5 w-2.5 rounded-full bg-success-500" /> In Stock (&ge;10)
+              <span className="h-2.5 w-2.5 rounded-full bg-success-500" /> &gt; 150 Units (Green)
             </span>
             <span className="flex items-center gap-1">
-              <span className="h-2.5 w-2.5 rounded-full bg-warning-500" /> Low (&lt;10)
+              <span className="h-2.5 w-2.5 rounded-full bg-warning-500" /> 100–150 Units (Yellow)
             </span>
             <span className="flex items-center gap-1">
-              <span className="h-2.5 w-2.5 rounded-full bg-error-500" /> Empty (0)
+              <span className="h-2.5 w-2.5 rounded-full bg-error-500" /> &lt; 100 Units (Red)
             </span>
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
           {groupStats.map((g) => {
-            const statusColor =
-              g.available === 0
-                ? 'border-error-200 bg-error-50/50'
-                : g.available < 10
-                  ? 'border-warning-200 bg-warning-50/50'
-                  : 'border-success-200 bg-success-50/50';
-            const badgeColor =
-              g.available === 0
-                ? 'bg-error-100 text-error-700'
-                : g.available < 10
-                  ? 'bg-warning-100 text-warning-700'
-                  : 'bg-success-100 text-success-700';
+            const isRed = g.available < 100;
+            const isYellow = g.available >= 100 && g.available <= 150;
+
+            const statusColor = isRed
+              ? 'border-error-300 bg-error-50/50'
+              : isYellow
+              ? 'border-warning-300 bg-warning-50/50'
+              : 'border-success-300 bg-success-50/50';
+            const badgeColor = isRed
+              ? 'bg-error-100 text-error-700'
+              : isYellow
+              ? 'bg-warning-100 text-warning-800'
+              : 'bg-success-100 text-success-700';
+            const numberColor = isRed
+              ? 'text-error-600'
+              : isYellow
+              ? 'text-warning-600'
+              : 'text-success-600';
 
             const isSelected = filterGroup === g.group;
 
@@ -343,7 +349,7 @@ function MetricsTab({ hospital, inventory }: { hospital: Hospital; inventory: Bl
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-xs text-sm font-extrabold text-gray-900 transition-transform duration-200 hover:scale-105">
                   {g.group}
                 </span>
-                <p className="mt-2 text-lg font-bold text-gray-900">{g.available}</p>
+                <p className={`mt-2 text-lg font-bold ${numberColor}`}>{g.available}</p>
                 <span className="text-[10px] text-gray-500">units available</span>
                 {g.needed > 0 && (
                   <span className="mt-1 text-[10px] font-semibold text-warning-700">
@@ -351,7 +357,7 @@ function MetricsTab({ hospital, inventory }: { hospital: Hospital; inventory: Bl
                   </span>
                 )}
                 <span className={`mt-2 rounded-full px-2 py-0.5 text-[10px] font-bold ${badgeColor}`}>
-                  {g.available === 0 ? 'Out' : g.available < 10 ? 'Low' : 'Ready'}
+                  {isRed ? 'Critical' : isYellow ? 'Moderate' : 'Optimal'}
                 </span>
               </button>
             );
@@ -448,21 +454,27 @@ function MetricsTab({ hospital, inventory }: { hospital: Hospital; inventory: Bl
                 </tr>
               ) : (
                 filtered.map((item) => {
-                  const status =
-                    item.units_available === 0
-                      ? { label: 'Out of Stock', class: 'bg-error-50 text-error-700 ring-1 ring-error-200' }
-                      : item.units_available < 10
-                        ? { label: 'Low Stock', class: 'bg-warning-50 text-warning-700 ring-1 ring-warning-200' }
-                        : { label: 'In Stock', class: 'bg-success-50 text-success-700 ring-1 ring-success-200' };
+                  const isRed = item.units_available < 100;
+                  const isYellow = item.units_available >= 100 && item.units_available <= 150;
 
-                  // Stock bar calculation (max display 40 units)
-                  const barWidth = Math.min(100, Math.round((item.units_available / 40) * 100));
-                  const barColor =
-                    item.units_available === 0
-                      ? 'bg-error-500'
-                      : item.units_available < 10
-                        ? 'bg-warning-500'
-                        : 'bg-success-500';
+                  const status = isRed
+                    ? { label: 'Critical (<100)', class: 'bg-error-50 text-error-700 ring-1 ring-error-200' }
+                    : isYellow
+                    ? { label: 'Moderate (100–150)', class: 'bg-warning-50 text-warning-800 ring-1 ring-warning-200' }
+                    : { label: 'In Stock (>150)', class: 'bg-success-50 text-success-700 ring-1 ring-success-200' };
+
+                  // Stock bar calculation (max display 200 units)
+                  const barWidth = Math.min(100, Math.round((item.units_available / 200) * 100));
+                  const barColor = isRed
+                    ? 'bg-error-500'
+                    : isYellow
+                    ? 'bg-warning-500'
+                    : 'bg-success-500';
+                  const textColor = isRed
+                    ? 'text-error-600'
+                    : isYellow
+                    ? 'text-warning-600'
+                    : 'text-success-600';
 
                   return (
                     <tr key={item.id} className="transition-colors hover:bg-gray-50/50">
@@ -476,7 +488,7 @@ function MetricsTab({ hospital, inventory }: { hospital: Hospital; inventory: Bl
                       </td>
                       <td className="px-5 py-3.5">
                         <div className="flex items-center gap-2">
-                          <span className="text-base font-bold text-gray-900">
+                          <span className={`text-base font-bold ${textColor}`}>
                             {item.units_available}
                           </span>
                           <span className="text-xs text-gray-400">units</span>

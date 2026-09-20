@@ -86,21 +86,33 @@
             z-index: 2;
         }
 
-        .hosp-logo-icon {
+        .hosp-logo-icon, .logo-drop {
             width: 48px;
             height: 48px;
-            background: rgba(255, 255, 255, 0.18);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1.5px solid rgba(255, 255, 255, 0.28);
-            color: #FFFFFF;
+            background: #ffffff;
+            border: 1.5px solid rgba(255, 255, 255, 0.85);
             border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16), 0 0 16px rgba(255, 255, 255, 0.4);
             flex-shrink: 0;
+            overflow: hidden;
+            padding: 3px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .hosp-logo-icon:hover, .logo-drop:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22), 0 0 20px rgba(255, 255, 255, 0.6);
+        }
+
+        .hosp-logo-icon img, .logo-drop img, .brand-logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
         }
 
         .brand-text-block {
@@ -1250,7 +1262,7 @@
     <header class="landing-header">
         <a href="/index.html" class="header-brand" title="LifeFlow Blood Network Platform">
             <div class="logo-drop">
-                <i class="fa-solid fa-droplet"></i>
+                <img src="/logo-icon.png" alt="LifeFlow Logo" class="brand-logo-img">
             </div>
             <div class="brand-text-block">
                 <span class="brand-name">LifeFlow</span>
@@ -1586,7 +1598,7 @@
     <header class="hub-navbar">
         <div class="hub-nav-brand">
             <div class="hosp-logo-icon">
-                <i class="fa-solid fa-droplet"></i>
+                <img src="/logo-icon.png" alt="LifeFlow Logo" class="brand-logo-img">
             </div>
             <div>
                 <span class="hub-brand-title">LifeFlow</span>
