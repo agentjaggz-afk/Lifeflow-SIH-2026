@@ -8,5 +8,8 @@
     "start": "npm --prefix Site run dev",
     "build": "npm --prefix Site run build",
     "preview": "npm --prefix Site run preview"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.116.0"
   }
 }
