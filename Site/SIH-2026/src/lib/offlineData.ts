@@ -383,19 +383,27 @@ function calculateInventory(hospital: Hospital): BloodInventory[] {
       const seed = (hospital.name.length * 37 + group.charCodeAt(0) * 17 + component.length * 11) % 100;
       let baseAvail = 10;
 
-      // High availability groups (> 100 total units per city, ~140-270 units) -> Green
-      if (group === 'O+' || group === 'B+') {
-        baseAvail = 11 + (seed % 6);
-      } else if (group === 'A+' || group === 'AB+') {
-        baseAvail = 8 + (seed % 4);
+      // Green (> 150 total units across 4 components): O+, A+, B+ (3 blood groups)
+      if (group === 'O+') {
+        baseAvail = 42 + (seed % 4);
+      } else if (group === 'A+') {
+        baseAvail = 40 + (seed % 3);
+      } else if (group === 'B+') {
+        baseAvail = 39 + (seed % 3);
       }
-      // Moderate availability groups (50 - 100 total units per city, ~56-90 units) -> Yellow
-      else if (group === 'A-' || group === 'B-') {
-        baseAvail = 3 + (seed % 3);
+      // Yellow (100–150 total units across 4 components): A-, B-, AB+ (3 blood groups)
+      else if (group === 'A-') {
+        baseAvail = 30 + (seed % 3);
+      } else if (group === 'B-') {
+        baseAvail = 28 + (seed % 3);
+      } else if (group === 'AB+') {
+        baseAvail = 32 + (seed % 3);
       }
-      // Critical / Low availability groups (< 50 total units per city, ~24-30 units) -> Red
-      else if (group === 'AB-' || group === 'O-') {
-        baseAvail = 1 + (seed % 2);
+      // Red (< 100 total units across 4 components): O-, AB- (2 blood groups)
+      else if (group === 'O-') {
+        baseAvail = 10 + (seed % 3);
+      } else if (group === 'AB-') {
+        baseAvail = 6 + (seed % 3);
       }
 
       const units_available = Math.max(0, baseAvail);

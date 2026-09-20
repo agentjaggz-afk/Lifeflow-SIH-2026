@@ -1,0 +1,9 @@
+# LifeFlow Cloudflare Pages Clean Route Rewrites
+/hospital-auth    /hospital-auth.html    200
+/hospital         /hospital-auth.html    200
+/donor-hub        /donor-hub.html        200
+/donor            /donor-hub.html        200
+/ngo-portal       /ngo-portal.html       200
+/ngo              /ngo-portal.html       200
+/credit           /credit.html           200
+/credits          /credit.html           200

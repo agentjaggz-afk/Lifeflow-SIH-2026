@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "npm --prefix Site run dev",
     "start": "npm --prefix Site run dev",
-    "build": "npm --prefix Site run build",
+    "build": "npm --prefix Site run build && node -e \"const fs=require('fs'); if(fs.existsSync('Site/dist')){fs.cpSync('Site/dist', 'dist', {recursive: true, force: true});}\"",
+    "deploy": "npm run build && npx --yes wrangler pages deploy dist",
     "preview": "npm --prefix Site run preview"
   },
   "dependencies": {

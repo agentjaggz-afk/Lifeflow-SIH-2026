@@ -6,6 +6,27 @@
 let currentRole = "";
 window.currentHospCaptcha = "";
 
+function isLocalEnvironment() {
+    return window.location.hostname === "localhost" || 
+           window.location.hostname === "127.0.0.1" || 
+           window.location.hostname === "[::1]" ||
+           window.location.protocol === "file:";
+}
+
+function getBackendBaseUrl() {
+    if (window.LIFEFLOW_API_URL) {
+        return window.LIFEFLOW_API_URL.replace(/\/+$/, "");
+    }
+    if (isLocalEnvironment()) {
+        const host = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") 
+            ? window.location.hostname 
+            : "127.0.0.1";
+        return `http://${host}:8000`;
+    }
+    return null;
+}
+
+
 /* =====================================================
    ROLE INFORMATION (For Donor, Consumer, NGO)
 ===================================================== */
@@ -1000,37 +1021,7 @@ function loginUser(event) {
         if (authCard) authCard.classList.add("auth-exit-animation");
 
         showMessage("Authenticating NGO Institutional Accreditation...", "info");
-        const backendHost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" ? window.location.hostname : "127.0.0.1";
-        fetch(`http://${backendHost}:8000/api/ngo/pseudo-login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ identifier: email })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.authenticated && data.session) {
-                const ngoName = data.session.ngoName || "Verified NGO Partner";
-                localStorage.setItem("bloodlinkUserName", ngoName);
-                localStorage.setItem("bloodlinkUserRole", "ngo");
-                localStorage.setItem("bloodlinkNgoId", data.session.ngoId);
-                localStorage.setItem("bloodlinkNgoLicense", data.session.licenseNumber || data.session.licenseNo);
-                localStorage.setItem("bloodlinkNgoToken", data.token);
-
-                showMessage(`Authenticated as ${ngoName}! Launching Real-Time NGO Platform...`, "success");
-                setTimeout(function () {
-                    window.location.href = "ngo-portal.html#/dashboard";
-                }, 400);
-            } else {
-                if (submitBtn) {
-                    submitBtn.innerHTML = 'Login <i class="fa-solid fa-arrow-right"></i>';
-                    submitBtn.disabled = false;
-                }
-                if (authCard) authCard.classList.remove("auth-exit-animation");
-                showMessage(data.error || "NGO credentials not found in network registry.", "error");
-            }
-        })
-        .catch(err => {
-            console.warn("Backend auth offline, using local fallback for NGO:", err);
+        const executeNgoFallback = () => {
             const defaultNgoName = "Red Cross Blood Bank & Voluntary Mission, Odisha";
             localStorage.setItem("bloodlinkUserName", defaultNgoName);
             localStorage.setItem("bloodlinkUserRole", "ngo");
@@ -1040,7 +1031,45 @@ function loginUser(event) {
             setTimeout(function () {
                 window.location.href = "ngo-portal.html#/dashboard";
             }, 400);
-        });
+        };
+
+        const backendBase = getBackendBaseUrl();
+        if (backendBase) {
+            fetch(`${backendBase}/api/ngo/pseudo-login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ identifier: email })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.authenticated && data.session) {
+                    const ngoName = data.session.ngoName || "Verified NGO Partner";
+                    localStorage.setItem("bloodlinkUserName", ngoName);
+                    localStorage.setItem("bloodlinkUserRole", "ngo");
+                    localStorage.setItem("bloodlinkNgoId", data.session.ngoId);
+                    localStorage.setItem("bloodlinkNgoLicense", data.session.licenseNumber || data.session.licenseNo);
+                    localStorage.setItem("bloodlinkNgoToken", data.token);
+
+                    showMessage(`Authenticated as ${ngoName}! Launching Real-Time NGO Platform...`, "success");
+                    setTimeout(function () {
+                        window.location.href = "ngo-portal.html#/dashboard";
+                    }, 400);
+                } else {
+                    if (submitBtn) {
+                        submitBtn.innerHTML = 'Login <i class="fa-solid fa-arrow-right"></i>';
+                        submitBtn.disabled = false;
+                    }
+                    if (authCard) authCard.classList.remove("auth-exit-animation");
+                    showMessage(data.error || "NGO credentials not found in network registry.", "error");
+                }
+            })
+            .catch(err => {
+                console.warn("Backend auth offline, using local fallback for NGO:", err);
+                executeNgoFallback();
+            });
+        } else {
+            executeNgoFallback();
+        }
         return;
     }
 
@@ -2578,15 +2607,18 @@ function verifyNgoLicense() {
         hospitalAddress: "Plot 12B, Saheed Nagar, Janpath Road, Bhubaneswar, Odisha 751007"
     };
 
-    fetch("http://localhost:8000/api/network/partnerships/request", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(partnershipPayload)
-    }).then(res => res.json()).then(data => {
-        if (data && data.success) {
-            console.log("Institutional Partnership Memorandum Dispatched:", data);
-        }
-    }).catch(err => console.warn("Backend partnership sync notice:", err));
+    const backendBase = getBackendBaseUrl();
+    if (backendBase) {
+        fetch(`${backendBase}/api/network/partnerships/request`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(partnershipPayload)
+        }).then(res => res.json()).then(data => {
+            if (data && data.success) {
+                console.log("Institutional Partnership Memorandum Dispatched:", data);
+            }
+        }).catch(err => console.warn("Backend partnership sync notice:", err));
+    }
 
     feedback.className = "validation-feedback-box success";
     feedback.innerHTML = `
@@ -3577,36 +3609,39 @@ function initHospitalProfile() {
         }
     }
 
-    // Try fetching from backend API asynchronously
-    fetch("http://localhost:8000/api/hospital/profile")
-        .then(res => res.ok ? res.json() : null)
-        .then(data => {
-            const h = (data && (data.hospital || data.profile));
-            if (h) {
-                hospitalProfileState.name = h.name || hospitalProfileState.name;
-                hospitalProfileState.licenseNumber = h.licenseNumber || h.license_number || hospitalProfileState.licenseNumber;
-                hospitalProfileState.emergencyHotline = h.emergencyHotline || h.emergency_hotline || hospitalProfileState.emergencyHotline;
-                hospitalProfileState.phone = h.phone || hospitalProfileState.phone;
-                hospitalProfileState.email = h.email || hospitalProfileState.email;
-                hospitalProfileState.address = h.address || hospitalProfileState.address;
-                hospitalProfileState.city = h.city || hospitalProfileState.city;
-                hospitalProfileState.latitude = h.latitude !== undefined ? h.latitude : hospitalProfileState.latitude;
-                hospitalProfileState.longitude = h.longitude !== undefined ? h.longitude : hospitalProfileState.longitude;
-                hospitalProfileState.traumaCenterLevel = h.traumaCenterLevel || h.trauma_center_level || hospitalProfileState.traumaCenterLevel;
-                if (h.storageFacilities || h.storage_facilities) {
-                    hospitalProfileState.storageFacilities = h.storageFacilities || h.storage_facilities;
+    // Try fetching from backend API asynchronously if available
+    const backendBase = getBackendBaseUrl();
+    if (backendBase) {
+        fetch(`${backendBase}/api/hospital/profile`)
+            .then(res => res.ok ? res.json() : null)
+            .then(data => {
+                const h = (data && (data.hospital || data.profile));
+                if (h) {
+                    hospitalProfileState.name = h.name || hospitalProfileState.name;
+                    hospitalProfileState.licenseNumber = h.licenseNumber || h.license_number || hospitalProfileState.licenseNumber;
+                    hospitalProfileState.emergencyHotline = h.emergencyHotline || h.emergency_hotline || hospitalProfileState.emergencyHotline;
+                    hospitalProfileState.phone = h.phone || hospitalProfileState.phone;
+                    hospitalProfileState.email = h.email || hospitalProfileState.email;
+                    hospitalProfileState.address = h.address || hospitalProfileState.address;
+                    hospitalProfileState.city = h.city || hospitalProfileState.city;
+                    hospitalProfileState.latitude = h.latitude !== undefined ? h.latitude : hospitalProfileState.latitude;
+                    hospitalProfileState.longitude = h.longitude !== undefined ? h.longitude : hospitalProfileState.longitude;
+                    hospitalProfileState.traumaCenterLevel = h.traumaCenterLevel || h.trauma_center_level || hospitalProfileState.traumaCenterLevel;
+                    if (h.storageFacilities || h.storage_facilities) {
+                        hospitalProfileState.storageFacilities = h.storageFacilities || h.storage_facilities;
+                    }
+                    if (h.photoData || h.photo_data) {
+                        hospitalProfileState.photoUrl = h.photoData || h.photo_data;
+                    } else if (h.photoUrl || h.photo_url) {
+                        hospitalProfileState.photoUrl = h.photoUrl || h.photo_url;
+                    }
+                    applyHospitalProfileToDOM();
                 }
-                if (h.photoData || h.photo_data) {
-                    hospitalProfileState.photoUrl = h.photoData || h.photo_data;
-                } else if (h.photoUrl || h.photo_url) {
-                    hospitalProfileState.photoUrl = h.photoUrl || h.photo_url;
-                }
-                applyHospitalProfileToDOM();
-            }
-        })
-        .catch(() => {
-            // Local fallback already in place
-        });
+            })
+            .catch(() => {
+                // Local fallback already in place
+            });
+    }
 
     applyHospitalProfileToDOM();
 }
@@ -3751,15 +3786,18 @@ function processHospitalPhoto(file) {
         // Persist to localStorage
         localStorage.setItem("bloodlinkHospitalProfile", JSON.stringify(hospitalProfileState));
 
-        // Sync to backend API
-        fetch("http://localhost:8000/api/hospital/profile", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                photo_data: base64Data,
-                name: hospitalProfileState.name
-            })
-        }).catch(err => console.warn("Backend image sync:", err));
+        // Sync to backend API if available
+        const backendBase = getBackendBaseUrl();
+        if (backendBase) {
+            fetch(`${backendBase}/api/hospital/profile`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    photo_data: base64Data,
+                    name: hospitalProfileState.name
+                })
+            }).catch(err => console.warn("Backend image sync:", err));
+        }
 
         showToast("Official hospital photo uploaded & applied across dashboard!", "success");
     };
@@ -3808,25 +3846,28 @@ function handleProfileFormSubmit(event) {
     localStorage.setItem("bloodlinkUserName", name);
     localStorage.setItem("bloodlinkUserLicense", lic);
 
-    // Sync to backend API
-    fetch("http://localhost:8000/api/hospital/profile", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            name,
-            license_number: lic,
-            emergency_hotline: hotline,
-            phone,
-            email,
-            address,
-            city,
-            latitude: lat,
-            longitude: lon,
-            trauma_center_level: trauma,
-            storage_facilities: facilities,
-            photo_data: hospitalProfileState.photoUrl
-        })
-    }).catch(err => console.warn("Backend profile sync:", err));
+    // Sync to backend API if available
+    const backendBase = getBackendBaseUrl();
+    if (backendBase) {
+        fetch(`${backendBase}/api/hospital/profile`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                name,
+                license_number: lic,
+                emergency_hotline: hotline,
+                phone,
+                email,
+                address,
+                city,
+                latitude: lat,
+                longitude: lon,
+                trauma_center_level: trauma,
+                storage_facilities: facilities,
+                photo_data: hospitalProfileState.photoUrl
+            })
+        }).catch(err => console.warn("Backend profile sync:", err));
+    }
 
     applyHospitalProfileToDOM();
     refreshSosRadar();
@@ -4099,19 +4140,24 @@ function refreshSosRadar() {
     const originLon = hospitalProfileState.longitude || 85.8245;
 
     // Query backend directory with geospatial filtering if available
-    fetch(`http://localhost:8000/api/network/directory?radius=${currentSosRadius}&blood_group=${encodeURIComponent(selectedGroup)}&lat=${originLat}&lon=${originLon}`)
-        .then(res => res.ok ? res.json() : null)
-        .then(data => {
-            const list = data && (data.entities || data.facilities);
-            if (list && list.length > 0) {
-                renderRadarFromData(list, selectedGroup);
-            } else {
+    const backendBase = getBackendBaseUrl();
+    if (backendBase) {
+        fetch(`${backendBase}/api/network/directory?radius=${currentSosRadius}&blood_group=${encodeURIComponent(selectedGroup)}&lat=${originLat}&lon=${originLon}`)
+            .then(res => res.ok ? res.json() : null)
+            .then(data => {
+                const list = data && (data.entities || data.facilities);
+                if (list && list.length > 0) {
+                    renderRadarFromData(list, selectedGroup);
+                } else {
+                    renderRadarFromClientData(selectedGroup, originLat, originLon);
+                }
+            })
+            .catch(() => {
                 renderRadarFromClientData(selectedGroup, originLat, originLon);
-            }
-        })
-        .catch(() => {
-            renderRadarFromClientData(selectedGroup, originLat, originLon);
-        });
+            });
+    } else {
+        renderRadarFromClientData(selectedGroup, originLat, originLon);
+    }
 }
 
 function renderRadarFromData(facilities, bloodGroup) {
@@ -4291,11 +4337,14 @@ function handleSosBroadcastSubmit(event) {
         radius_km: currentSosRadius
     };
 
-    fetch("http://localhost:8000/api/network/sos/broadcast", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(sosPayload)
-    }).catch(err => console.warn("Backend broadcast sync:", err));
+    const backendBase = getBackendBaseUrl();
+    if (backendBase) {
+        fetch(`${backendBase}/api/network/sos/broadcast`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(sosPayload)
+        }).catch(err => console.warn("Backend broadcast sync:", err));
+    }
 
     renderSosBroadcastAuditTable();
     playEmergencyAudioAlert();
@@ -4676,14 +4725,17 @@ function verifyPeerHospitalLicense() {
     foundHosp.connected = true;
 
     // Call backend API if available
-    fetch("http://localhost:8000/api/hospitals/connect", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            peer_license: rawVal,
-            notes: "Linked via Hospital Network Console"
-        })
-    }).catch(err => console.warn("Backend hospital link sync:", err));
+    const backendBase = getBackendBaseUrl();
+    if (backendBase) {
+        fetch(`${backendBase}/api/hospitals/connect`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                peer_license: rawVal,
+                notes: "Linked via Hospital Network Console"
+            })
+        }).catch(err => console.warn("Backend hospital link sync:", err));
+    }
 
     feedback.className = "validation-feedback-box success";
     feedback.innerHTML = `
@@ -4734,10 +4786,8 @@ window.activeNgoEmergencyAlerts = {};
 window.ngoEmergencyEventSource = null;
 window.ngoPollingInterval = null;
 
-function getBackendBaseUrl() {
-    const host = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" ? window.location.hostname : "127.0.0.1";
-    return `http://${host}:8000`;
-}
+window.getBackendBaseUrl = getBackendBaseUrl;
+window.isLocalEnvironment = isLocalEnvironment;
 
 function playEmergencyChime() {
     try {
@@ -4807,6 +4857,13 @@ function initNgoEmergencyReception() {
     const currentNgoId = localStorage.getItem("bloodlinkNgoId") || "NGO-OD-9021";
     console.log(`[*] Initializing Real-Time Emergency Reception for NGO: ${currentNgoId}`);
 
+    const backendBase = getBackendBaseUrl();
+    if (!backendBase) {
+        updateSseStatus(false, "Emergency Bus Ready (Standby)");
+        renderAllEmergencyAlerts();
+        return;
+    }
+
     // Update status badge to connecting
     updateSseStatus(false, "Connecting Live SSE Stream...");
 
@@ -4840,9 +4897,16 @@ function updateSseStatus(isConnected, message) {
 function connectEmergencySseStream(ngoId) {
     if (window.ngoEmergencyEventSource) {
         window.ngoEmergencyEventSource.close();
+        window.ngoEmergencyEventSource = null;
     }
 
-    const sseUrl = `${getBackendBaseUrl()}/api/network/alerts/stream?ngoId=${encodeURIComponent(ngoId)}`;
+    const backendBase = getBackendBaseUrl();
+    if (!backendBase) {
+        updateSseStatus(false, "Emergency Bus Ready (Standby)");
+        return;
+    }
+
+    const sseUrl = `${backendBase}/api/network/alerts/stream?ngoId=${encodeURIComponent(ngoId)}`;
     try {
         const es = new EventSource(sseUrl);
         window.ngoEmergencyEventSource = es;
@@ -4879,7 +4943,13 @@ function connectEmergencySseStream(ngoId) {
 }
 
 function fetchActiveEmergencyAlerts(ngoId, isBackgroundPoll = false) {
-    const url = `${getBackendBaseUrl()}/api/network/alerts/active?ngoId=${encodeURIComponent(ngoId)}`;
+    const backendBase = getBackendBaseUrl();
+    if (!backendBase) {
+        renderAllEmergencyAlerts();
+        return;
+    }
+
+    const url = `${backendBase}/api/network/alerts/active?ngoId=${encodeURIComponent(ngoId)}`;
     fetch(url)
         .then(res => res.json())
         .then(data => {

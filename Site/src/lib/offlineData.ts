@@ -383,27 +383,27 @@ function calculateInventory(hospital: Hospital): BloodInventory[] {
       const seed = (hospital.name.length * 37 + group.charCodeAt(0) * 17 + component.length * 11) % 100;
       let baseAvail = 10;
 
-      // Green (> 150 total units across 5 components): O+, A+, B+ (3 blood groups)
+      // Green (> 150 total units across 4 components): O+, A+, B+ (3 blood groups)
       if (group === 'O+') {
-        baseAvail = 34 + (seed % 4);
+        baseAvail = 42 + (seed % 4);
       } else if (group === 'A+') {
-        baseAvail = 32 + (seed % 3);
+        baseAvail = 40 + (seed % 3);
       } else if (group === 'B+') {
-        baseAvail = 31 + (seed % 3);
+        baseAvail = 39 + (seed % 3);
       }
-      // Yellow (100–150 total units across 5 components): A-, B-, AB+ (3 blood groups)
+      // Yellow (100–150 total units across 4 components): A-, B-, AB+ (3 blood groups)
       else if (group === 'A-') {
-        baseAvail = 24 + (seed % 3);
+        baseAvail = 30 + (seed % 3);
       } else if (group === 'B-') {
-        baseAvail = 22 + (seed % 3);
+        baseAvail = 28 + (seed % 3);
       } else if (group === 'AB+') {
-        baseAvail = 26 + (seed % 3);
+        baseAvail = 32 + (seed % 3);
       }
-      // Red (< 100 total units across 5 components): O-, AB- (2 blood groups)
+      // Red (< 100 total units across 4 components): O-, AB- (2 blood groups)
       else if (group === 'O-') {
-        baseAvail = 8 + (seed % 3);
+        baseAvail = 10 + (seed % 3);
       } else if (group === 'AB-') {
-        baseAvail = 5 + (seed % 3);
+        baseAvail = 6 + (seed % 3);
       }
 
       const units_available = Math.max(0, baseAvail);

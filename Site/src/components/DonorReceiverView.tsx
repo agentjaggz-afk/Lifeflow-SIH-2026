@@ -219,12 +219,15 @@ function Dashboard({
   const manualDonorsCount = donors.filter((d) => isManualDonor(d.id)).length;
   const manualRequestsCount = openRequests.filter((r) => isManualRequest(r.id)).length;
 
-  // Aggregate by blood group
+  // Aggregate by blood group (normalized per hospital facility across regional network)
+  const hospCount = Math.max(hospitals.length, 1);
   const byGroup = BLOOD_GROUPS.map((group) => {
     const items = inventory.filter((i) => i.blood_group === group);
-    const available = items.reduce((s, i) => s + i.units_available, 0);
-    const needed = items.reduce((s, i) => s + i.units_needed, 0);
-    return { group, available, needed };
+    const totalAvailable = items.reduce((s, i) => s + i.units_available, 0);
+    const totalNeeded = items.reduce((s, i) => s + i.units_needed, 0);
+    const available = Math.round(totalAvailable / hospCount);
+    const needed = Math.round(totalNeeded / hospCount);
+    return { group, available, needed, totalAvailable, totalNeeded };
   });
 
   const maxUnits = Math.max(...byGroup.map((g) => g.available + g.needed), 1);
@@ -260,24 +263,24 @@ function Dashboard({
         <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
           <div>
             <h3 className="text-lg font-bold text-gray-900">Blood Group Availability</h3>
-            <p className="text-sm text-gray-500">Real-time inventory status across all hospitals</p>
+            <p className="text-sm text-gray-500">Real-time inventory status per facility across network</p>
           </div>
           <div className="flex flex-wrap items-center gap-3 text-xs">
             <span className="flex items-center gap-1.5 font-semibold text-gray-700">
-              <span className="h-2.5 w-2.5 rounded-full bg-red-500 shadow-xs" /> &lt; 50 Units (Low)
+              <span className="h-2.5 w-2.5 rounded-full bg-red-500 shadow-xs" /> &lt; 100 Units (Critical)
             </span>
             <span className="flex items-center gap-1.5 font-semibold text-gray-700">
-              <span className="h-2.5 w-2.5 rounded-full bg-amber-400 shadow-xs" /> 50 – 100 Units (Moderate)
+              <span className="h-2.5 w-2.5 rounded-full bg-amber-400 shadow-xs" /> 100 – 150 Units (Moderate)
             </span>
             <span className="flex items-center gap-1.5 font-semibold text-gray-700">
-              <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 shadow-xs" /> &gt; 100 Units (Optimal)
+              <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 shadow-xs" /> &gt; 150 Units (Optimal)
             </span>
           </div>
         </div>
         <div className="grid grid-cols-4 gap-4 md:grid-cols-8">
           {byGroup.map((g) => {
-            const isRed = g.available < 50;
-            const isYellow = g.available >= 50 && g.available <= 100;
+            const isRed = g.available < 100;
+            const isYellow = g.available >= 100 && g.available <= 150;
             const barGradient = isRed
               ? 'from-red-600 to-rose-400'
               : isYellow
@@ -294,10 +297,10 @@ function Dashboard({
                 ? 'shadow-amber-500/25'
                 : 'shadow-emerald-500/25';
             const statusText = isRed
-              ? 'Critical (<50 units)'
+              ? 'Critical (<100 units)'
               : isYellow
-                ? 'Moderate (50-100 units)'
-                : 'Optimal (>100 units)';
+                ? 'Moderate (100-150 units)'
+                : 'Optimal (>150 units)';
 
             return (
               <div key={g.group} className="group flex flex-col items-center">
@@ -306,7 +309,7 @@ function Dashboard({
                     <div
                       className={`w-full bg-gradient-to-t ${barGradient} shadow-md ${shadowColor} transition-all duration-500 rounded-t-md`}
                       style={{ height: `${Math.max(14, (g.available / maxUnits) * 140)}px` }}
-                      title={`${g.group}: ${g.available} units available (${statusText})`}
+                      title={`${g.group}: ${g.available} units available per facility (${g.totalAvailable} total in network) • ${statusText}`}
                     />
                     {g.needed > 0 && (
                       <div
