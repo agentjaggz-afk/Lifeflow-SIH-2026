@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "description": "LifeFlow Blood Network Platform Root Proxy",
+  "workspaces": [
+    "Site"
+  ],
   "scripts": {
     "dev": "npm --prefix Site run dev",
     "start": "npm --prefix Site run dev",
-    "build": "npm --prefix Site run build && node -e \"const fs=require('fs'); if(fs.existsSync('Site/dist')){fs.cpSync('Site/dist', 'dist', {recursive: true, force: true});}\"",
+    "build": "npm --prefix Site install && npm --prefix Site run build && node -e \"const fs=require('fs'); if(fs.existsSync('Site/dist')){fs.cpSync('Site/dist', 'dist', {recursive: true, force: true});}\"",
     "deploy": "npm run build && npx --yes wrangler pages deploy dist",
     "preview": "npm --prefix Site run preview"
-  },
-  "dependencies": {
-    "@supabase/supabase-js": "^2.116.0"
   }
 }
