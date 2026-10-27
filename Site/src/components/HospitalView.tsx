@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   ArrowLeft, Droplet, Building2, AlertCircle, Clock, Phone, MapPin,
   Activity, Calendar, Search, User, ShieldCheck, CheckCircle2,
-  PhoneCall, MessageSquare, Send, X, Navigation,
+  PhoneCall, MessageSquare, Send, X, Navigation, Menu,
 } from 'lucide-react';
 import {
   BLOOD_GROUPS,
@@ -34,6 +34,7 @@ export function HospitalView({ hospital, city, onBack }: HospitalViewProps) {
   const [inventory, setInventory] = useState<BloodInventory[]>([]);
   const [camps, setCamps] = useState<BloodCamp[]>([]);
   const [loading, setLoading] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const fetchData = useCallback(() => {
     setLoading(true);
@@ -48,16 +49,43 @@ export function HospitalView({ hospital, city, onBack }: HospitalViewProps) {
     fetchData();
   }, [fetchData]);
 
+  const navItems = [
+    { id: 'metrics' as Tab, label: 'Blood Metrics', icon: Activity },
+    { id: 'camps' as Tab, label: 'Donation Camps', icon: Calendar, badge: camps.length },
+  ];
+
   return (
     <div className="min-h-screen bg-[#fdf6f3]">
-      {/* Left Sidebar - Locked at viewport */}
-      <aside className="fixed top-0 left-0 bottom-0 z-30 flex h-screen w-64 flex-col justify-between border-r border-gray-100 bg-white shadow-xs">
+      {/* Mobile Backdrop Overlay */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-gray-950/50 backdrop-blur-xs transition-opacity duration-200 md:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Left Sidebar - Locked at viewport on desktop, slide-over drawer on mobile */}
+      <aside
+        className={`fixed top-0 left-0 bottom-0 z-40 flex h-screen w-64 flex-col justify-between border-r border-gray-100 bg-white shadow-xl md:shadow-xs transition-transform duration-300 ease-in-out ${
+          mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+        }`}
+      >
         {/* Top Scrollable Navigation Section */}
         <div className="flex flex-1 flex-col min-h-0 overflow-y-auto">
-          {/* Logo */}
-          <a href="/index.html" className="flex items-center px-5 py-4 shrink-0 hover:opacity-85 transition-opacity cursor-pointer" title="Return to Portal Gateway">
-            <img src="/lifeflow-logo.png" alt="Life Flow" className="h-14 w-auto object-contain" />
-          </a>
+          {/* Logo & Mobile Close Button */}
+          <div className="flex items-center justify-between px-5 py-4 shrink-0">
+            <a href="/index.html" className="flex items-center hover:opacity-85 transition-opacity cursor-pointer" title="Return to Portal Gateway">
+              <img src="/lifeflow-logo.png" alt="Life Flow" className="h-12 md:h-14 w-auto object-contain" />
+            </a>
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              className="rounded-xl p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-700 md:hidden cursor-pointer"
+              aria-label="Close menu"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
 
           {/* Hospital badge */}
           <div className="mx-4 mb-3 rounded-2xl bg-primary-50 p-3.5 ring-1 ring-primary-100 shrink-0">
@@ -91,13 +119,13 @@ export function HospitalView({ hospital, city, onBack }: HospitalViewProps) {
 
           {/* Navigation */}
           <nav className="flex flex-1 flex-col gap-1 px-3 py-2">
-            {[
-              { id: 'metrics' as Tab, label: 'Blood Metrics', icon: Activity },
-              { id: 'camps' as Tab, label: 'Donation Camps', icon: Calendar },
-            ].map((t) => (
+            {navItems.map((t) => (
               <button
                 key={t.id}
-                onClick={() => setTab(t.id)}
+                onClick={() => {
+                  setTab(t.id);
+                  setMobileMenuOpen(false);
+                }}
                 className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-150 active:scale-95 cursor-pointer ${
                   tab === t.id
                     ? 'bg-primary-50 text-primary-700 font-semibold ring-1 ring-primary-100 shadow-xs'
@@ -106,9 +134,9 @@ export function HospitalView({ hospital, city, onBack }: HospitalViewProps) {
               >
                 <t.icon className="h-4 w-4 shrink-0" />
                 {t.label}
-                {t.id === 'camps' && camps.length > 0 && (
+                {t.badge !== undefined && t.badge > 0 && (
                   <span className="ml-auto rounded-full bg-primary-100 px-2 py-0.5 text-xs font-semibold text-primary-700">
-                    {camps.length}
+                    {t.badge}
                   </span>
                 )}
               </button>
@@ -120,7 +148,10 @@ export function HospitalView({ hospital, city, onBack }: HospitalViewProps) {
         <div className="shrink-0 border-t border-gray-100 bg-white p-3 space-y-2">
           <UserProfileMenu variant="sidebar" currentCity={city} />
           <button
-            onClick={onBack}
+            onClick={() => {
+              setMobileMenuOpen(false);
+              onBack();
+            }}
             className="flex w-full items-center justify-center gap-2 rounded-xl bg-gray-100 py-2.5 text-xs font-semibold text-gray-700 transition-all duration-150 hover:bg-gray-200 active:scale-95 cursor-pointer"
           >
             <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-150 group-hover:-translate-x-0.5" />
@@ -129,22 +160,38 @@ export function HospitalView({ hospital, city, onBack }: HospitalViewProps) {
         </div>
       </aside>
 
-      {/* Main content with left padding to offset fixed sidebar */}
-      <main className="flex-1 min-w-0 pl-64 overflow-x-hidden">
-        {/* Sticky topbar with signed-in user profile option */}
-        <div className="sticky top-0 z-20 flex items-center justify-between border-b border-gray-100 bg-white/80 px-6 py-3.5 backdrop-blur-md">
-          <div className="flex items-center gap-2.5">
-            <span className="text-sm font-bold text-gray-900 truncate max-w-[280px] md:max-w-md">
-              {hospital.name}
-            </span>
-            <span className="text-xs font-medium text-gray-400">• {city}</span>
+      {/* Main content with left padding to offset fixed sidebar on desktop, full width on mobile */}
+      <main className="flex-1 min-w-0 pl-0 md:pl-64 overflow-x-hidden pb-20 md:pb-6">
+        {/* Sticky topbar */}
+        <div className="sticky top-0 z-20 flex items-center justify-between border-b border-gray-100 bg-white/90 px-4 py-3 md:px-6 md:py-3.5 backdrop-blur-md">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <button
+              onClick={() => setMobileMenuOpen(true)}
+              className="rounded-xl p-1.5 text-gray-600 hover:bg-gray-100 md:hidden cursor-pointer"
+              aria-label="Open navigation drawer"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+            <button
+              onClick={onBack}
+              className="md:hidden flex items-center gap-1 rounded-xl p-1.5 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+              title="Back"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </button>
+            <div className="min-w-0">
+              <span className="text-sm font-bold text-gray-900 truncate block max-w-[170px] sm:max-w-xs md:max-w-md">
+                {hospital.name}
+              </span>
+              <span className="hidden sm:inline text-xs font-medium text-gray-400">• {city}</span>
+            </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <UserProfileMenu variant="header" currentCity={city} />
           </div>
         </div>
 
-        <div className="mx-auto max-w-6xl px-4 py-6 md:px-8">
+        <div className="mx-auto max-w-6xl px-3 py-4 sm:px-4 sm:py-6 md:px-8">
           {loading ? (
             <div className="flex h-64 items-center justify-center">
               <div className="flex flex-col items-center gap-3">
@@ -160,6 +207,40 @@ export function HospitalView({ hospital, city, onBack }: HospitalViewProps) {
           )}
         </div>
       </main>
+
+      {/* Mobile Bottom Fixed Navigation Bar */}
+      <nav className="fixed bottom-0 left-0 right-0 z-30 flex h-16 items-center justify-around border-t border-gray-200 bg-white/95 px-2 py-1 shadow-lg backdrop-blur-md md:hidden">
+        <button
+          onClick={() => setTab('metrics')}
+          className={`flex flex-col items-center justify-center py-1 px-4 text-[10px] font-medium transition-colors ${
+            tab === 'metrics' ? 'text-primary-600 font-bold' : 'text-gray-500 hover:text-gray-900'
+          }`}
+        >
+          <Activity className={`h-4 w-4 ${tab === 'metrics' ? 'scale-110 text-primary-600' : ''}`} />
+          <span className="mt-0.5">Metrics</span>
+        </button>
+
+        <button
+          onClick={() => setTab('camps')}
+          className={`flex flex-col items-center justify-center py-1 px-4 text-[10px] font-medium transition-colors relative ${
+            tab === 'camps' ? 'text-primary-600 font-bold' : 'text-gray-500 hover:text-gray-900'
+          }`}
+        >
+          <Calendar className={`h-4 w-4 ${tab === 'camps' ? 'scale-110 text-primary-600' : ''}`} />
+          <span className="mt-0.5">Camps</span>
+          {camps.length > 0 && (
+            <span className="absolute top-1 right-3 h-1.5 w-1.5 rounded-full bg-primary-600" />
+          )}
+        </button>
+
+        <button
+          onClick={onBack}
+          className="flex flex-col items-center justify-center py-1 px-4 text-[10px] font-medium text-gray-500 hover:text-primary-600 transition-colors"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          <span className="mt-0.5">Back</span>
+        </button>
+      </nav>
     </div>
   );
 }

@@ -197,7 +197,7 @@ export function UserProfileMenu({ currentCity, variant = 'header' }: UserProfile
         <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary-600 to-primary-500 text-[11px] font-bold text-white shadow-xs">
           {initials}
         </div>
-        <div className="text-left leading-none max-w-[130px] md:max-w-[180px]">
+        <div className="hidden sm:block text-left leading-none max-w-[130px] md:max-w-[180px]">
           <span className="block truncate text-xs font-bold">{userName}</span>
           <span className={`block text-[10px] mt-0.5 truncate ${isDark ? 'text-white/70' : 'text-gray-500'}`}>
             {roleLabel}
@@ -212,7 +212,7 @@ export function UserProfileMenu({ currentCity, variant = 'header' }: UserProfile
 
       {/* Floating Menu */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-72 origin-top-right rounded-2xl bg-white p-4 shadow-xl ring-1 ring-black/5 z-50 animate-fade-in text-gray-800">
+        <div className="absolute right-0 mt-2 w-72 max-w-[calc(100vw-24px)] origin-top-right rounded-2xl bg-white p-4 shadow-xl ring-1 ring-black/5 z-50 animate-fade-in text-gray-800">
           {/* User Header */}
           <div className="flex items-center gap-3 border-b border-gray-100 pb-3">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary-600 to-primary-500 text-sm font-bold text-white shadow-sm">

@@ -11,6 +11,7 @@ import {
 } from './types';
 import { NgoNavbar } from './components/layout/NgoNavbar';
 import { NgoSidebar } from './components/layout/NgoSidebar';
+import { NgoMobileNav } from './components/layout/NgoMobileNav';
 import { SosAlertBanner } from './components/layout/SosAlertBanner';
 
 import { NgoDashboardView } from './components/dashboard/NgoDashboardView';
@@ -463,6 +464,18 @@ export const NgoApp: React.FC = () => {
       <BloodUnitTimelineModal
         unit={selectedTimelineUnit}
         onClose={() => setSelectedTimelineUnit(null)}
+      />
+
+      {/* Mobile Drawer & Fixed Bottom Navigation */}
+      <NgoMobileNav
+        activePage={activePage}
+        isOpen={mobileMenuOpen}
+        unreadNotifications={unreadNotificationsCount}
+        pendingRequests={pendingRequestsCount}
+        onClose={() => setMobileMenuOpen(false)}
+        onNavigate={navigateTo}
+        onOpenScanModal={() => setIsScanModalOpen(true)}
+        onOpenSosModal={() => setIsSosModalOpen(true)}
       />
 
       {/* Floating Notifications */}
