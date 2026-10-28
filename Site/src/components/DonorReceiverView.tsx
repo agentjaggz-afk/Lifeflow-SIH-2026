@@ -3,7 +3,7 @@ import {
   ArrowLeft, Droplet, Users, Building2, Calendar, Phone, MapPin,
   Plus, AlertCircle, CheckCircle2, Clock, Heart, Activity, Search,
   TrendingUp, TrendingDown, X, User, PhoneCall, MessageSquare, Send,
-  Navigation,
+  Navigation, Menu,
 } from 'lucide-react';
 import {
   BLOOD_GROUPS,
@@ -44,6 +44,7 @@ type Tab = 'dashboard' | 'donors' | 'requests' | 'camps';
 
 export function DonorReceiverView({ city, coords, onBack, onSelectHospital }: DonorReceiverViewProps) {
   const [tab, setTab] = useState<Tab>('dashboard');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [inventory, setInventory] = useState<BloodInventory[]>([]);
   const [donors, setDonors] = useState<Donor[]>([]);
   const [requests, setRequests] = useState<BloodRequest[]>([]);
@@ -73,33 +74,57 @@ export function DonorReceiverView({ city, coords, onBack, onSelectHospital }: Do
   }, [fetchData]);
 
   const navItems = [
-    { id: 'dashboard' as Tab, label: 'Overview', icon: Activity },
-    { id: 'donors' as Tab, label: 'Donors', icon: Users },
-    { id: 'requests' as Tab, label: 'Blood Requests', icon: AlertCircle },
-    { id: 'camps' as Tab, label: 'Donation Camps', icon: Calendar },
+    { id: 'dashboard' as Tab, label: 'Overview', icon: Activity, desc: 'Real-time blood stock summary' },
+    { id: 'donors' as Tab, label: 'Voluntary Donors', icon: Users, desc: 'Find registered local donors' },
+    { id: 'requests' as Tab, label: 'Blood Requests', icon: AlertCircle, desc: 'Urgent patient blood needs' },
+    { id: 'camps' as Tab, label: 'Donation Camps', icon: Calendar, desc: 'Upcoming community drives' },
   ];
 
   return (
     <div className="min-h-screen bg-[#fdf6f3]">
-      {/* Left Sidebar - Locked at viewport on desktop, hidden on mobile */}
-      <aside className="hidden md:flex fixed top-0 left-0 bottom-0 z-30 h-screen w-64 flex-col justify-between border-r border-gray-100 bg-white shadow-xs">
+      {/* Mobile Drawer Backdrop */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-gray-950/60 backdrop-blur-xs md:hidden animate-fade-in"
+          onClick={() => setMobileMenuOpen(false)}
+          aria-label="Close navigation sidebar"
+        />
+      )}
+
+      {/* Side Navigation Bar - Locked at viewport on desktop, slide-over drawer on mobile */}
+      <aside
+        className={`fixed top-0 left-0 bottom-0 h-screen flex flex-col justify-between border-r border-gray-100 bg-white transition-transform duration-300 ease-in-out z-50 md:z-30 w-72 md:w-64 ${
+          mobileMenuOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full md:translate-x-0 md:shadow-xs'
+        }`}
+      >
         {/* Top Scrollable Navigation Section */}
         <div className="flex flex-1 flex-col min-h-0 overflow-y-auto">
-          {/* Logo */}
-          <div className="flex items-center px-5 py-4 shrink-0">
+          {/* Logo & Mobile Close button */}
+          <div className="flex items-center justify-between px-5 py-4 shrink-0">
             <a href="/index.html" className="flex items-center hover:opacity-85 transition-opacity cursor-pointer" title="Return to Portal Gateway">
-              <img src="/lifeflow-logo.png" alt="Life Flow" className="h-12 md:h-14 w-auto object-contain" />
+              <img src="/lifeflow-logo.png" alt="Life Flow" className="h-11 md:h-14 w-auto object-contain" />
             </a>
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              className="md:hidden flex h-9 w-9 items-center justify-center rounded-xl bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-900 active:scale-95 transition-all cursor-pointer"
+              title="Close Sidebar"
+              aria-label="Close Sidebar"
+            >
+              <X className="h-5 w-5" />
+            </button>
           </div>
 
           {/* Location badge */}
-          <div className="mx-4 mb-3 flex items-center justify-between rounded-xl bg-primary-50 px-3 py-2 ring-1 ring-primary-100 shrink-0">
+          <div className="mx-4 mb-3 flex items-center justify-between rounded-xl bg-primary-50 px-3.5 py-2.5 ring-1 ring-primary-100 shrink-0">
             <div className="flex items-center gap-2 min-w-0">
-              <MapPin className="h-3.5 w-3.5 shrink-0 text-primary-600" />
+              <MapPin className="h-4 w-4 shrink-0 text-primary-600" />
               <span className="truncate text-sm font-semibold text-primary-700">{city}</span>
             </div>
             <button
-              onClick={onBack}
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onBack();
+              }}
               className="text-[11px] font-bold text-primary-600 hover:text-primary-800 hover:underline shrink-0 ml-1 cursor-pointer transition-colors"
               title="Change Location"
             >
@@ -107,33 +132,50 @@ export function DonorReceiverView({ city, coords, onBack, onSelectHospital }: Do
             </button>
           </div>
 
-          {/* Navigation */}
-          <nav className="flex flex-1 flex-col gap-1 px-3 py-2">
-            {navItems.map((t) => (
-              <button
-                key={t.id}
-                onClick={() => {
-                  setTab(t.id);
-                  fetchData();
-                }}
-                className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-150 active:scale-95 cursor-pointer ${
-                  tab === t.id
-                    ? 'bg-primary-50 text-primary-700 font-semibold ring-1 ring-primary-100 shadow-xs'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                }`}
-              >
-                <t.icon className="h-4 w-4 shrink-0" />
-                {t.label}
-              </button>
-            ))}
+          {/* Navigation Title */}
+          <div className="px-5 pt-1 pb-1 text-[11px] font-bold uppercase tracking-wider text-gray-400">
+            Navigation Tabs
+          </div>
+
+          {/* Navigation with full tab names */}
+          <nav className="flex flex-1 flex-col gap-1.5 px-3 py-1">
+            {navItems.map((t) => {
+              const isActive = tab === t.id;
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => {
+                    setTab(t.id);
+                    setMobileMenuOpen(false);
+                    fetchData();
+                  }}
+                  className={`flex items-center gap-3.5 rounded-xl px-3.5 py-3 text-sm font-semibold transition-all duration-150 active:scale-95 cursor-pointer text-left ${
+                    isActive
+                      ? 'bg-primary-600 text-white shadow-md shadow-primary-600/20'
+                      : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                  }`}
+                >
+                  <t.icon className={`h-5 w-5 shrink-0 ${isActive ? 'text-white' : 'text-primary-600'}`} />
+                  <div className="flex flex-col min-w-0">
+                    <span className="truncate leading-tight">{t.label}</span>
+                    <span className={`text-[11px] font-normal truncate mt-0.5 ${isActive ? 'text-white/80' : 'text-gray-400'}`}>
+                      {t.desc}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
           </nav>
         </div>
 
-        {/* Profile link & Location Change - Desktop footer */}
+        {/* Profile link & Location Change - Footer */}
         <div className="shrink-0 border-t border-gray-100 bg-white p-3 space-y-2">
           <UserProfileMenu variant="sidebar" currentCity={city} />
           <button
-            onClick={onBack}
+            onClick={() => {
+              setMobileMenuOpen(false);
+              onBack();
+            }}
             className="flex w-full items-center justify-center gap-2 rounded-xl bg-gray-100 py-2.5 px-3 text-xs font-semibold text-gray-700 transition-all duration-150 hover:bg-primary-50 hover:text-primary-700 hover:ring-1 hover:ring-primary-200 active:scale-95 cursor-pointer"
             title="Change your current city/region"
           >
@@ -144,50 +186,37 @@ export function DonorReceiverView({ city, coords, onBack, onSelectHospital }: Do
       </aside>
 
       {/* Main content with left padding to offset fixed sidebar on desktop, full width on mobile */}
-      <main className="flex-1 min-w-0 pl-0 md:pl-64 overflow-x-hidden pb-6">
-        {/* Mobile Sticky Header (< 768px): Row 1 brand & location, Row 2 prominent tab buttons */}
+      <main className="flex-1 min-w-0 pl-0 md:pl-64 overflow-x-hidden pb-20 md:pb-6">
+        {/* Mobile Sticky Header (< 768px): Top bar with Menu Button, active tab, and location */}
         <header className="md:hidden sticky top-0 z-30 bg-white/95 border-b border-gray-200/80 shadow-xs backdrop-blur-md">
-          {/* Row 1: Logo & Location & Profile */}
-          <div className="flex items-center justify-between px-3.5 py-2.5">
-            <a href="/index.html" className="flex items-center shrink-0 active:scale-95 transition-transform" title="LifeFlow Portal">
-              <img src="/lifeflow-logo.png" alt="Life Flow" className="h-8 w-auto object-contain" />
-            </a>
+          <div className="flex items-center justify-between px-3 py-2.5 gap-2">
+            {/* Left: Prominent Menu Button that opens the Side Navigation Bar */}
             <div className="flex items-center gap-2">
               <button
+                onClick={() => setMobileMenuOpen(true)}
+                className="flex items-center gap-1.5 rounded-xl bg-primary-50 border border-primary-200/70 px-2.5 py-1.5 text-xs font-bold text-primary-800 shadow-xs active:scale-95 transition-all cursor-pointer"
+                aria-label="Open Side Navigation Bar"
+              >
+                <Menu className="h-4 w-4 text-primary-600 shrink-0" />
+                <span>Menu</span>
+              </button>
+              <a href="/index.html" className="flex items-center shrink-0 active:scale-95 transition-transform" title="LifeFlow Portal">
+                <img src="/lifeflow-logo.png" alt="Life Flow" className="h-7 w-auto object-contain" />
+              </a>
+            </div>
+
+            {/* Right: Active Tab indicator + Location + Profile */}
+            <div className="flex items-center gap-2 min-w-0">
+              <button
                 onClick={onBack}
-                className="flex items-center gap-1.5 rounded-full bg-primary-50 px-2.5 py-1 text-xs font-semibold text-primary-700 ring-1 ring-primary-100 hover:bg-primary-100 active:scale-95 transition-all"
+                className="flex items-center gap-1 rounded-full bg-gray-100 px-2.5 py-1 text-xs font-semibold text-gray-700 hover:bg-gray-200 active:scale-95 transition-all shrink-0"
                 title="Change Location"
               >
                 <MapPin className="h-3 w-3 text-primary-600 shrink-0" />
-                <span className="truncate max-w-[90px]">{city}</span>
-                <span className="text-[10px] text-primary-500 font-normal">Change</span>
+                <span className="truncate max-w-[70px]">{city}</span>
               </button>
               <UserProfileMenu variant="header" currentCity={city} />
             </div>
-          </div>
-
-          {/* Row 2: Always-Visible Mobile Navigation Tabs */}
-          <div className="flex items-center gap-1.5 px-2.5 pb-2.5 pt-0.5 overflow-x-auto no-scrollbar">
-            {navItems.map((t) => {
-              const isActive = tab === t.id;
-              return (
-                <button
-                  key={t.id}
-                  onClick={() => {
-                    setTab(t.id);
-                    fetchData();
-                  }}
-                  className={`flex-1 min-w-[76px] flex items-center justify-center gap-1.5 rounded-xl py-2 px-2 text-xs font-semibold transition-all duration-150 active:scale-95 whitespace-nowrap cursor-pointer ${
-                    isActive
-                      ? 'bg-primary-600 text-white shadow-xs ring-1 ring-primary-600'
-                      : 'bg-gray-100/90 text-gray-700 hover:bg-gray-200/80 hover:text-gray-900'
-                  }`}
-                >
-                  <t.icon className={`h-3.5 w-3.5 shrink-0 ${isActive ? 'text-white' : 'text-gray-500'}`} />
-                  <span>{t.label}</span>
-                </button>
-              );
-            })}
           </div>
         </header>
 
@@ -235,6 +264,39 @@ export function DonorReceiverView({ city, coords, onBack, onSelectHospital }: Do
           )}
         </div>
       </main>
+
+      {/* Mobile Bottom Fixed Navigation Bar (< 768px): Thumb-friendly with Tab Names */}
+      <nav className="fixed bottom-0 left-0 right-0 z-30 flex h-16 items-center justify-around border-t border-gray-200 bg-white/95 px-1 py-1 shadow-lg backdrop-blur-md md:hidden">
+        {navItems.map((t) => {
+          const isActive = tab === t.id;
+          return (
+            <button
+              key={t.id}
+              onClick={() => {
+                setTab(t.id);
+                fetchData();
+              }}
+              className={`flex flex-1 flex-col items-center justify-center py-1 px-1 text-[11px] font-semibold transition-all duration-150 active:scale-95 cursor-pointer ${
+                isActive ? 'text-primary-600 font-bold' : 'text-gray-500 hover:text-gray-900'
+              }`}
+            >
+              <div className={`p-1 rounded-xl transition-all ${isActive ? 'bg-primary-50 text-primary-600 scale-105 ring-1 ring-primary-200' : ''}`}>
+                <t.icon className="h-4 w-4" />
+              </div>
+              <span className="mt-0.5 truncate max-w-[64px]">{t.label}</span>
+            </button>
+          );
+        })}
+        <button
+          onClick={() => setMobileMenuOpen(true)}
+          className="flex flex-1 flex-col items-center justify-center py-1 px-1 text-[11px] font-semibold text-gray-500 hover:text-primary-600 transition-all active:scale-95 cursor-pointer"
+        >
+          <div className="p-1 rounded-xl text-gray-600">
+            <Menu className="h-4 w-4" />
+          </div>
+          <span className="mt-0.5">Sidebar</span>
+        </button>
+      </nav>
     </div>
   );
 }

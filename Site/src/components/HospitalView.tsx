@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   ArrowLeft, Droplet, Building2, AlertCircle, Clock, Phone, MapPin,
   Activity, Calendar, Search, User, ShieldCheck, CheckCircle2,
-  PhoneCall, MessageSquare, Send, X, Navigation,
+  PhoneCall, MessageSquare, Send, X, Navigation, Menu,
 } from 'lucide-react';
 import {
   BLOOD_GROUPS,
@@ -31,6 +31,7 @@ type Tab = 'metrics' | 'camps';
 
 export function HospitalView({ hospital, city, onBack }: HospitalViewProps) {
   const [tab, setTab] = useState<Tab>('metrics');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [inventory, setInventory] = useState<BloodInventory[]>([]);
   const [camps, setCamps] = useState<BloodCamp[]>([]);
   const [loading, setLoading] = useState(true);
@@ -49,21 +50,42 @@ export function HospitalView({ hospital, city, onBack }: HospitalViewProps) {
   }, [fetchData]);
 
   const navItems = [
-    { id: 'metrics' as Tab, label: 'Blood Metrics', icon: Activity },
-    { id: 'camps' as Tab, label: 'Donation Camps', icon: Calendar, badge: camps.length },
+    { id: 'metrics' as Tab, label: 'Blood Metrics', icon: Activity, desc: 'Real-time blood stock & compatibility' },
+    { id: 'camps' as Tab, label: 'Donation Camps', icon: Calendar, badge: camps.length, desc: 'Scheduled community donation events' },
   ];
 
   return (
     <div className="min-h-screen bg-[#fdf6f3]">
-      {/* Left Sidebar - Locked at viewport on desktop, hidden on mobile */}
-      <aside className="hidden md:flex fixed top-0 left-0 bottom-0 z-30 h-screen w-64 flex-col justify-between border-r border-gray-100 bg-white shadow-xs">
+      {/* Mobile Drawer Backdrop */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-gray-950/60 backdrop-blur-xs md:hidden animate-fade-in"
+          onClick={() => setMobileMenuOpen(false)}
+          aria-label="Close navigation sidebar"
+        />
+      )}
+
+      {/* Side Navigation Bar - Locked at viewport on desktop, slide-over drawer on mobile */}
+      <aside
+        className={`fixed top-0 left-0 bottom-0 h-screen flex flex-col justify-between border-r border-gray-100 bg-white transition-transform duration-300 ease-in-out z-50 md:z-30 w-72 md:w-64 ${
+          mobileMenuOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full md:translate-x-0 md:shadow-xs'
+        }`}
+      >
         {/* Top Scrollable Navigation Section */}
         <div className="flex flex-1 flex-col min-h-0 overflow-y-auto">
-          {/* Logo */}
-          <div className="flex items-center px-5 py-4 shrink-0">
+          {/* Logo & Mobile Close button */}
+          <div className="flex items-center justify-between px-5 py-4 shrink-0">
             <a href="/index.html" className="flex items-center hover:opacity-85 transition-opacity cursor-pointer" title="Return to Portal Gateway">
-              <img src="/lifeflow-logo.png" alt="Life Flow" className="h-12 md:h-14 w-auto object-contain" />
+              <img src="/lifeflow-logo.png" alt="Life Flow" className="h-11 md:h-14 w-auto object-contain" />
             </a>
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              className="md:hidden flex h-9 w-9 items-center justify-center rounded-xl bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-900 active:scale-95 transition-all cursor-pointer"
+              title="Close Sidebar"
+              aria-label="Close Sidebar"
+            >
+              <X className="h-5 w-5" />
+            </button>
           </div>
 
           {/* Hospital badge */}
@@ -96,35 +118,56 @@ export function HospitalView({ hospital, city, onBack }: HospitalViewProps) {
             </div>
           </div>
 
-          {/* Navigation */}
-          <nav className="flex flex-1 flex-col gap-1 px-3 py-2">
-            {navItems.map((t) => (
-              <button
-                key={t.id}
-                onClick={() => setTab(t.id)}
-                className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-150 active:scale-95 cursor-pointer ${
-                  tab === t.id
-                    ? 'bg-primary-50 text-primary-700 font-semibold ring-1 ring-primary-100 shadow-xs'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                }`}
-              >
-                <t.icon className="h-4 w-4 shrink-0" />
-                {t.label}
-                {t.badge !== undefined && t.badge > 0 && (
-                  <span className="ml-auto rounded-full bg-primary-100 px-2 py-0.5 text-xs font-semibold text-primary-700">
-                    {t.badge}
-                  </span>
-                )}
-              </button>
-            ))}
+          {/* Navigation Title */}
+          <div className="px-5 pt-1 pb-1 text-[11px] font-bold uppercase tracking-wider text-gray-400">
+            Navigation Tabs
+          </div>
+
+          {/* Navigation with full tab names */}
+          <nav className="flex flex-1 flex-col gap-1.5 px-3 py-1">
+            {navItems.map((t) => {
+              const isActive = tab === t.id;
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => {
+                    setTab(t.id);
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`flex items-center gap-3.5 rounded-xl px-3.5 py-3 text-sm font-semibold transition-all duration-150 active:scale-95 cursor-pointer text-left ${
+                    isActive
+                      ? 'bg-primary-600 text-white shadow-md shadow-primary-600/20'
+                      : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                  }`}
+                >
+                  <t.icon className={`h-5 w-5 shrink-0 ${isActive ? 'text-white' : 'text-primary-600'}`} />
+                  <div className="flex flex-col min-w-0">
+                    <span className="truncate leading-tight">{t.label}</span>
+                    <span className={`text-[11px] font-normal truncate mt-0.5 ${isActive ? 'text-white/80' : 'text-gray-400'}`}>
+                      {t.desc}
+                    </span>
+                  </div>
+                  {t.badge !== undefined && t.badge > 0 && (
+                    <span className={`ml-auto rounded-full px-2 py-0.5 text-xs font-bold ${
+                      isActive ? 'bg-white/20 text-white' : 'bg-primary-100 text-primary-700'
+                    }`}>
+                      {t.badge}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
           </nav>
         </div>
 
-        {/* Profile link & Return button - Desktop footer */}
+        {/* Profile link & Return button - Footer */}
         <div className="shrink-0 border-t border-gray-100 bg-white p-3 space-y-2">
           <UserProfileMenu variant="sidebar" currentCity={city} />
           <button
-            onClick={onBack}
+            onClick={() => {
+              setMobileMenuOpen(false);
+              onBack();
+            }}
             className="flex w-full items-center justify-center gap-2 rounded-xl bg-gray-100 py-2.5 text-xs font-semibold text-gray-700 transition-all duration-150 hover:bg-gray-200 active:scale-95 cursor-pointer"
           >
             <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-150 group-hover:-translate-x-0.5" />
@@ -134,58 +177,38 @@ export function HospitalView({ hospital, city, onBack }: HospitalViewProps) {
       </aside>
 
       {/* Main content with left padding to offset fixed sidebar on desktop, full width on mobile */}
-      <main className="flex-1 min-w-0 pl-0 md:pl-64 overflow-x-hidden pb-6">
-        {/* Mobile Sticky Header (< 768px): Row 1 Back + Hospital name + Profile, Row 2 prominent tab buttons */}
+      <main className="flex-1 min-w-0 pl-0 md:pl-64 overflow-x-hidden pb-20 md:pb-6">
+        {/* Mobile Sticky Header (< 768px): Top bar with Menu Button, Hospital name, and Profile */}
         <header className="md:hidden sticky top-0 z-30 bg-white/95 border-b border-gray-200/80 shadow-xs backdrop-blur-md">
-          {/* Row 1: Back + Hospital name + Profile */}
-          <div className="flex items-center justify-between px-3.5 py-2.5 gap-2">
-            <button
-              onClick={onBack}
-              className="flex items-center gap-1 rounded-xl bg-gray-100 px-2.5 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-200 active:scale-95 transition-all shrink-0 cursor-pointer"
-              title="Back"
-            >
-              <ArrowLeft className="h-3.5 w-3.5 text-gray-600 shrink-0" />
-              <span>Back</span>
-            </button>
+          <div className="flex items-center justify-between px-3 py-2.5 gap-2">
+            {/* Left: Menu & Back buttons */}
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={() => setMobileMenuOpen(true)}
+                className="flex items-center gap-1 rounded-xl bg-primary-50 border border-primary-200/70 px-2.5 py-1.5 text-xs font-bold text-primary-800 shadow-xs active:scale-95 transition-all cursor-pointer"
+                aria-label="Open Side Navigation Bar"
+              >
+                <Menu className="h-4 w-4 text-primary-600 shrink-0" />
+                <span>Menu</span>
+              </button>
+              <button
+                onClick={onBack}
+                className="flex items-center gap-1 rounded-xl bg-gray-100 px-2.5 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-200 active:scale-95 transition-all shrink-0 cursor-pointer"
+                title="Back to Dashboard"
+              >
+                <ArrowLeft className="h-3.5 w-3.5 text-gray-600 shrink-0" />
+                <span>Back</span>
+              </button>
+            </div>
 
-            <div className="min-w-0 flex-1 text-center">
+            {/* Hospital title */}
+            <div className="min-w-0 flex-1 text-center px-1">
               <h1 className="text-xs sm:text-sm font-bold text-gray-900 truncate">
                 {hospital.name}
               </h1>
-              <p className="text-[10px] text-gray-500 truncate flex items-center justify-center gap-1">
-                <MapPin className="h-2.5 w-2.5 text-gray-400 shrink-0" /> {hospital.city}
-              </p>
             </div>
 
             <UserProfileMenu variant="header" currentCity={city} />
-          </div>
-
-          {/* Row 2: Always-Visible Mobile Navigation Tabs */}
-          <div className="flex items-center gap-2 px-3 pb-2.5 pt-0.5">
-            {navItems.map((t) => {
-              const isActive = tab === t.id;
-              return (
-                <button
-                  key={t.id}
-                  onClick={() => setTab(t.id)}
-                  className={`flex-1 flex items-center justify-center gap-1.5 rounded-xl py-2 px-3 text-xs font-semibold transition-all duration-150 active:scale-95 cursor-pointer ${
-                    isActive
-                      ? 'bg-primary-600 text-white shadow-xs ring-1 ring-primary-600'
-                      : 'bg-gray-100/90 text-gray-700 hover:bg-gray-200/80 hover:text-gray-900'
-                  }`}
-                >
-                  <t.icon className={`h-3.5 w-3.5 shrink-0 ${isActive ? 'text-white' : 'text-gray-500'}`} />
-                  <span>{t.label}</span>
-                  {t.badge !== undefined && t.badge > 0 && (
-                    <span className={`rounded-full px-1.5 py-0.2 text-[10px] font-bold ${
-                      isActive ? 'bg-white/20 text-white' : 'bg-primary-100 text-primary-700'
-                    }`}>
-                      {t.badge}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
           </div>
         </header>
 
@@ -218,6 +241,45 @@ export function HospitalView({ hospital, city, onBack }: HospitalViewProps) {
           )}
         </div>
       </main>
+
+      {/* Mobile Bottom Fixed Navigation Bar (< 768px): Thumb-friendly with Tab Names */}
+      <nav className="fixed bottom-0 left-0 right-0 z-30 flex h-16 items-center justify-around border-t border-gray-200 bg-white/95 px-1 py-1 shadow-lg backdrop-blur-md md:hidden">
+        {navItems.map((t) => {
+          const isActive = tab === t.id;
+          return (
+            <button
+              key={t.id}
+              onClick={() => setTab(t.id)}
+              className={`flex flex-1 flex-col items-center justify-center py-1 px-1 text-[11px] font-semibold transition-all duration-150 active:scale-95 cursor-pointer ${
+                isActive ? 'text-primary-600 font-bold' : 'text-gray-500 hover:text-gray-900'
+              }`}
+            >
+              <div className={`p-1 rounded-xl transition-all ${isActive ? 'bg-primary-50 text-primary-600 scale-105 ring-1 ring-primary-200' : ''}`}>
+                <t.icon className="h-4 w-4" />
+              </div>
+              <span className="mt-0.5 truncate max-w-[80px]">{t.label}</span>
+            </button>
+          );
+        })}
+        <button
+          onClick={onBack}
+          className="flex flex-1 flex-col items-center justify-center py-1 px-1 text-[11px] font-semibold text-gray-500 hover:text-gray-900 transition-all active:scale-95 cursor-pointer"
+        >
+          <div className="p-1 rounded-xl text-gray-600">
+            <ArrowLeft className="h-4 w-4" />
+          </div>
+          <span className="mt-0.5">Back</span>
+        </button>
+        <button
+          onClick={() => setMobileMenuOpen(true)}
+          className="flex flex-1 flex-col items-center justify-center py-1 px-1 text-[11px] font-semibold text-gray-500 hover:text-primary-600 transition-all active:scale-95 cursor-pointer"
+        >
+          <div className="p-1 rounded-xl text-gray-600">
+            <Menu className="h-4 w-4" />
+          </div>
+          <span className="mt-0.5">Sidebar</span>
+        </button>
+      </nav>
     </div>
   );
 }
