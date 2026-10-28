@@ -125,12 +125,9 @@ export function LocationGate({ onLocationSet, currentCity, onCancel }: LocationG
             <h2 className="mb-3 text-2xl font-bold leading-snug text-white sm:text-3xl md:text-5xl md:leading-tight">
               Connecting donors, receivers,<br className="hidden sm:inline" /> hospitals &amp; blood camps
             </h2>
-            <p className="mb-4 text-xs text-white/70 sm:text-sm md:text-lg">
+            <p className="mb-6 text-xs text-white/70 sm:text-sm md:mb-10 md:text-lg">
               Real-time blood availability across every blood group and component.
               Find donors, track inventory, and save lives — all in one network.
-            </p>
-            <p className="mb-6 text-[11px] sm:text-xs text-white/75 italic max-w-xl mx-auto">
-              * This website is in it's early stages of development and shows demo data for illustration purposes. Any similarity with the data of any medical institution is purely coincidential and unintentional
             </p>
 
             {/* Location card */}
