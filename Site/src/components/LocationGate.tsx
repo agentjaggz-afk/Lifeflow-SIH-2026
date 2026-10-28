@@ -223,6 +223,11 @@ export function LocationGate({ onLocationSet, currentCity, onCancel }: LocationG
                   ))}
                 </div>
               </div>
+
+              {/* Bottom Disclaimer Inside Location Card */}
+              <p className="text-center text-[11px] text-slate-500 mt-6 mb-0 leading-relaxed border-t border-slate-100 pt-3.5 italic">
+                * This website is in it's early stages of development and shows demo data for illustration purposes. Any similarity with the data of any medical institution is purely coincidential and unintentional
+              </p>
             </div>
 
             {/* Stats */}
