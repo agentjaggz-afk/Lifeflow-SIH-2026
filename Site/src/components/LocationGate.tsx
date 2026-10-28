@@ -101,8 +101,9 @@ export function LocationGate({ onLocationSet, currentCity, onCancel }: LocationG
       <div className="relative z-10 flex min-h-screen flex-col">
         {/* Header */}
         <header className="flex items-center justify-between px-4 py-3 sm:px-6 sm:py-5 md:px-12">
-          <a href="/index.html" className="flex items-center hover:opacity-90 transition-opacity cursor-pointer" title="Return to Portal Gateway">
+          <a href="/index.html" className="flex items-start hover:opacity-90 transition-opacity cursor-pointer" title="Return to Portal Gateway">
             <img src="/lifeflow-logo.png" alt="Life Flow" className="h-10 sm:h-12 md:h-14 w-auto rounded-xl bg-white p-1 sm:p-1.5 shadow-md object-contain" />
+            <sup className="text-white text-base font-bold ml-1 -mt-1">*</sup>
           </a>
           <div className="flex items-center gap-2 sm:gap-3">
             <UserProfileMenu variant="dark" currentCity={currentCity} />
@@ -119,13 +120,17 @@ export function LocationGate({ onLocationSet, currentCity, onCancel }: LocationG
             <div className="mb-4 sm:mb-6 inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1 sm:px-4 sm:py-1.5 backdrop-blur-sm ring-1 ring-white/20">
               <Activity className="h-3.5 w-3.5 text-white/80" />
               <span className="text-[11px] sm:text-xs font-medium text-white/80">Live blood metrics in your area</span>
+              <sup className="text-white/90 text-xs font-bold -ml-1">*</sup>
             </div>
             <h2 className="mb-3 text-2xl font-bold leading-snug text-white sm:text-3xl md:text-5xl md:leading-tight">
               Connecting donors, receivers,<br className="hidden sm:inline" /> hospitals &amp; blood camps
             </h2>
-            <p className="mb-6 text-xs text-white/70 sm:text-sm md:mb-10 md:text-lg">
+            <p className="mb-4 text-xs text-white/70 sm:text-sm md:text-lg">
               Real-time blood availability across every blood group and component.
               Find donors, track inventory, and save lives — all in one network.
+            </p>
+            <p className="mb-6 text-[11px] sm:text-xs text-white/75 italic max-w-xl mx-auto">
+              * This website is in it's early stages of development and shows demo data for illustration purposes. Any similarity with the data of any medical institution is purely coincidential and unintentional
             </p>
 
             {/* Location card */}
