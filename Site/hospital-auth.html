@@ -16,7 +16,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="style1.css?v=5.0.0">
+    <link rel="stylesheet" href="style1.css?v=5.2.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
@@ -924,6 +924,72 @@
                 box-shadow: none !important;
                 display: flex !important;
                 flex-direction: column !important;
+                background: #FFFFFF !important;
+            }
+
+            aside#hospMainSidebar .sidebar-nav-item span,
+            .hosp-sidebar .sidebar-nav-item span {
+                display: inline-block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                font-size: 13.5px !important;
+                font-weight: 600 !important;
+                flex: 1 !important;
+                text-align: left !important;
+            }
+
+            aside#hospMainSidebar .sidebar-nav-item,
+            .hosp-sidebar .sidebar-nav-item {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: flex-start !important;
+                padding: 12px 14px !important;
+                gap: 12px !important;
+                width: 100% !important;
+                text-align: left !important;
+            }
+
+            aside#hospMainSidebar .sidebar-nav-label,
+            .hosp-sidebar .sidebar-nav-label {
+                display: block !important;
+                font-size: 11px !important;
+                font-weight: 700 !important;
+                text-transform: uppercase !important;
+                color: #9CA3AF !important;
+                padding: 8px 14px 2px !important;
+                text-align: left !important;
+            }
+
+            aside#hospMainSidebar .sidebar-profile-info,
+            .hosp-sidebar .sidebar-profile-info {
+                display: flex !important;
+                flex-direction: column !important;
+                visibility: visible !important;
+                text-align: left !important;
+            }
+
+            aside#hospMainSidebar .sidebar-hospital-name,
+            .hosp-sidebar .sidebar-hospital-name {
+                display: block !important;
+                visibility: visible !important;
+            }
+
+            aside#hospMainSidebar .sidebar-hospital-meta,
+            .hosp-sidebar .sidebar-hospital-meta {
+                display: flex !important;
+                visibility: visible !important;
+            }
+
+            aside#hospMainSidebar .sidebar-sos-btn span,
+            .hosp-sidebar .sidebar-sos-btn span {
+                display: inline !important;
+                visibility: visible !important;
+            }
+
+            aside#hospMainSidebar .sidebar-user-pill span,
+            .hosp-sidebar .sidebar-user-pill span {
+                display: inline !important;
+                visibility: visible !important;
             }
 
             aside#hospMainSidebar.sidebar-open,
@@ -972,10 +1038,24 @@
                 color: #DC2626;
             }
 
+            html, body {
+                overflow-x: hidden !important;
+                max-width: 100vw !important;
+                width: 100% !important;
+            }
+
+            .hosp-app-container {
+                overflow-x: hidden !important;
+                max-width: 100vw !important;
+                width: 100% !important;
+            }
+
             .hosp-main-viewport {
                 width: 100% !important;
+                max-width: 100vw !important;
                 margin-left: 0 !important;
                 min-height: 100vh !important;
+                overflow-x: hidden !important;
             }
 
             .btn-mobile-sidebar-toggle {
@@ -1008,6 +1088,10 @@
                 align-items: center !important;
                 justify-content: space-between !important;
                 gap: 10px !important;
+                width: 100% !important;
+                max-width: 100vw !important;
+                box-sizing: border-box !important;
+                overflow-x: hidden !important;
             }
 
             .viewport-header-actions {
@@ -1039,6 +1123,30 @@
             .qr-studio-grid {
                 grid-template-columns: 1fr !important;
                 gap: 20px !important;
+            }
+
+            .inv-section-header {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 10px !important;
+            }
+
+            .inv-legend {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                gap: 8px 12px !important;
+            }
+
+            .blood-grid-container {
+                grid-template-columns: 1fr !important;
+                gap: 12px !important;
+                width: 100% !important;
+            }
+
+            @media (min-width: 480px) and (max-width: 900px) {
+                .blood-grid-container {
+                    grid-template-columns: repeat(2, 1fr) !important;
+                }
             }
         }
 
@@ -1128,9 +1236,17 @@
                 gap: 10px !important;
             }
 
-            .blood-stock-grid {
+            .blood-stock-grid,
+            .blood-grid-container {
                 grid-template-columns: repeat(2, 1fr) !important;
                 gap: 10px !important;
+            }
+
+            @media (max-width: 420px) {
+                .blood-stock-grid,
+                .blood-grid-container {
+                    grid-template-columns: 1fr !important;
+                }
             }
 
             .blood-card {

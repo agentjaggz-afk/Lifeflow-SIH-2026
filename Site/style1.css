@@ -7127,31 +7127,16 @@ body.dark-mode .setting-row p {
 
 /* Responsive Overrides */
 @media (max-width: 1024px) {
-    .hosp-sidebar {
-        width: 72px;
+    .sidebar-nav-item span {
+        display: inline-block !important;
     }
-    .sidebar-brand-text,
     .sidebar-hospital-name,
     .sidebar-hospital-meta,
-    .sidebar-nav-item span,
     .sidebar-nav-label,
     .sidebar-sos-btn span,
     .sidebar-user-pill span,
     .sidebar-profile-info {
-        display: none;
-    }
-    .sidebar-profile-card {
-        margin: 12px 6px;
-        padding: 6px;
-        justify-content: center;
-    }
-    .sidebar-avatar-img {
-        width: 38px;
-        height: 38px;
-    }
-    .sidebar-nav-item {
-        justify-content: center;
-        padding: 12px;
+        display: block !important;
     }
     .profile-editor-grid {
         grid-template-columns: 1fr;
@@ -8802,9 +8787,19 @@ input[type="submit"],
     /* Blood Stock Grid (2 columns on mobile portrait) */
     .blood-stock-grid,
     .blood-groups-grid,
+    .blood-grid-container,
     .bank-grid {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 10px !important;
+    }
+
+    @media (max-width: 420px) {
+        .blood-stock-grid,
+        .blood-groups-grid,
+        .blood-grid-container,
+        .bank-grid {
+            grid-template-columns: 1fr !important;
+        }
     }
 
     .blood-card,
